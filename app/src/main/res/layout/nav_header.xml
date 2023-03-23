@@ -8,7 +8,7 @@
     android:padding="16dp"
     android:background="@drawable/headerbkg_cyan"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
-    
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,17 +18,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Julian Camilo Mora Valbuena"
-        android:fontFamily="@font/roboto_bold"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white"
+        android:textStyle="bold"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="j.morav@uniandes.edu.co"
-        android:fontFamily="@font/roboto_light"
         android:textColor="@color/white"
         android:textSize="14sp"
         android:layout_marginBottom="16dp"/>
-    
 
 </LinearLayout>

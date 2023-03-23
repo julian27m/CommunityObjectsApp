@@ -10,7 +10,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
 }
-rootProject.name = "Navigation Drawer Community Objects"
+rootProject.name = "Community Objects"
 include ':app'
