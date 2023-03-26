@@ -2,7 +2,9 @@ package com.example.navigationdrawercommunityobjects.model
 
 data class Item (
     val name: String = "",
-    val categories: List<String> = emptyList(),
+    val category : String = "",
     val description: String = "",
-    val photos: List<String> = emptyList()
-)
+    val photo: String = "",
+) {
+    val id: String = ""
+}

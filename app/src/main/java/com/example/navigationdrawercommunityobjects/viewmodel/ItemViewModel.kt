@@ -1,5 +1,6 @@
 package com.example.navigationdrawercommunityobjects.viewmodel
 
+import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -34,5 +35,10 @@ class ItemViewModel : ViewModel() {
         repository.getItem(itemId) { item ->
             _item.value = item
         }
+    }
+
+    fun addPhoto(ivItemImage: ImageView): String {
+//        put the foto on the storage
+        return repository.addPhoto(ivItemImage)
     }
 }

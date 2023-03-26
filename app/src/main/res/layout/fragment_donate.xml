@@ -45,13 +45,13 @@
             app:icon="@drawable/ic_camera"
             app:iconSize="100dp"
             app:iconTint="@color/teal_700" />
-        <LinearLayout
-            android:id="@+id/layoutImages"
-            android:layout_width="match_parent"
-            android:layout_height="94dp"
-            android:orientation="horizontal" >
 
-        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ivItemImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@android:drawable/ic_menu_gallery" />
 
         <EditText
             android:id="@+id/etItemName"

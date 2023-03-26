@@ -1,6 +1,10 @@
 package com.example.navigationdrawercommunityobjects.view
 
+import android.app.Activity.RESULT_OK
+import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +19,9 @@ import com.example.navigationdrawercommunityobjects.viewmodel.ItemViewModel
 
 class DonateFragment : Fragment() {
 
+    private val binding: FragmentDonateBinding by lazy {
+        FragmentDonateBinding.inflate(layoutInflater)
+    }
     private lateinit var viewModel: ItemViewModel
 
     override fun onCreateView(
@@ -22,7 +29,6 @@ class DonateFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentDonateBinding.inflate(inflater, container, false)
         val view = binding.root
 
         viewModel = ViewModelProvider(this).get(ItemViewModel::class.java)
@@ -32,8 +38,8 @@ class DonateFragment : Fragment() {
             val item = Item(
                 name = binding.etItemName.text.toString(),
                 description = binding.etItemDescription.text.toString(),
-                categories = binding.spCategory.selectedItem.toString().split(","),
-                photos = listOf("url1", "url2", "url3") // Aquí debes agregar la lógica para obtener las imágenes
+                category = binding.spCategory.selectedItem.toString(),
+                photo = viewModel.addPhoto(binding.ivItemImage)
             )
 
             viewModel.addItem(item)
@@ -58,6 +64,27 @@ class DonateFragment : Fragment() {
             supportFragmentManager.beginTransaction().replace(R.id.fragment_container, HomeFragment()).commit()
         }
 
+
+        // Agregar un botón para seleccionar una imagen
+        binding.btnAddImage.setOnClickListener {
+            // Abrir el fragmento CameraFragment
+            val cameraFragment = CameraFragment()
+            cameraFragment.setTargetFragment(this, 1)
+            val transaction = parentFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragment_container, cameraFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
+
+
+
         return view
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            val photoUri = data?.data
+            binding.ivItemImage.setImageURI(photoUri)
+        }
     }
 }
