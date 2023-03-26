@@ -2,4 +2,11 @@
     <string name="app_name">Community Objects</string>
     <string name="open_nav">Open Navigation Drawer</string>
     <string name="close_nav">Close Navigation Drawer</string>
+    <string name="donate_item_name_title">Make a donation</string>
+    <string name="donate_item_name_hint">Name</string>
+    <string name="donate_item_description_hint">Description</string>
+    <string name="donate_item_category_prompt">Select categories...</string>
+    <string name="donate_item_image_title">Photos</string>
+    <string name="donate_item_add_image_button_text">Add</string>
+    <string name="donate_item_publish_button_text">Publish</string>
 </resources>

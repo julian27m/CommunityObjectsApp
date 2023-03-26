@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
 
-    private fun replaceFragment(fragment: Fragment) {
+    public fun replaceFragment(fragment: Fragment) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.fragment_container, fragment)
@@ -123,6 +123,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             dialog.dismiss()
             Toast.makeText(this@MainActivity, "Upload donation is clicked", Toast.LENGTH_SHORT)
                 .show()
+//            set the donate fragment
+            replaceFragment(DonateFragment())
         }
         requestLayout.setOnClickListener {
             dialog.dismiss()
