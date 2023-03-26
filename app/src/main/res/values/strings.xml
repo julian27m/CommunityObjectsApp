@@ -9,4 +9,6 @@
     <string name="donate_item_image_title">Photos</string>
     <string name="donate_item_add_image_button_text">Add</string>
     <string name="donate_item_publish_button_text">Publish</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

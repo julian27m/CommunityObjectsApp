@@ -15,141 +15,106 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.developer.gbuttons.GoogleSignInButton
-import com.example.navigationdrawercommunityobjects.view.MainActivity
 import com.example.navigationdrawercommunityobjects.R
+import com.example.navigationdrawercommunityobjects.view.MainActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class LoginActivity: AppCompatActivity() {
-    private lateinit var loginEmail: EditText
-    private lateinit var loginPassword: EditText
-    private lateinit var signupRedirectText: TextView
-    private lateinit var loginButton: Button
-    private lateinit var auth: FirebaseAuth
-    lateinit var forgotPassword: TextView
-    lateinit var googleBtn: GoogleSignInButton
-    var gOptions: GoogleSignInOptions? = null
-    var gClient: GoogleSignInClient? = null
-
+    lateinit var loginUsername: EditText
+    lateinit var loginPassword: EditText
+    lateinit var loginButton: Button
+    lateinit var signupRedirectText: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        loginEmail = findViewById(R.id.login_email)
+        loginUsername = findViewById(R.id.login_username)
         loginPassword = findViewById(R.id.login_password)
         loginButton = findViewById(R.id.login_button)
         signupRedirectText = findViewById(R.id.signUpRedirectText)
-        forgotPassword = findViewById(R.id.forgot_password)
-        googleBtn = findViewById(R.id.googleBtn)
-        auth = FirebaseAuth.getInstance()
         loginButton.setOnClickListener(View.OnClickListener {
-            val email = loginEmail.getText().toString()
-            val pass = loginPassword.getText().toString()
-            if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                if (!pass.isEmpty()) {
-                    auth!!.signInWithEmailAndPassword(email, pass)
-                        .addOnSuccessListener {
-                            Toast.makeText(
-                                this@LoginActivity,
-                                "Login Successful",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                            finish()
-                        }.addOnFailureListener {
-                            Toast.makeText(
-                                this@LoginActivity,
-                                "Login Failed",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                } else {
-                    loginPassword.setError("Empty fields are not allowed")
-                }
-            } else if (email.isEmpty()) {
-                loginEmail.setError("Empty fields are not allowed")
+
+            if (!validateUsername() or !validatePassword()) {
             } else {
-                loginEmail.setError("Please enter correct email")
+                checkUser()
             }
         })
         signupRedirectText.setOnClickListener(View.OnClickListener {
-            startActivity(
-                Intent(
-                    this@LoginActivity,
-                    SignUpActivity::class.java
-                )
-            )
-        })
-        forgotPassword.setOnClickListener(View.OnClickListener {
-            val builder = AlertDialog.Builder(this@LoginActivity)
-            val dialogView = layoutInflater.inflate(R.layout.dialog_forgot, null)
-            val emailBox = dialogView.findViewById<EditText>(R.id.emailBox)
-            builder.setView(dialogView)
-            val dialog = builder.create()
-            dialogView.findViewById<View>(R.id.btnReset).setOnClickListener(View.OnClickListener {
-                val userEmail = emailBox.text.toString()
-                if (TextUtils.isEmpty(userEmail) && !Patterns.EMAIL_ADDRESS.matcher(userEmail)
-                        .matches()
-                ) {
-                    Toast.makeText(
-                        this@LoginActivity,
-                        "Enter your registered email id",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return@OnClickListener
-                }
-                auth!!.sendPasswordResetEmail(userEmail).addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Toast.makeText(this@LoginActivity, "Check your email", Toast.LENGTH_SHORT)
-                            .show()
-                        dialog.dismiss()
-                    } else {
-                        Toast.makeText(
-                            this@LoginActivity,
-                            "Unable to send, failed",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            })
-            dialogView.findViewById<View>(R.id.btnCancel).setOnClickListener { dialog.dismiss() }
-            if (dialog.window != null) {
-                dialog.window!!.setBackgroundDrawable(ColorDrawable(0))
-            }
-            dialog.show()
-        })
-        //Inside onCreate
-        gOptions =
-            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
-        gClient = GoogleSignIn.getClient(this, gOptions!!)
-        val gAccount = GoogleSignIn.getLastSignedInAccount(this)
-        if (gAccount != null) {
-            finish()
-            val intent = Intent(this@LoginActivity, MainActivity::class.java)
+            val intent = Intent(this@LoginActivity, SignUpActivity::class.java)
             startActivity(intent)
+        })
+    }
+
+    fun validateUsername(): Boolean {
+        val `val` = loginUsername!!.text.toString()
+        return if (`val`.isEmpty()) {
+            loginUsername!!.error = "Username cannot be empty"
+            false
+        } else {
+            loginUsername!!.error = null
+            true
         }
-        val activityResultLauncher = registerForActivityResult<Intent, ActivityResult>(
-            ActivityResultContracts.StartActivityForResult()
-        ) { result ->
-            if (result.resultCode == RESULT_OK) {
-                val data = result.data
-                val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-                try {
-                    task.getResult(ApiException::class.java)
-                    finish()
-                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                    startActivity(intent)
-                } catch (e: ApiException) {
-                    Toast.makeText(this@LoginActivity, "Something went wrong", Toast.LENGTH_SHORT)
-                        .show()
+    }
+
+    fun validatePassword(): Boolean {
+        val `val` = loginPassword!!.text.toString()
+        return if (`val`.isEmpty()) {
+            loginPassword!!.error = "Password cannot be empty"
+            false
+        } else {
+            loginPassword!!.error = null
+            true
+        }
+    }
+
+    fun checkUser() {
+        val userUsername = loginUsername!!.text.toString().trim { it <= ' ' }
+        val userPassword = loginPassword!!.text.toString().trim { it <= ' ' }
+        val reference = FirebaseDatabase.getInstance().getReference("users")
+        val checkUserDatabase = reference.orderByChild("username").equalTo(userUsername)
+        checkUserDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    loginUsername!!.error = null
+                    val passwordFromDB = snapshot.child(userUsername).child("password").getValue(
+                        String::class.java
+                    )
+                    if (passwordFromDB == userPassword) {
+                        loginUsername!!.error = null
+                        val nameFromDB = snapshot.child(userUsername).child("name").getValue(
+                            String::class.java
+                        )
+                        val emailFromDB = snapshot.child(userUsername).child("email").getValue(
+                            String::class.java
+                        )
+                        val usernameFromDB =
+                            snapshot.child(userUsername).child("username").getValue(
+                                String::class.java
+                            )
+                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        intent.putExtra("name", nameFromDB)
+                        intent.putExtra("email", emailFromDB)
+                        intent.putExtra("username", usernameFromDB)
+                        intent.putExtra("password", passwordFromDB)
+                        startActivity(intent)
+                    } else {
+                        loginPassword!!.error = "Invalid Credentials"
+                        loginPassword!!.requestFocus()
+                    }
+                } else {
+                    loginUsername!!.error = "User does not exist"
+                    loginUsername!!.requestFocus()
                 }
             }
-        }
-        googleBtn.setOnClickListener(View.OnClickListener {
-            val signInIntent = gClient!!.signInIntent
-            activityResultLauncher.launch(signInIntent)
+
+            override fun onCancelled(error: DatabaseError) {}
         })
     }
 }
