@@ -1,22 +1,28 @@
 package com.example.navigationdrawercommunityobjects.view
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.example.navigationdrawercommunityobjects.R
 import com.example.navigationdrawercommunityobjects.model.LoginActivity
+import com.example.navigationdrawercommunityobjects.model.ProfileActivity
+import com.example.navigationdrawercommunityobjects.model.SignUpActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -62,19 +68,30 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
         replaceFragment(HomeFragment())
+
+
+
         bottomNavigationView.setBackground(null)
         bottomNavigationView.setOnItemSelectedListener(NavigationBarView.OnItemSelectedListener { item: MenuItem ->
             when (item.itemId) {
                 R.id.home -> replaceFragment(HomeFragment())
-                R.id.profile -> replaceFragment(ProfileFragment())
+                //redirect to activityProfile with the LoginActivity data
+                R.id.profile -> {
+                    val intent = Intent(this, ProfileActivity::class.java)
+                    startActivity(intent)
+                }
             }
             true
         })
         fab.setOnClickListener(View.OnClickListener { showBottomDialog() })
 
-
+        val header = navigationView.getHeaderView(0)
+        val navName = header.findViewById<View>(R.id.navName) as TextView
+        val navEmail = header.findViewById<View>(R.id.navEmail) as TextView
 
     }
+
+
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -112,6 +129,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         fragmentTransaction.commit()
     }
 
+
+
     private fun showBottomDialog() {
         val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -140,3 +159,4 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         dialog.window!!.setGravity(Gravity.BOTTOM)
     }
 }
+

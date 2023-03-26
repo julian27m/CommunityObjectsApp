@@ -12,7 +12,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="685dp"
         android:layout_margin="30dp"
         app:cardCornerRadius="32dp"
         app:cardElevation="20dp">
@@ -37,19 +37,66 @@
 
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:id="@+id/signup_email"
+                android:layout_height="45dp"
+                android:id="@+id/signup_name"
                 android:background="@drawable/custom_edittext"
                 android:layout_marginTop="40dp"
                 android:padding="8dp"
-                android:hint="Email"
+                android:hint="Name"
                 android:drawableLeft="@drawable/baseline_person_24"
                 android:drawablePadding="8dp"
                 android:textColor="@color/black"/>
 
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="45dp"
+                android:id="@+id/signup_gender"
+                android:background="@drawable/custom_edittext"
+                android:layout_marginTop="40dp"
+                android:padding="8dp"
+                android:hint="Gender (NA if you prefer)"
+                android:drawableLeft="@drawable/baseline_filter_vintage_24"
+                android:drawablePadding="8dp"
+                android:textColor="@color/black"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:id="@+id/signup_age"
+                android:background="@drawable/custom_edittext"
+                android:layout_marginTop="40dp"
+                android:padding="8dp"
+                android:hint="Age (Enter the number)"
+                android:drawableLeft="@drawable/baseline_numbers_24"
+                android:drawablePadding="8dp"
+                android:textColor="@color/black"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:id="@+id/signup_username"
+                android:background="@drawable/custom_edittext"
+                android:layout_marginTop="20dp"
+                android:padding="8dp"
+                android:hint="Username"
+                android:drawableLeft="@drawable/baseline_person_pin_24"
+                android:drawablePadding="8dp"
+                android:textColor="@color/black"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:id="@+id/signup_email"
+                android:background="@drawable/custom_edittext"
+                android:layout_marginTop="20dp"
+                android:padding="8dp"
+                android:hint="Email"
+                android:drawableLeft="@drawable/baseline_email_24"
+                android:drawablePadding="8dp"
+                android:textColor="@color/black"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
                 android:id="@+id/signup_password"
                 android:background="@drawable/custom_edittext"
                 android:layout_marginTop="20dp"
