@@ -33,6 +33,7 @@ class SignUpActivity: AppCompatActivity() {
     private var completeGender: Boolean = true
     private var completeAge: Boolean = true
     private var completeAgeN: Boolean = true
+    private var completeAgeC: Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
@@ -127,9 +128,14 @@ class SignUpActivity: AppCompatActivity() {
                completeAge = true
 
            }
+           if (age.toInt() < 16){
+               completeAgeC = false
+               signupAge.setError("Age must be 16 or older")
+              }else if (age.toInt() >= 16 && completeAgeN){
+               completeAgeC = true
+              }
 
-
-            if (completeName && completeUserName && completeEmail && completePass && completeGender && completeAge && completeAgeN) {
+            if (completeName && completeUserName && completeEmail && completePass && completeGender && completeAge && completeAgeN && completeAgeC) {
 
                 auth!!.createUserWithEmailAndPassword(user, pass).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
