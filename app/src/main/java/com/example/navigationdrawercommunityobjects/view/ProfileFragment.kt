@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.content.Intent
+import com.example.navigationdrawercommunityobjects.model.ProfileActivity
 import com.example.navigationdrawercommunityobjects.R
 import com.example.navigationdrawercommunityobjects.viewmodel.ProfileViewModel
 
@@ -31,6 +32,14 @@ class ProfileFragment : Fragment() {
         profileName.text = viewModel.nameUser
         profileEmail.text = viewModel.emailUser
         profileUsername.text = viewModel.usernameUser
+
+        //invoke profile activity
+        val profileIntent = Intent(activity, ProfileActivity::class.java)
+        profileIntent.putExtra("name", viewModel.nameUser)
+        profileIntent.putExtra("email", viewModel.emailUser)
+        profileIntent.putExtra("username", viewModel.usernameUser)
+        startActivity(profileIntent)
+        
 
         return root
     }

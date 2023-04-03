@@ -31,6 +31,8 @@ class LoginActivity: AppCompatActivity() {
     lateinit var loginUsername: EditText
     lateinit var loginPassword: EditText
     lateinit var loginButton: Button
+    private lateinit var auth: FirebaseAuth
+    lateinit var forgotPassword: TextView
     lateinit var signupRedirectText: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +41,8 @@ class LoginActivity: AppCompatActivity() {
         loginPassword = findViewById(R.id.login_password)
         loginButton = findViewById(R.id.login_button)
         signupRedirectText = findViewById(R.id.signUpRedirectText)
+        forgotPassword = findViewById(R.id.forgot_password)
+        auth = FirebaseAuth.getInstance()
         loginButton.setOnClickListener(View.OnClickListener {
 
             if (!validateUsername() or !validatePassword()) {
@@ -49,6 +53,44 @@ class LoginActivity: AppCompatActivity() {
         signupRedirectText.setOnClickListener(View.OnClickListener {
             val intent = Intent(this@LoginActivity, SignUpActivity::class.java)
             startActivity(intent)
+        })
+        forgotPassword.setOnClickListener(View.OnClickListener {
+            val builder = AlertDialog.Builder(this@LoginActivity)
+            val dialogView = layoutInflater.inflate(R.layout.dialog_forgot, null)
+            val emailBox = dialogView.findViewById<EditText>(R.id.emailBox)
+            builder.setView(dialogView)
+            val dialog = builder.create()
+            dialogView.findViewById<View>(R.id.btnReset).setOnClickListener(View.OnClickListener {
+                val userEmail = emailBox.text.toString()
+                if (TextUtils.isEmpty(userEmail) && !Patterns.EMAIL_ADDRESS.matcher(userEmail)
+                        .matches()
+                ) {
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "Enter your registered email id",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@OnClickListener
+                }
+                auth!!.sendPasswordResetEmail(userEmail).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(this@LoginActivity, "Check your email", Toast.LENGTH_SHORT)
+                            .show()
+                        dialog.dismiss()
+                    } else {
+                        Toast.makeText(
+                            this@LoginActivity,
+                            "Unable to send, failed",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            })
+            dialogView.findViewById<View>(R.id.btnCancel).setOnClickListener { dialog.dismiss() }
+            if (dialog.window != null) {
+                dialog.window!!.setBackgroundDrawable(ColorDrawable(0))
+            }
+            dialog.show()
         })
     }
 
