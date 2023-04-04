@@ -35,6 +35,7 @@ class SignUpActivity: AppCompatActivity() {
     private var completeAgeN: Boolean = true
     private var completeAgeC: Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.Theme_NavigationDrawerCommunityObjects)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
         auth = FirebaseAuth.getInstance()
