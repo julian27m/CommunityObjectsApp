@@ -53,7 +53,7 @@ class SignUpActivity: AppCompatActivity() {
             database = FirebaseDatabase.getInstance()
             reference = database!!.getReference("users")
             val name = signupName.getText().toString().trim { it <= ' ' }
-            val gender = signupGender.getText().toString().trim { it <= ' ' }
+            val gender = signupGender.getText().toString().trim { it <= ' ' }.lowercase()
             val age = signupAge.getText().toString().trim { it <= ' ' }
             val username = signupUsername.getText().toString().trim { it <= ' ' }
             val user = signupEmail.getText().toString().trim { it <= ' ' }
