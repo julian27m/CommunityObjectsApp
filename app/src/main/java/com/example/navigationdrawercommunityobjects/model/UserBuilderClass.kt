@@ -1,21 +1,53 @@
 package com.example.navigationdrawercommunityobjects.model
 
-class UserBuilderClass {
-    var name: String? = null
-    var gender: String? = null
-    var age: String? = null
-    var email: String? = null
-    var username: String? = null
-    var password: String? = null
+class UserBuilderClass private constructor(
+    val name: String?,
+    val gender: String?,
+    val age: String?,
+    val email: String?,
+    val username: String?,
+    val password: String?
+) {
+    class Builder {
+        private var name: String? = null
+        private var gender: String? = null
+        private var age: String? = null
+        private var email: String? = null
+        private var username: String? = null
+        private var password: String? = null
 
-    constructor(name: String?, gender: String?, age: String?, email: String?, username: String?, password: String?) {
-        this.name = name
-        this.gender = gender
-        this.age = age
-        this.email = email
-        this.username = username
-        this.password = password
+        fun setName(name: String?): Builder {
+            this.name = name
+            return this
+        }
+
+        fun setGender(gender: String?): Builder {
+            this.gender = gender
+            return this
+        }
+
+        fun setAge(age: String?): Builder {
+            this.age = age
+            return this
+        }
+
+        fun setEmail(email: String?): Builder {
+            this.email = email
+            return this
+        }
+
+        fun setUsername(username: String?): Builder {
+            this.username = username
+            return this
+        }
+
+        fun setPassword(password: String?): Builder {
+            this.password = password
+            return this
+        }
+
+        fun build(): UserBuilderClass {
+            return UserBuilderClass(name, gender, age, email, username, password)
+        }
     }
-
-    constructor() {}
 }

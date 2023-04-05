@@ -142,7 +142,14 @@ class SignUpActivity: AppCompatActivity() {
 
                 auth!!.createUserWithEmailAndPassword(user, pass).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        val userBuilderClass = UserBuilderClass(name, gender, age, user, username, pass)
+                        val userBuilderClass = UserBuilderClass.Builder()
+                            .setName(name)
+                            .setGender(gender)
+                            .setAge(age)
+                            .setEmail(user)
+                            .setUsername(username)
+                            .setPassword(pass)
+                            .build()
                         reference!!.child(username).setValue(userBuilderClass)
                         Toast.makeText(this@SignUpActivity, "SignUp Successful", Toast.LENGTH_SHORT)
                             .show()
