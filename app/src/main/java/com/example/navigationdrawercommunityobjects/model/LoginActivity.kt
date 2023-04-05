@@ -14,6 +14,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.developer.gbuttons.GoogleSignInButton
 import com.example.navigationdrawercommunityobjects.R
 import com.example.navigationdrawercommunityobjects.view.MainActivity
@@ -36,6 +37,7 @@ class LoginActivity: AppCompatActivity() {
     lateinit var signupRedirectText: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.white)
         setContentView(R.layout.activity_login)
         loginUsername = findViewById(R.id.login_username)
         loginPassword = findViewById(R.id.login_password)

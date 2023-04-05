@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.navigationdrawercommunityobjects.R
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -37,6 +38,7 @@ class SignUpActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_NavigationDrawerCommunityObjects)
         super.onCreate(savedInstanceState)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.white)
         setContentView(R.layout.activity_sign_up)
         auth = FirebaseAuth.getInstance()
         signupName = findViewById(R.id.signup_name)

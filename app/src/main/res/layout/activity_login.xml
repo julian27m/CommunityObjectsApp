@@ -6,47 +6,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
-    android:background="@drawable/pagebkg_cyancat_login"
+    android:gravity="bottom"
+    android:background="@drawable/pagebkg_logo_login"
     tools:context=".model.LoginActivity">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        app:cardCornerRadius="32dp"
-        app:cardElevation="20dp">
+        android:layout_height="330dp"
+        android:layout_margin="0dp"
+        android:background="@color/cyan"
+        app:cardBackgroundColor="@color/cyan">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center_horizontal"
+            android:orientation= "vertical"
+            android:layout_gravity="center"
             android:padding="24dp"
+            android:backgroundTint="@color/cyan"
             android:background="@drawable/custom_edittext">
 
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Login"
-                android:id="@+id/loginText"
-                android:textSize="36sp"
-                android:textAlignment="center"
-                android:fontFamily="@font/roboto"
-                android:textStyle="bold"
-                android:textColor="@color/light_cyan"/>
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:id="@+id/login_username"
                 android:background="@drawable/custom_edittext"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="55dp"
                 android:padding="8dp"
                 android:hint="Username"
-                android:drawableLeft="@drawable/baseline_person_pin_24"
+                android:backgroundTint="@color/white"
+                android:drawableStart="@drawable/baseline_person_pin_24"
                 android:textColor="@color/black"
+                android:autofillHints="username"
+                android:inputType="text"
                 android:drawablePadding="8dp"/>
 
             <EditText
@@ -54,61 +47,55 @@
                 android:layout_height="50dp"
                 android:id="@+id/login_password"
                 android:background="@drawable/custom_edittext"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="15dp"
                 android:inputType="textPassword"
                 android:padding="8dp"
                 android:hint="Password"
-                android:drawableLeft="@drawable/baseline_lock_24"
+                android:autofillHints="password"
+                android:backgroundTint="@color/white"
+                android:drawableStart="@drawable/baseline_lock_24"
                 android:textColor="@color/black"
                 android:drawablePadding="8dp"/>
 
             <Button
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="50dp"
                 android:text="Login"
+                android:background="@drawable/round_corner"
                 android:id="@+id/login_button"
                 android:textSize="18sp"
-                android:layout_marginTop="30dp"
-                android:backgroundTint="@color/light_cyan"
-                app:cornerRadius = "20dp"/>
+                android:textColor="@color/white"
+                android:layout_marginTop="15dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/forgot_password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="start"
                 android:layout_marginTop="5dp"
-                android:padding="8dp"
+                android:padding="10dp"
                 android:text="Forgot Password?"
                 android:textColor="@color/light_cyan"
-                android:textSize="16sp" />
-
-        <!--
-            <com.developer.gbuttons.GoogleSignInButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Sign in with Google"
-                android:id="@+id/googleBtn"
-                app:isDarkTheme = "true"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="40dp"
-                android:layout_marginEnd="40dp"
-                android:padding="8dp"/>
-        -->
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/signUpRedirectText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:padding="8dp"
-                android:layout_gravity="center"
-                android:text="Not yet registered? Sign Up"
-                android:textAlignment="center"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="40dp"
+                android:padding="10dp"
+                android:layout_gravity="end"
+                android:text="Sign Up"
                 android:textColor="@color/light_cyan"
                 android:textSize="18sp" />
 
+            </LinearLayout>
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

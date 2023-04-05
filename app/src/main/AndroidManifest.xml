@@ -31,7 +31,7 @@
             android:name=".model.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".model.LoginActivity"
+            android:name=".model.SignUpActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -39,7 +39,7 @@
         </activity>
         <activity
             android:theme="@style/SplashTheme"
-            android:name=".model.SignUpActivity"
+            android:name=".model.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
