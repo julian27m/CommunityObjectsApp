@@ -1,6 +1,6 @@
 package com.example.navigationdrawercommunityobjects.model
 
-class UserBuilderClass private constructor(
+class UserBuilderClass public constructor(
     val name: String?,
     val gender: String?,
     val age: String?,

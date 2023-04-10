@@ -1,13 +1,11 @@
 package com.example.navigationdrawercommunityobjects.view
 
-import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
-import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -19,10 +17,10 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.example.navigationdrawercommunityobjects.R
 import com.example.navigationdrawercommunityobjects.model.LoginActivity
-import com.example.navigationdrawercommunityobjects.model.ProfileActivity
-import com.example.navigationdrawercommunityobjects.model.SignUpActivity
+import com.example.navigationdrawercommunityobjects.viewmodel.ProfileViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -53,6 +51,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
 
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
+
+
         navigationView.setNavigationItemSelectedListener(this)
 
         val toggle = ActionBarDrawerToggle(
@@ -80,10 +80,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             when (item.itemId) {
                 R.id.home -> replaceFragment(HomeFragment())
                 //redirect to activityProfile with the LoginActivity data
-                R.id.profile -> {
-                    val intent = Intent(this, ProfileActivity::class.java)
-                    startActivity(intent)
-                }
+                R.id.profile -> replaceFragment(ProfileFragment())
+
             }
             true
         })
@@ -92,6 +90,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val header = navigationView.getHeaderView(0)
         val navName = header.findViewById<View>(R.id.navName) as TextView
         val navEmail = header.findViewById<View>(R.id.navEmail) as TextView
+
+        val viewModel = ProfileViewModel.getInstance()
+
+        viewModel.getUser().observe(this, Observer { user ->
+            Log.d("ProfileFragment", "getUser().observe() called")
+            if (user != null) {
+                navName.text = user.name
+                navEmail.text = user.email
+            }
+        })
 
     }
 

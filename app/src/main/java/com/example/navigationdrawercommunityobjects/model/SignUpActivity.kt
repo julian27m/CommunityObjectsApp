@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.navigationdrawercommunityobjects.R
-import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -116,13 +115,19 @@ class SignUpActivity: AppCompatActivity() {
                completeAge = false
                signupAge.setError("Age cannot be empty")
            }
-           //check if age.int throws an exception
-           try {
-                age.toInt()
-              } catch (e: NumberFormatException) {
+
+            if (isNumeric(age)){
+                completeAgeN = true
+                if (age.toInt() < 16){
+                    completeAgeC = false
+                    signupAge.setError("Age must be 16 or older")
+                }else if (age.toInt() >= 16 && completeAgeN){
+                    completeAgeC = true
+                }
+            }else{
                 completeAgeN = false
                 signupAge.setError("Age must be a number")
-           }
+            }
 
            if (age.length > 2){
                completeAge = false
@@ -131,12 +136,7 @@ class SignUpActivity: AppCompatActivity() {
                completeAge = true
 
            }
-           if (age.toInt() < 16){
-               completeAgeC = false
-               signupAge.setError("Age must be 16 or older")
-              }else if (age.toInt() >= 16 && completeAgeN){
-               completeAgeC = true
-              }
+
 
             if (completeName && completeUserName && completeEmail && completePass && completeGender && completeAge && completeAgeN && completeAgeC) {
 
@@ -172,5 +172,9 @@ class SignUpActivity: AppCompatActivity() {
                 )
             )
         })
+    }
+
+    fun isNumeric(toCheck: String): Boolean {
+        return toCheck.all { char -> char.isDigit() }
     }
 }

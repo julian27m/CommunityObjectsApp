@@ -1,11 +1,9 @@
 package com.example.navigationdrawercommunityobjects.model
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.navigationdrawercommunityobjects.R
-import com.example.navigationdrawercommunityobjects.view.ProfileFragment
 import com.example.navigationdrawercommunityobjects.viewmodel.ProfileViewModel
 
 class ProfileActivity : AppCompatActivity() {

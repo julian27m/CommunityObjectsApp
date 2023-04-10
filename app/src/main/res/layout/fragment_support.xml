@@ -3,15 +3,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.SupportFragment">
+    tools:context=".view.AboutFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Customer Support fragment"
-        android:gravity="center"
+        android:text="Contact Us"
+        android:gravity="top"
         android:textSize="30sp"
-        android:textColor="@color/light_cyan"/>
+        android:textColor="@color/light_cyan"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="10dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="Please, feel free to contact us at any time at the following email address."
+        android:gravity="center"
+        android:justificationMode="inter_word"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:textColor="@color/cyan"/>
 
 </FrameLayout>
