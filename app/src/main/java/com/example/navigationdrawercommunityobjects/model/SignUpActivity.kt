@@ -1,6 +1,7 @@
 package com.example.navigationdrawercommunityobjects.model;
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -28,6 +29,7 @@ class SignUpActivity: AppCompatActivity() {
     lateinit var reference: DatabaseReference
     private var completeName: Boolean = true
     private var completeUserName: Boolean = true
+    private var completeUserNameC : Boolean = true
     private var completeEmail: Boolean = true
     private var completePass: Boolean = true
     private var completeGender: Boolean = true
@@ -39,6 +41,10 @@ class SignUpActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         window.statusBarColor = ContextCompat.getColor(this, R.color.white)
         setContentView(R.layout.activity_sign_up)
+
+        //Im using this to unable landscape mode
+        this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         auth = FirebaseAuth.getInstance()
         signupName = findViewById(R.id.signup_name)
 
@@ -61,7 +67,6 @@ class SignUpActivity: AppCompatActivity() {
             val pass = signupPassword.getText().toString().trim { it <= ' ' }
 
 
-
             if (user.isEmpty()) {
                 completeEmail = false
                 signupEmail.setError("Email cannot be empty")
@@ -76,6 +81,13 @@ class SignUpActivity: AppCompatActivity() {
             if (username.isEmpty()) {
                 completeUserName = false
                 signupUsername.setError("Username cannot be empty")
+            }
+            //check if the username has '.', '#', '$', '[', or ']' characters
+            if (username.contains(".") || username.contains("#") || username.contains("$") || username.contains("[") || username.contains("]")) {
+                completeUserNameC = false
+                signupUsername.setError("Username cannot contain '.', '#', '$', '[', or ']'")
+            } else if (username.isNotEmpty() && !username.contains(".") && !username.contains("#") && !username.contains("$") && !username.contains("[") && !username.contains("]")) {
+                completeUserNameC = true
             }
 
             if (username.length > 30) {
@@ -111,10 +123,10 @@ class SignUpActivity: AppCompatActivity() {
             {
                 completeGender = true
             }
-           if (age.isEmpty()) {
-               completeAge = false
-               signupAge.setError("Age cannot be empty")
-           }
+            if (age.isEmpty()) {
+                completeAge = false
+                signupAge.setError("Age cannot be empty")
+            }
 
             if (isNumeric(age)){
                 completeAgeN = true
@@ -129,16 +141,16 @@ class SignUpActivity: AppCompatActivity() {
                 signupAge.setError("Age must be a number")
             }
 
-           if (age.length > 2){
-               completeAge = false
-               signupAge.setError("Age cannot be more than 2 characters")
-              }else if (age.length <= 2 && age.isNotEmpty() && completeAgeN) {
-               completeAge = true
+            if (age.length > 2){
+                completeAge = false
+                signupAge.setError("Age cannot be more than 2 characters")
+            }else if (age.length <= 2 && age.isNotEmpty() && completeAgeN) {
+                completeAge = true
 
-           }
+            }
 
 
-            if (completeName && completeUserName && completeEmail && completePass && completeGender && completeAge && completeAgeN && completeAgeC) {
+            if (completeName && completeUserNameC && completeUserName && completeEmail && completePass && completeGender && completeAge && completeAgeN && completeAgeC){
 
                 auth!!.createUserWithEmailAndPassword(user, pass).addOnCompleteListener { task ->
                     if (task.isSuccessful) {

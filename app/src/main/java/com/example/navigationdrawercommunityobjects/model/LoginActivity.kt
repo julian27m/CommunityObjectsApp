@@ -1,6 +1,7 @@
 package com.example.navigationdrawercommunityobjects.model;
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.TextUtils
@@ -35,6 +36,10 @@ class LoginActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         window.statusBarColor = ContextCompat.getColor(this, R.color.white)
         setContentView(R.layout.activity_login)
+
+        //Im using this to unable landscape mode
+        this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         loginUsername = findViewById(R.id.login_username)
         loginPassword = findViewById(R.id.login_password)
         loginButton = findViewById(R.id.login_button)

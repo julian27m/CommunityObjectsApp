@@ -32,6 +32,10 @@
         <item name="android:windowEnterAnimation">@anim/slide_in</item>
         <item name="android:windowExitAnimation">@anim/slide_out</item>
     </style>
+
+    <style name="WhiteButtonStyle" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:colorPrimary">@color/white</item>
+    </style>
     
     <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/splashscreen</item>

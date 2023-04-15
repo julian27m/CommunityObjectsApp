@@ -3,6 +3,7 @@ package com.example.navigationdrawercommunityobjects.view
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+
 import com.example.navigationdrawercommunityobjects.R
 import com.example.navigationdrawercommunityobjects.databinding.FragmentDonateBinding
 import com.example.navigationdrawercommunityobjects.model.Item
@@ -30,6 +32,7 @@ class DonateFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = binding.root
+
 
         viewModel = ViewModelProvider(this).get(ItemViewModel::class.java)
 
@@ -67,13 +70,10 @@ class DonateFragment : Fragment() {
 
         // Agregar un botón para seleccionar una imagen
         binding.btnAddImage.setOnClickListener {
-            // Abrir el fragmento CameraFragment
-            val cameraFragment = CameraFragment()
-            cameraFragment.setTargetFragment(this, 1)
-            val transaction = parentFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment_container, cameraFragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
+            //Start CameraActivity.kt
+            val intent = Intent(requireContext(), CameraActivity::class.java)
+            startActivity(intent)
+
         }
 
 
