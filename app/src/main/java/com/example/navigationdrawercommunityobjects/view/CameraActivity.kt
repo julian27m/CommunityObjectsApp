@@ -71,7 +71,7 @@ class CameraActivity : AppCompatActivity() {
     }
 
     private fun returnPhoto() {
-        println("-----------------------------------------------------------------------------------------------------------------------photoUri: $photoUri")
+//        println("-----------------------------------------------------------------------------------------------------------------------photoUri: $photoUri")
         val intent = Intent()
         intent.setData(photoUri)
         setResult(RESULT_OK, intent)

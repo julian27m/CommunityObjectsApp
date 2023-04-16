@@ -23,6 +23,7 @@ import com.example.navigationdrawercommunityobjects.viewmodel.ItemViewModel
 
 class DonateFragment : Fragment() {
 
+    private var imageUri: Uri? = null
     private val binding: FragmentDonateBinding by lazy {
         FragmentDonateBinding.inflate(layoutInflater)
     }
@@ -35,44 +36,62 @@ class DonateFragment : Fragment() {
     ): View? {
         val view = binding.root
 
-
-        viewModel = ViewModelProvider(this).get(ItemViewModel::class.java)
+        viewModel = ViewModelProvider(this)[ItemViewModel::class.java]
 
         // Configurar el botón de agregar item
         binding.btnPublish.setOnClickListener {
             val item = Item(
                 name = binding.etItemName.text.toString(),
                 description = binding.etItemDescription.text.toString(),
-                category = binding.spCategory.selectedItem.toString(),
-                photo = viewModel.addPhoto(binding.ivItemImage)
+                category = binding.spCategory.selectedItem.toString()
             )
-
-            viewModel.addItem(item)
+//            println("Item: $item")
+//            println("ImageUri: $imageUri")
+            if (imageUri != null) {
+                viewModel.addItem(item, imageUri!!) { success, item ->
+//                    println("intenta publicar")
+                    if (success) {
+                        Toast.makeText(requireContext(), "Item agregado correctamente", Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        Toast.makeText(requireContext(), "Error al agregar item", Toast.LENGTH_SHORT).show()
+                    }
+//            set the home fragment
+                    val supportFragmentManager = requireActivity().supportFragmentManager
+                    supportFragmentManager.beginTransaction().replace(R.id.fragment_container, HomeFragment()).commit()
+                }
+            } else {
+                Toast.makeText(requireContext(), "Por favor seleccione una imagen", Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.btnCancel.setOnClickListener {
 //            set the home fragment
             val supportFragmentManager = requireActivity().supportFragmentManager
-            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, HomeFragment()).commit()
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, HomeFragment()).commit()
         }
 
-        // Observar el resultado de la operación de agregar item
-        viewModel.addItemResult.observe(viewLifecycleOwner) { success ->
-            if (success) {
-                Toast.makeText(requireContext(), "Item agregado correctamente", Toast.LENGTH_SHORT)
-                    .show()
-            } else {
-                Toast.makeText(requireContext(), "Error al agregar item", Toast.LENGTH_SHORT).show()
-            }
-//            set the home fragment
-            val supportFragmentManager = requireActivity().supportFragmentManager
-            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, HomeFragment()).commit()
-        }
+//        // Observar el resultado de la operación de agregar item
+//        viewModel.addItemResult.observe(viewLifecycleOwner) { success ->
+//            if (success) {
+//                Toast.makeText(requireContext(), "Item agregado correctamente", Toast.LENGTH_SHORT)
+//                    .show()
+//            } else {
+//                Toast.makeText(requireContext(), "Error al agregar item", Toast.LENGTH_SHORT).show()
+//            }
+////            set the home fragment
+//            val supportFragmentManager = requireActivity().supportFragmentManager
+//            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, HomeFragment()).commit()
+//        }
 
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
-                val photoUri: Uri? = result.data?.data
-                binding.ivItemImage.setImageURI(photoUri)
+                val _photoUri: Uri? = result.data?.data
+//                println("photoUri: $_photoUri")
+                imageUri = _photoUri
+//                println("imageUri: $imageUri")
+                binding.ivItemImage.setImageURI(_photoUri)
             }
         }
 
@@ -94,16 +113,18 @@ class DonateFragment : Fragment() {
 
         return view
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        println("onActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResult")
-        println(requestCode)
-        println(resultCode)
-        println(data)
+//        println("onActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResult")
+//        println(requestCode)
+//        println(resultCode)
+//        println(data)
         if (requestCode == 1 && resultCode == RESULT_OK) {
-            println("Funcionanananannananannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn")
+//            println("Funcionanananannananannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn")
             val photoUri: Uri? = data?.data
-            print(photoUri)
+//            print(photoUri)
+            imageUri = photoUri
             binding.ivItemImage.setImageURI(photoUri)
         }
     }

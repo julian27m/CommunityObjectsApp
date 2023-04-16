@@ -1,44 +1,47 @@
 package com.example.navigationdrawercommunityobjects.viewmodel
 
+import android.net.Uri
 import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.navigationdrawercommunityobjects.model.FirestoreRepository
+import androidx.lifecycle.viewModelScope
+import com.example.navigationdrawercommunityobjects.model.FirebaseServiceAdapter
 import com.example.navigationdrawercommunityobjects.model.Item
+import com.example.navigationdrawercommunityobjects.model.ItemRepository
+import kotlinx.coroutines.launch
 
-class ItemViewModel : ViewModel() {
-    private val repository = FirestoreRepository()
+class ItemViewModel() : ViewModel() {
+    private val repository = ItemRepository()
+    private val itemsLiveData = MutableLiveData<List<Item>>()
+    val items: LiveData<List<Item>>
+        get() = itemsLiveData
 
-    private val _addItemResult = MutableLiveData<Boolean>()
-    val addItemResult: LiveData<Boolean> = _addItemResult
-
-    fun addItem(item: Item) {
-        repository.addItem(item) { success ->
-            _addItemResult.value = success
+    init {
+        viewModelScope.launch {
+//            tener en cuenta el callback
+            val items = repository.getItems() { items ->
+                itemsLiveData.value = items
+            }
         }
     }
 
-    private val _updateItemResult = MutableLiveData<Boolean>()
-    val updateItemResult: LiveData<Boolean> = _updateItemResult
+    fun addItem(item: Item, image: Uri, callback: (Boolean, Item?) -> Unit) {
+//        println("ItemViewModel.addItem")
+        repository.addItem(item, image) { success, newItem ->
+            callback(success, newItem)
+        }
+    }
 
-    fun updateItem(itemId: String, item: Item) {
+    fun updateItem(itemId: String, item: Item, callback: (Boolean) -> Unit) {
         repository.updateItem(itemId, item) { success ->
-            _updateItemResult.value = success
+            callback(success)
         }
     }
 
-    private val _item = MutableLiveData<Item>()
-    val item: LiveData<Item> = _item
-
-    fun getItem(itemId: String) {
+    fun getItem(itemId: String, callback: (Item?) -> Unit) {
         repository.getItem(itemId) { item ->
-            _item.value = item
+            callback(item)
         }
-    }
-
-    fun addPhoto(ivItemImage: ImageView): String {
-//        put the foto on the storage
-        return repository.addPhoto(ivItemImage)
     }
 }
