@@ -4,9 +4,9 @@
 
     <corners
         android:radius="20dp"
-        android:color="@color/cyan"/>
+        android:color="@color/light_cyan"/>
     <stroke
-        android:color="@color/cyan"
+        android:color="@color/light_cyan"
         android:width="2dp"/>
     <solid
         android:color="@color/white"/>

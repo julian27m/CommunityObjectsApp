@@ -13,6 +13,6 @@
         android:top="10dp"/>
     <stroke
         android:width="2dp"
-        android:color="@color/cyan"/>
+        android:color="@color/light_cyan"/>
 
 </shape>

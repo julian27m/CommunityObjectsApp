@@ -1,5 +1,6 @@
 package com.example.navigationdrawercommunityobjects.view
 
+import android.content.pm.ActivityInfo
 import android.net.Uri
 import androidx.camera.core.ImageCaptureException
 import com.example.navigationdrawercommunityobjects.view.Constants
@@ -37,6 +38,9 @@ class CameraActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCameraBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //Im using this to unable landscape mode
+        this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         outputDirectory = getOutputDirectory()
         cameraExecutorService = Executors.newSingleThreadExecutor()
