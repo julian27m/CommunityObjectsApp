@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="donate_item_categories">
-        <item>Electronics</item>
+        <item>Clothes</item>
         <item>Books</item>
-        <item>Home</item>
-        <item>Tools</item>
+        <item>Protective equipment</item>
+        <item>School and University Supplies</item>
         <item>Other</item>
     </string-array>
 </resources>

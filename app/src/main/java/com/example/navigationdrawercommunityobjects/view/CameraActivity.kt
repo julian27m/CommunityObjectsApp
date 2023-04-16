@@ -1,5 +1,6 @@
 package com.example.navigationdrawercommunityobjects.view
 
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.net.Uri
 import androidx.camera.core.ImageCaptureException
@@ -28,6 +29,7 @@ import java.util.concurrent.Executors
 
 class CameraActivity : AppCompatActivity() {
 
+    private var photoUri: Uri? = null
     private lateinit var binding: ActivityCameraBinding
     private var imageCapture: ImageCapture? = null
     private lateinit var outputDirectory: File
@@ -56,11 +58,24 @@ class CameraActivity : AppCompatActivity() {
         binding.btnTakePhoto.setOnClickListener(){
             takePhoto()
         }
+        binding.buttonAccept.setOnClickListener(){
+            returnPhoto()
+        }
+        binding.buttonRetry.setOnClickListener(){
+            startCamera()
+        }
         binding.btnCancel.setOnClickListener(){
             finish()
-
         }
 
+    }
+
+    private fun returnPhoto() {
+        println("-----------------------------------------------------------------------------------------------------------------------photoUri: $photoUri")
+        val intent = Intent()
+        intent.setData(photoUri)
+        setResult(RESULT_OK, intent)
+        finish()
     }
 
 
@@ -84,8 +99,21 @@ class CameraActivity : AppCompatActivity() {
             object: ImageCapture.OnImageSavedCallback{
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                     val savedUri = Uri.fromFile(photoFile)
+                    photoUri = savedUri
                     val msg = "Photo Saved"
                     Toast.makeText(this@CameraActivity,"$msg $savedUri", Toast.LENGTH_SHORT).show()
+
+                    val btnAccept = binding.buttonAccept
+                    val btnRetry = binding.buttonRetry
+                    val imgPreview = binding.imagePreview
+                    val btnShutter = binding.btnTakePhoto
+                    val livePreview = binding.viewFinder
+                    btnAccept.visibility = android.view.View.VISIBLE
+                    btnRetry.visibility = android.view.View.VISIBLE
+                    imgPreview.setImageURI(savedUri)
+                    imgPreview.visibility = android.view.View.VISIBLE
+                    btnShutter.visibility = android.view.View.INVISIBLE
+                    livePreview.visibility = android.view.View.INVISIBLE
 
 
                 }
@@ -101,6 +129,18 @@ class CameraActivity : AppCompatActivity() {
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
         cameraProviderFuture.addListener({
+
+            val btnAccept = binding.buttonAccept
+            val btnRetry = binding.buttonRetry
+            val imgPreview = binding.imagePreview
+            val btnShutter = binding.btnTakePhoto
+            val livePreview = binding.viewFinder
+
+            btnAccept.visibility = android.view.View.INVISIBLE
+            btnRetry.visibility = android.view.View.INVISIBLE
+            imgPreview.visibility = android.view.View.INVISIBLE
+            btnShutter.visibility = android.view.View.VISIBLE
+            livePreview.visibility = android.view.View.VISIBLE
 
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
             val preview = Preview.Builder().build().also { mPreview->

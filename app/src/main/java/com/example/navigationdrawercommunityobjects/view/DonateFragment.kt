@@ -10,7 +10,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 
@@ -67,13 +69,25 @@ class DonateFragment : Fragment() {
             supportFragmentManager.beginTransaction().replace(R.id.fragment_container, HomeFragment()).commit()
         }
 
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val photoUri: Uri? = result.data?.data
+                binding.ivItemImage.setImageURI(photoUri)
+            }
+        }
 
         // Agregar un botón para seleccionar una imagen
         binding.btnAddImage.setOnClickListener {
             //Start CameraActivity.kt
             val intent = Intent(requireContext(), CameraActivity::class.java)
-            startActivity(intent)
+            startActivityForResult(intent, 1)
 
+        }
+
+        binding.btnPickImage.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            intent.type = "image/*"
+            startActivityForResult(intent, 1)
         }
 
 
@@ -82,8 +96,14 @@ class DonateFragment : Fragment() {
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK && requestCode == 1) {
-            val photoUri = data?.data
+        println("onActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResult")
+        println(requestCode)
+        println(resultCode)
+        println(data)
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            println("Funcionanananannananannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn")
+            val photoUri: Uri? = data?.data
+            print(photoUri)
             binding.ivItemImage.setImageURI(photoUri)
         }
     }

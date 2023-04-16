@@ -14,93 +14,139 @@
         android:id="@+id/fragment_donate"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/cyan"
         android:gravity="center"
-        android:orientation="vertical"
-        android:layout_margin="16dp"
-        android:padding="16dp">
-        >
+        android:isScrollContainer="true"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_bold"
+            android:paddingTop="16dp"
             android:text="@string/donate_item_name_title"
-            android:textAppearance="?android:textAppearanceLarge" />
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="@color/white" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="12dp" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/donate_item_image_title"
-            android:textAppearance="?android:textAppearanceMedium" />
-
-        <Button
-            android:id="@+id/btnAddImage"
-            style="@style/Widget.Material3.Button.IconButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawablePadding="8dp"
-            app:icon="@drawable/ic_camera"
-            app:iconSize="100dp"
-            app:iconTint="@color/teal_700" />
-
+            android:fontFamily="@font/roboto"
+            android:text="Select an image of your material"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/white" />
 
         <ImageView
             android:id="@+id/ivItemImage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/ic_menu_gallery" />
-
-        <EditText
-            android:id="@+id/etItemName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/donate_item_name_hint"
-            android:inputType="text" />
-
-        <EditText
-            android:id="@+id/etItemDescription"
-            android:layout_width="match_parent"
-            android:layout_height="140dp"
-            android:hint="@string/donate_item_description_hint"
-
-            android:inputType="text"
-            android:maxLines="5"
-            android:textAlignment="inherit" />
-
-        <Spinner
-            android:id="@+id/spCategory"
-            android:layout_width="match_parent"
-            android:layout_height="38dp"
-            android:entries="@array/donate_item_categories"
-            android:prompt="@string/donate_item_category_prompt" />
+            android:layout_width="wrap_content"
+            android:layout_height="200dp" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/white_box"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <Button
-                android:id="@+id/btnCancel"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnPickImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/light_cyan"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="Pick image from Gallery"
+                    android:textColor="@color/black"
+                    android:textSize="8sp"
+                    app:strokeColor="@color/light_cyan" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/btnAddImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/light_cyan"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="Take photo with the camera"
+                    android:textColor="@color/black"
+                    android:textSize="8sp"
+                    app:strokeColor="@color/light_cyan" />
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/etItemName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/donate_item_name_hint"
+                android:inputType="text" />
+
+            <Spinner
+                android:id="@+id/spCategory"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:entries="@array/donate_item_categories"
+                android:prompt="@string/donate_item_category_prompt" />
+
+            <LinearLayout
+                android:id="@+id/formRestrictions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"></LinearLayout>
+
+            <EditText
+                android:id="@+id/etItemDescription"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:hint="@string/donate_item_description_hint"
+
+                android:inputType="text"
+                android:maxLines="5"
+                android:textAlignment="inherit" />
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cancel"
-                android:layout_gravity="start"/>
+                android:orientation="horizontal">
 
-            <Space
-                android:layout_width="71dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                <Button
+                    android:id="@+id/btnCancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:backgroundTint="@color/orange"
+                    android:text="Cancel" />
 
-            <Button
-            android:id="@+id/btnPublish"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:text="@string/donate_item_publish_button_text" />
+                <Space
+                    android:layout_width="71dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
 
+                <Button
+                    android:id="@+id/btnPublish"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:backgroundTint="@color/orange"
+                    android:text="@string/donate_item_publish_button_text" />
+
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>
