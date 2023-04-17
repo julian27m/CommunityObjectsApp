@@ -57,9 +57,44 @@ class Book(
 }
 
 class Clothes(
-    private var colors
-) : Item()
+    private var colors: String,
+    private var size: String,
+) : Item() {
+    constructor(
+        name: String = "",
+        category: String = "",
+        description: String = "",
+        photo: String = "",
+        id: String = "",
+        colors: String = "",
+        size: String = ""
+    ) : this(colors, size) {
+        this.name = name
+        this.category = category
+        this.description = description
+        this.photo = photo
+        this.id = id
+        this.colors = colors
+        this.size = size
+    }
+}
 
 class Supplies(
-    val reference: String = "",
-) : Item()
+    private var reference: String
+) : Item() {
+    constructor(
+        name: String = "",
+        category: String = "",
+        description: String = "",
+        photo: String = "",
+        id: String = "",
+        reference: String = ""
+    ) : this(reference) {
+        this.name = name
+        this.category = category
+        this.description = description
+        this.photo = photo
+        this.id = id
+        this.reference = reference
+    }
+}

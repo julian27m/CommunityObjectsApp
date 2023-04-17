@@ -37,7 +37,7 @@ class FirebaseServiceAdapter {
                 // Obtener la URL de la imagen subida
                 imageRef.downloadUrl.addOnSuccessListener { uri ->
                     // Crear un nuevo item con los datos proporcionados
-                    val newItem: Item
+                    var newItem: Item? = null
                     when (categorystr) {
                         "Other" -> newItem = Item(
                             item["name"].toString(),
@@ -55,22 +55,53 @@ class FirebaseServiceAdapter {
                             item["degree"].toString(),
                             item["type"].toString()
                         )
-
+                        "Books" -> newItem = EPP(
+                            item["name"].toString(),
+                            item["category"].toString(),
+                            item["description"].toString(),
+                            uri.toString(),
+                            itemId,
+                            item["degree"].toString(),
+                            item["type"].toString()
+                        )
+                        "Clothes" -> newItem = EPP(
+                            item["name"].toString(),
+                            item["category"].toString(),
+                            item["description"].toString(),
+                            uri.toString(),
+                            itemId,
+                            item["colors"].toString(),
+                            item["size"].toString()
+                        )
+                        "School and University Supplies" -> newItem = EPP(
+                            item["name"].toString(),
+                            item["category"].toString(),
+                            item["description"].toString(),
+                            uri.toString(),
+                            itemId,
+                            item["reference"].toString()
+                        )
                     }
 
                     // Agregar el nuevo item a Firestore
-                    firestore.collection(category)
-                        .document(itemId)
-                        .set(newItem)
-                        .addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                // Si se agregó correctamente el item, llamar al callback con el item
-                                callback(true)
-                            } else {
-                                // Si hubo un error al agregar el item, llamar al callback con un valor nulo
-                                callback(false)
+                    if (newItem != null) {
+                        firestore.collection(category)
+                            .document(itemId)
+                            .set(newItem)
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    // Si se agregó correctamente el item, llamar al callback con el item
+                                    callback(true)
+                                } else {
+                                    // Si hubo un error al agregar el item, llamar al callback con un valor nulo
+                                    callback(false)
+                                }
                             }
-                        }
+                    } else {
+                        // Si hubo un error al agregar el item, llamar al callback con un valor nulo
+                        println("Error al crear el item")
+                        callback(false)
+                    }
                 }
             }
             .addOnFailureListener { exception ->
