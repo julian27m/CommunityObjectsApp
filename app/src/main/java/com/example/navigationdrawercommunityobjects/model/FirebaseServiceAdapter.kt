@@ -10,10 +10,25 @@ class FirebaseServiceAdapter {
     private val firestore = Firebase.firestore
     private val storageRef = FirebaseStorage.getInstance().reference
 
-    fun addItem(item: Item, image: Uri, callback: (Boolean, Item?) -> Unit) {
+    fun addItem(
+        item: HashMap<String, String>,
+        image: Uri,
+        callback: (Boolean) -> Unit
+    ) {
 //        println("ItemRepository.addItem")
         // Generar un ID único para el item
-        val itemId = firestore.collection("items").document().id
+        val categorystr = item["category"].toString()
+        var category = ""
+        when (categorystr) {
+            "Protective equipment" -> category = "EPP"
+            "Books" -> category = "books_printed"
+            "Clothes" -> category = "clothes"
+            "School and University Supplies" -> category = "school_university"
+            "Other" -> category = "items"
+        }
+
+
+        val itemId = firestore.collection(category).document().id
 
         // Subir la imagen a Firebase Storage
         val imageRef = storageRef.child("items").child("$itemId.jpg")
@@ -22,50 +37,89 @@ class FirebaseServiceAdapter {
                 // Obtener la URL de la imagen subida
                 imageRef.downloadUrl.addOnSuccessListener { uri ->
                     // Crear un nuevo item con los datos proporcionados
-                    val newItem = hashMapOf(
-                        "id" to itemId,
-                        "name" to item.name,
-                        "description" to item.description,
-                        "category" to item.category,
-                        "image" to uri.toString()
-                    )
+                    val newItem: Item
+                    when (categorystr) {
+                        "Other" -> newItem = Item(
+                            item["name"].toString(),
+                            item["category"].toString(),
+                            item["description"].toString(),
+                            uri.toString(),
+                            itemId
+                        )
+                        "Protective equipment" -> newItem = EPP(
+                            item["name"].toString(),
+                            item["category"].toString(),
+                            item["description"].toString(),
+                            uri.toString(),
+                            itemId,
+                            item["degree"].toString(),
+                            item["type"].toString()
+                        )
+
+                    }
 
                     // Agregar el nuevo item a Firestore
-                    firestore.collection("items")
+                    firestore.collection(category)
                         .document(itemId)
                         .set(newItem)
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 // Si se agregó correctamente el item, llamar al callback con el item
-                                callback(true, item.copy(id = itemId))
+                                callback(true)
                             } else {
                                 // Si hubo un error al agregar el item, llamar al callback con un valor nulo
-                                callback(false, null)
+                                callback(false)
                             }
                         }
                 }
             }
             .addOnFailureListener { exception ->
                 // Si hubo un error al subir la imagen, llamar al callback con un valor nulo
-                callback(false, null)
+                callback(false)
             }
-    }
-
-    fun updateItem(itemId: String, item: Item, onComplete: (Boolean) -> Unit) {
-        firestore.collection("items")
-            .document(itemId)
-            .set(item)
-            .addOnSuccessListener { onComplete(true) }
-            .addOnFailureListener { onComplete(false) }
     }
 
     fun getItems(callback: (List<Item>) -> Unit) {
         // Obtener todos los items de Firestore y llamar al callback con ellos
+        val items = mutableListOf<Item>()
+        firestore.collection("EPP")
+            .get()
+            .addOnSuccessListener { docs ->
+                for (doc in docs) {
+                    val item = doc.toObject(Item::class.java)
+                    items.add(item)
+                }
+            }
+        firestore.collection("books_printed")
+            .get()
+            .addOnSuccessListener { docs ->
+                for (doc in docs) {
+                    val item = doc.toObject(Item::class.java)
+                    items.add(item)
+                }
+            }
+        firestore.collection("clothes")
+            .get()
+            .addOnSuccessListener { docs ->
+                for (doc in docs) {
+                    val item = doc.toObject(Item::class.java)
+                    items.add(item)
+                }
+            }
+        firestore.collection("school_university")
+            .get()
+            .addOnSuccessListener { docs ->
+                for (doc in docs) {
+                    val item = doc.toObject(Item::class.java)
+                    items.add(item)
+                }
+            }
         firestore.collection("items")
             .get()
-            .addOnSuccessListener { result ->
-                val items = result.documents.mapNotNull { doc ->
-                    doc.toObject(Item::class.java)?.copy(id = doc.id)
+            .addOnSuccessListener { docs ->
+                for (doc in docs) {
+                    val item = doc.toObject(Item::class.java)
+                    items.add(item)
                 }
                 callback(items)
             }
@@ -78,7 +132,7 @@ class FirebaseServiceAdapter {
             .get()
             .addOnSuccessListener { doc ->
                 val item = doc.toObject(Item::class.java)
-                callback(item?.copy(id = doc.id))
+                callback(item)
             }
     }
 

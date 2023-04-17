@@ -40,15 +40,22 @@ class DonateFragment : Fragment() {
 
         // Configurar el botón de agregar item
         binding.btnPublish.setOnClickListener {
-            val item = Item(
-                name = binding.etItemName.text.toString(),
-                description = binding.etItemDescription.text.toString(),
-                category = binding.spCategory.selectedItem.toString()
-            )
+            val item = HashMap<String, String>()
+            item["name"] = binding.etItemName.text.toString()
+            item["description"] = binding.etItemDescription.text.toString()
+            item["category"] = binding.spCategory.selectedItem.toString()
+            item["degree"] = binding.etItemDegree.text.toString()
+            item["type"] = binding.etItemType.text.toString()
+            item["author"] = binding.etItemAuthor.text.toString()
+            item["subject"] = binding.etItemSubject.text.toString()
+            item["colors"] = binding.etItemColors.text.toString()
+            item["size"] = binding.etItemSize.text.toString()
+            item["reference"] = binding.etItemReference.text.toString()
+
 //            println("Item: $item")
 //            println("ImageUri: $imageUri")
             if (imageUri != null) {
-                viewModel.addItem(item, imageUri!!) { success, item ->
+                viewModel.addItem(item, imageUri!!) { success ->
 //                    println("intenta publicar")
                     if (success) {
                         Toast.makeText(requireContext(), "Item agregado correctamente", Toast.LENGTH_SHORT)

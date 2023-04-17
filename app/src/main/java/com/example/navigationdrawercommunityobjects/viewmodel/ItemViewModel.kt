@@ -6,10 +6,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.navigationdrawercommunityobjects.model.EPP
 import com.example.navigationdrawercommunityobjects.model.FirebaseServiceAdapter
 import com.example.navigationdrawercommunityobjects.model.Item
 import com.example.navigationdrawercommunityobjects.model.ItemRepository
 import kotlinx.coroutines.launch
+import kotlin.reflect.typeOf
 
 class ItemViewModel() : ViewModel() {
     private val repository = ItemRepository()
@@ -26,18 +28,13 @@ class ItemViewModel() : ViewModel() {
         }
     }
 
-    fun addItem(item: Item, image: Uri, callback: (Boolean, Item?) -> Unit) {
+    fun addItem(item: HashMap<String,String>, image: Uri, callback: (Boolean) -> Unit) {
 //        println("ItemViewModel.addItem")
-        repository.addItem(item, image) { success, newItem ->
-            callback(success, newItem)
-        }
-    }
-
-    fun updateItem(itemId: String, item: Item, callback: (Boolean) -> Unit) {
-        repository.updateItem(itemId, item) { success ->
+        repository.addItem(item, image) { success ->
             callback(success)
         }
     }
+
 
     fun getItem(itemId: String, callback: (Item?) -> Unit) {
         repository.getItem(itemId) { item ->

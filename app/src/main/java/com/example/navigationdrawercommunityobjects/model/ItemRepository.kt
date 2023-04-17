@@ -5,18 +5,13 @@ import android.net.Uri
 class ItemRepository {
     private val serviceAdapter = FirebaseServiceAdapter()
 
-    fun addItem(item: Item, image: Uri, callback: (Boolean, Item?) -> Unit) {
+    fun addItem(item: HashMap<String,String>, image: Uri, callback: (Boolean) -> Unit) {
 //        println("ItemRepository.addItem")
-        serviceAdapter.addItem(item, image) { success, newItem ->
-            callback(success, newItem)
-        }
-    }
-
-    fun updateItem(itemId: String, item: Item, callback: (Boolean) -> Unit) {
-        serviceAdapter.updateItem(itemId, item) { success ->
+        serviceAdapter.addItem(item, image) { success ->
             callback(success)
         }
     }
+
 
     fun getItem(itemId: String, callback: (Item?) -> Unit) {
         serviceAdapter.getItem(itemId) { item ->

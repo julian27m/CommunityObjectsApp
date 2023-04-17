@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_gravity="center|center_horizontal|center_vertical">
 
     <data>
@@ -10,144 +11,295 @@
             type="com.example.navigationdrawercommunityobjects.viewmodel.ItemViewModel" />
     </data>
 
-    <LinearLayout
-        android:id="@+id/fragment_donate"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/cyan"
-        android:gravity="center"
-        android:isScrollContainer="true"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_bold"
-            android:paddingTop="16dp"
-            android:text="@string/donate_item_name_title"
-            android:textAppearance="?android:textAppearanceLarge"
-            android:textColor="@color/white" />
-
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto"
-            android:text="Select an image of your material"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@color/white" />
-
-        <ImageView
-            android:id="@+id/ivItemImage"
-            android:layout_width="wrap_content"
-            android:layout_height="200dp" />
+        android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/fragment_donate"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/white_box"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:background="@color/cyan"
+            android:gravity="center"
+            android:isScrollContainer="true"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/btnPickImage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/light_cyan"
-                    android:fontFamily="@font/roboto_bold"
-                    android:text="Pick image from Gallery"
-                    android:textColor="@color/black"
-                    android:textSize="8sp"
-                    app:strokeColor="@color/light_cyan" />
-
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <Button
-                    android:id="@+id/btnAddImage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/light_cyan"
-                    android:fontFamily="@font/roboto_bold"
-                    android:text="Take photo with the camera"
-                    android:textColor="@color/black"
-                    android:textSize="8sp"
-                    app:strokeColor="@color/light_cyan" />
-
-            </LinearLayout>
-
-            <EditText
-                android:id="@+id/etItemName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/donate_item_name_hint"
-                android:inputType="text" />
-
-            <Spinner
-                android:id="@+id/spCategory"
-                android:layout_width="match_parent"
-                android:layout_height="38dp"
-                android:entries="@array/donate_item_categories"
-                android:prompt="@string/donate_item_category_prompt" />
-
-            <LinearLayout
-                android:id="@+id/formRestrictions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"></LinearLayout>
-
-            <EditText
-                android:id="@+id/etItemDescription"
-                android:layout_width="match_parent"
-                android:layout_height="140dp"
-                android:hint="@string/donate_item_description_hint"
-
-                android:inputType="text"
-                android:maxLines="5"
-                android:textAlignment="inherit" />
-
-            <LinearLayout
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:fontFamily="@font/roboto_bold"
+                android:paddingTop="16dp"
+                android:text="@string/donate_item_name_title"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textColor="@color/white" />
 
-                <Button
-                    android:id="@+id/btnCancel"
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:text="@string/select_an_image_of_your_material"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@color/white" />
+
+            <ImageView
+                android:id="@+id/ivItemImage"
+                android:layout_width="wrap_content"
+                android:layout_height="200dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/white_box"
+                android:gravity="center_horizontal"
+                android:isScrollContainer="true"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnPickImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/light_cyan"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="Pick image from Gallery"
+                        android:textColor="@color/black"
+                        android:textSize="8sp"
+                        app:strokeColor="@color/light_cyan" />
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:id="@+id/btnAddImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/light_cyan"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="Take photo with the camera"
+                        android:textColor="@color/black"
+                        android:textSize="8sp"
+                        app:strokeColor="@color/light_cyan" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/etItemName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/donate_item_name_hint"
+                    android:inputType="text" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="Category"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/spCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="38dp"
+                    android:entries="@array/donate_item_categories"
+                    android:prompt="@string/donate_item_category_prompt" />
+
+                <LinearLayout
+                    android:id="@+id/formRestrictions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/lblSize"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="@string/size"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etItemSize"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="@string/standard"
+                        android:inputType="textPersonName"
+                        tools:ignore="TextFields" />
+
+                    <!--                now that again with colors, author, degree, type, subject and reference-->
+
+                    <TextView
+                        android:id="@+id/lblColor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="@string/color_s"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etItemColors"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="@string/red_blue_green_etc"
+                        android:inputType="textPersonName" />
+
+                    <TextView
+                        android:id="@+id/lblAuthor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="@string/author"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etItemAuthor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="@string/author_of_the_book"
+                        android:inputType="textPersonName" />
+
+                    <TextView
+                        android:id="@+id/lblDegree"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="@string/degree"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etItemDegree"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="@string/ibio_leng_etc"
+                        android:inputType="textPersonName" />
+
+                    <TextView
+                        android:id="@+id/lblType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="@string/type"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etItemType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="@string/helmet_gloves_glasses"
+                        android:inputType="textPersonName" />
+
+                    <TextView
+                        android:id="@+id/lblSubject"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="@string/subject"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etItemSubject"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="@string/calc_biology_chemistry_etc"
+                        android:inputType="textPersonName" />
+
+                    <TextView
+                        android:id="@+id/lblReference"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="@string/reference"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etItemReference"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="@string/texas_ti_99_4a"
+                        android:inputType="textPersonName" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/etItemDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:hint="@string/donate_item_description_hint"
+
+                    android:inputType="text"
+                    android:maxLines="5"
+                    android:textAlignment="inherit" />
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:backgroundTint="@color/orange"
-                    android:text="Cancel" />
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnCancel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:backgroundTint="@color/orange"
+                        android:text="Cancel" />
+
+                    <Space
+                        android:layout_width="71dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:id="@+id/btnPublish"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:backgroundTint="@color/orange"
+                        android:text="@string/donate_item_publish_button_text" />
+
+                </LinearLayout>
 
                 <Space
-                    android:layout_width="71dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <Button
-                    android:id="@+id/btnPublish"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:backgroundTint="@color/orange"
-                    android:text="@string/donate_item_publish_button_text" />
-
+                    android:layout_width="match_parent"
+                    android:layout_height="39dp" />
             </LinearLayout>
         </LinearLayout>
-
-    </LinearLayout>
+    </ScrollView>
 </layout>
