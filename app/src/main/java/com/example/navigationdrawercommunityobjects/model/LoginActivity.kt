@@ -84,7 +84,7 @@ class LoginActivity: AppCompatActivity() {
                     } else {
                         Toast.makeText(
                             this@LoginActivity,
-                            "Unable to send, failed",
+                            "The user is not registered",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
