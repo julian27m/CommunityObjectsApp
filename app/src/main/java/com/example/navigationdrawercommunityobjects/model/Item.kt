@@ -30,6 +30,8 @@ class EPP(
         this.degree = degree
         this.type = type
     }
+
+    constructor() : this("", "")
 }
 
 class Book(
@@ -54,6 +56,7 @@ class Book(
             this.author = author
             this.subject = subject
         }
+    constructor() : this("", "")
 }
 
 class Clothes(
@@ -77,6 +80,8 @@ class Clothes(
         this.colors = colors
         this.size = size
     }
+
+    constructor() : this("", "")
 }
 
 class Supplies(
@@ -97,4 +102,6 @@ class Supplies(
         this.id = id
         this.reference = reference
     }
+
+    constructor() : this("")
 }

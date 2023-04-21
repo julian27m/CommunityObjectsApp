@@ -9,6 +9,7 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContentProviderCompat.requireContext
@@ -58,17 +59,30 @@ class DonateFragment : Fragment() {
                 viewModel.addItem(item, imageUri!!) { success ->
 //                    println("intenta publicar")
                     if (success) {
-                        Toast.makeText(requireContext(), "Item agregado correctamente", Toast.LENGTH_SHORT)
+                        Toast.makeText(
+                            requireContext(),
+                            "Item agregado correctamente",
+                            Toast.LENGTH_SHORT
+                        )
                             .show()
                     } else {
-                        Toast.makeText(requireContext(), "Error al agregar item", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "Error al agregar item",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
 //            set the home fragment
                     val supportFragmentManager = requireActivity().supportFragmentManager
-                    supportFragmentManager.beginTransaction().replace(R.id.fragment_container, HomeFragment()).commit()
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, HomeFragment()).commit()
                 }
             } else {
-                Toast.makeText(requireContext(), "Por favor seleccione una imagen", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Por favor seleccione una imagen",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -92,15 +106,123 @@ class DonateFragment : Fragment() {
 //            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, HomeFragment()).commit()
 //        }
 
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) {
-                val _photoUri: Uri? = result.data?.data
-//                println("photoUri: $_photoUri")
-                imageUri = _photoUri
-//                println("imageUri: $imageUri")
-                binding.ivItemImage.setImageURI(_photoUri)
+        binding.spCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                when (binding.spCategory.selectedItem.toString()) {
+                    "Clothes" -> {
+    //                        let color and size be visible
+                        binding.etItemColors.visibility = View.VISIBLE
+                        binding.etItemSize.visibility = View.VISIBLE
+                        binding.lblColor.visibility = View.VISIBLE
+                        binding.lblSize.visibility = View.VISIBLE
+
+                        binding.etItemDegree.visibility = View.GONE
+                        binding.etItemType.visibility = View.GONE
+                        binding.etItemAuthor.visibility = View.GONE
+                        binding.etItemSubject.visibility = View.GONE
+                        binding.etItemReference.visibility = View.GONE
+                        binding.lblDegree.visibility = View.GONE
+                        binding.lblType.visibility = View.GONE
+                        binding.lblAuthor.visibility = View.GONE
+                        binding.lblSubject.visibility = View.GONE
+                        binding.lblReference.visibility = View.GONE
+
+                    }
+                    "Books" -> {
+    //                        let author and subject be visible
+                        binding.etItemAuthor.visibility = View.VISIBLE
+                        binding.etItemSubject.visibility = View.VISIBLE
+binding.lblAuthor.visibility = View.VISIBLE
+                        binding.lblSubject.visibility = View.VISIBLE
+
+                        binding.etItemDegree.visibility = View.GONE
+                        binding.etItemType.visibility = View.GONE
+                        binding.etItemColors.visibility = View.GONE
+                        binding.etItemSize.visibility = View.GONE
+                        binding.etItemReference.visibility = View.GONE
+                        binding.lblDegree.visibility = View.GONE
+binding.lblType.visibility = View.GONE
+                        binding.lblColor.visibility = View.GONE
+                        binding.lblSize.visibility = View.GONE
+                        binding.lblReference.visibility = View.GONE
+                    }
+                    "Protective equipment" -> {
+    //                        let type and degree be visible
+                        binding.etItemDegree.visibility = View.VISIBLE
+                        binding.etItemType.visibility = View.VISIBLE
+                        binding.lblDegree.visibility = View.VISIBLE
+                        binding.lblType.visibility = View.VISIBLE
+
+                        binding.etItemAuthor.visibility = View.GONE
+                        binding.etItemSubject.visibility = View.GONE
+                        binding.etItemColors.visibility = View.GONE
+                        binding.etItemSize.visibility = View.GONE
+                        binding.etItemReference.visibility = View.GONE
+                        binding.lblAuthor.visibility = View.GONE
+                        binding.lblSubject.visibility = View.GONE
+                        binding.lblColor.visibility = View.GONE
+                        binding.lblSize.visibility = View.GONE
+                        binding.lblReference.visibility = View.GONE
+                    }
+                    "School and University Supplies" -> {
+    //                        let reference be visible
+                        binding.etItemReference.visibility = View.VISIBLE
+                        binding.lblReference.visibility = View.VISIBLE
+
+                        binding.etItemDegree.visibility = View.GONE
+                        binding.etItemType.visibility = View.GONE
+                        binding.etItemAuthor.visibility = View.GONE
+                        binding.etItemSubject.visibility = View.GONE
+                        binding.etItemColors.visibility = View.GONE
+                        binding.etItemSize.visibility = View.GONE
+                        binding.lblDegree.visibility = View.GONE
+                        binding.lblType.visibility = View.GONE
+                        binding.lblAuthor.visibility = View.GONE
+                        binding.lblSubject.visibility = View.GONE
+                        binding.lblColor.visibility = View.GONE
+                        binding.lblSize.visibility = View.GONE
+
+                    }
+                    "Other" -> {
+    //                        let none be visible
+                        binding.etItemDegree.visibility = View.GONE
+                        binding.etItemType.visibility = View.GONE
+                        binding.etItemAuthor.visibility = View.GONE
+                        binding.etItemSubject.visibility = View.GONE
+                        binding.etItemColors.visibility = View.GONE
+                        binding.etItemSize.visibility = View.GONE
+                        binding.etItemReference.visibility = View.GONE
+                        binding.lblDegree.visibility = View.GONE
+                        binding.lblType.visibility = View.GONE
+                        binding.lblAuthor.visibility = View.GONE
+                        binding.lblSubject.visibility = View.GONE
+                        binding.lblColor.visibility = View.GONE
+                        binding.lblSize.visibility = View.GONE
+                        binding.lblReference.visibility = View.GONE
+                    }
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+    //                set the first element
+                binding.spCategory.setSelection(0)
             }
         }
+
+//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+//            if (result.resultCode == RESULT_OK) {
+//                val _photoUri: Uri? = result.data?.data
+////                println("photoUri: $_photoUri")
+//                imageUri = _photoUri
+////                println("imageUri: $imageUri")
+//                binding.ivItemImage.setImageURI(_photoUri)
+//            }
+//        }
 
         // Agregar un botón para seleccionar una imagen
         binding.btnAddImage.setOnClickListener {

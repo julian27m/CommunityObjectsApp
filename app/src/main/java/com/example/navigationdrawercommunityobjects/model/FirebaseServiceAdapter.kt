@@ -113,39 +113,41 @@ class FirebaseServiceAdapter {
     fun getItems(callback: (List<Item>) -> Unit) {
         // Obtener todos los items de Firestore y llamar al callback con ellos
         val items = mutableListOf<Item>()
-        firestore.collection("EPP")
+        firestore.collection("EPP").whereEqualTo("photo", true)
             .get()
             .addOnSuccessListener { docs ->
                 for (doc in docs) {
-                    val item = doc.toObject(Item::class.java)
+                    println("doc: $doc")
+                    val item = doc.toObject(EPP::class.java)
                     items.add(item)
                 }
             }
-        firestore.collection("books_printed")
+        firestore.collection("books_printed").whereEqualTo("photo", true)
             .get()
             .addOnSuccessListener { docs ->
                 for (doc in docs) {
-                    val item = doc.toObject(Item::class.java)
+                    println("doc: $doc")
+                    val item = doc.toObject(Book::class.java)
                     items.add(item)
                 }
             }
-        firestore.collection("clothes")
+        firestore.collection("clothes").whereEqualTo("photo", true)
             .get()
             .addOnSuccessListener { docs ->
                 for (doc in docs) {
-                    val item = doc.toObject(Item::class.java)
+                    val item = doc.toObject(Clothes::class.java)
                     items.add(item)
                 }
             }
-        firestore.collection("school_university")
+        firestore.collection("school_university").whereEqualTo("photo", true)
             .get()
             .addOnSuccessListener { docs ->
                 for (doc in docs) {
-                    val item = doc.toObject(Item::class.java)
+                    val item = doc.toObject(Supplies::class.java)
                     items.add(item)
                 }
             }
-        firestore.collection("items")
+        firestore.collection("items").whereEqualTo("photo", true)
             .get()
             .addOnSuccessListener { docs ->
                 for (doc in docs) {
