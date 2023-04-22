@@ -1,46 +1,55 @@
 package com.example.navigationdrawercommunityobjects.view
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.content.Intent
-import com.example.navigationdrawercommunityobjects.model.ProfileActivity
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.example.navigationdrawercommunityobjects.R
 import com.example.navigationdrawercommunityobjects.viewmodel.ProfileViewModel
 
 class ProfileFragment : Fragment() {
 
     private lateinit var viewModel: ProfileViewModel
+    private lateinit var profileName: TextView
+    private lateinit var profileEmail: TextView
+    private lateinit var profileUsername: TextView
+    private lateinit var titleName: TextView
+    private lateinit var titleUsername: TextView
+
+
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_profile, container, false)
+        val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
-        viewModel = ViewModelProvider(requireActivity()).get(ProfileViewModel::class.java)
 
-        val profileName: TextView = root.findViewById(R.id.profileName)
-        val profileEmail: TextView = root.findViewById(R.id.profileEmail)
-        val profileUsername: TextView = root.findViewById(R.id.profileUsername)
+        profileName = view.findViewById(R.id.profileName)
+        profileEmail = view.findViewById(R.id.profileEmail)
+        profileUsername = view.findViewById(R.id.profileUsername)
+        titleName = view.findViewById(R.id.titleName)
+        titleUsername = view.findViewById(R.id.titleUsername)
 
-        profileName.text = viewModel.nameUser
-        profileEmail.text = viewModel.emailUser
-        profileUsername.text = viewModel.usernameUser
+        val viewModel = ProfileViewModel.getInstance()
 
-        //invoke profile activity
-        val profileIntent = Intent(activity, ProfileActivity::class.java)
-        profileIntent.putExtra("name", viewModel.nameUser)
-        profileIntent.putExtra("email", viewModel.emailUser)
-        profileIntent.putExtra("username", viewModel.usernameUser)
-        startActivity(profileIntent)
-        
+        viewModel.getUser().observe(viewLifecycleOwner, Observer { user ->
+            //Log.d("ProfileFragment", "getUser().observe() called")
+            if (user != null) {
+                profileName.text = user.name
+                profileEmail.text = user.email
+                profileUsername.text = user.username
+                titleName.text = user.name
+                titleUsername.text = user.username
+            }
+        })
 
-        return root
+
+        return view
     }
 }
+

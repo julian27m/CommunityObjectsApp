@@ -1,11 +1,10 @@
 package com.example.navigationdrawercommunityobjects.model
 
-import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.navigationdrawercommunityobjects.R
-import com.example.navigationdrawercommunityobjects.view.ProfileFragment
 import com.example.navigationdrawercommunityobjects.viewmodel.ProfileViewModel
 
 class ProfileActivity : AppCompatActivity() {
@@ -20,6 +19,9 @@ class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_profile)
+
+        //Im using this to unable landscape mode
+        this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         profileName = findViewById(R.id.profileName)
         profileEmail = findViewById(R.id.profileEmail)

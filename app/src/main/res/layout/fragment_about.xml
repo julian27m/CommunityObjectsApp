@@ -5,13 +5,25 @@
     android:layout_height="match_parent"
     tools:context=".view.AboutFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="About Us fragment"
-        android:gravity="center"
+        android:text="About Us"
+        android:gravity="top"
         android:textSize="30sp"
-        android:textColor="@color/light_cyan"/>
+        android:textColor="@color/light_cyan"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="10dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="We are a group of passionate university students working to make university life equally accessible to every student, no matter their background. We aim to follow our university’s core values primarily by cultivating solidarity and a sense of community for all."
+        android:gravity="center"
+        android:justificationMode="inter_word"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:textColor="@color/cyan"/>
 
 </FrameLayout>

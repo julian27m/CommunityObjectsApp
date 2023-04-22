@@ -1,6 +1,7 @@
 package com.example.navigationdrawercommunityobjects.model;
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.TextUtils
@@ -10,18 +11,12 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.developer.gbuttons.GoogleSignInButton
 import com.example.navigationdrawercommunityobjects.R
 import com.example.navigationdrawercommunityobjects.view.MainActivity
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
+import com.example.navigationdrawercommunityobjects.viewmodel.ProfileViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -35,16 +30,23 @@ class LoginActivity: AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     lateinit var forgotPassword: TextView
     lateinit var signupRedirectText: TextView
+
+    val viewModel = ProfileViewModel.getInstance()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.statusBarColor = ContextCompat.getColor(this, R.color.white)
         setContentView(R.layout.activity_login)
+
+        //Im using this to unable landscape mode
+        this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         loginUsername = findViewById(R.id.login_username)
         loginPassword = findViewById(R.id.login_password)
         loginButton = findViewById(R.id.login_button)
         signupRedirectText = findViewById(R.id.signUpRedirectText)
         forgotPassword = findViewById(R.id.forgot_password)
         auth = FirebaseAuth.getInstance()
+
         loginButton.setOnClickListener(View.OnClickListener {
 
             if (!validateUsername() or !validatePassword()) {
@@ -142,12 +144,30 @@ class LoginActivity: AppCompatActivity() {
                             snapshot.child(userUsername).child("username").getValue(
                                 String::class.java
                             )
-                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                        intent.putExtra("name", nameFromDB)
-                        intent.putExtra("email", emailFromDB)
-                        intent.putExtra("username", usernameFromDB)
-                        intent.putExtra("password", passwordFromDB)
-                        startActivity(intent)
+                        val ageFromDB =
+                            snapshot.child(userUsername).child("age").getValue(
+                                String::class.java
+                            )
+                        val genderFromDB =
+                            snapshot.child(userUsername).child("gender").getValue(
+                                String::class.java
+                            )
+
+                        val userBuilder = UserBuilderClass.Builder()
+                            .setName(nameFromDB.toString())
+                            .setEmail(emailFromDB.toString())
+                            .setUsername(usernameFromDB.toString())
+                            .setPassword(passwordFromDB.toString())
+                            .setGender(genderFromDB.toString())
+                            .setAge(ageFromDB.toString())
+                            .build()
+
+                        viewModel.setUser(userBuilder)
+
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+
+                        Toast.makeText(applicationContext, "Welcome ${nameFromDB}!", Toast.LENGTH_LONG).show()
+
                     } else {
                         loginPassword!!.error = "Invalid Credentials"
                         loginPassword!!.requestFocus()

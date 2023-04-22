@@ -11,4 +11,20 @@
     <string name="donate_item_publish_button_text">Publish</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="select_an_image_of_your_material">Select an image of your material</string>
+    <string name="author_of_the_book">Author of the book</string>
+    <string name="ibio_leng_etc">IBIO, LENG, etc.</string>
+    <string name="degree">Degree</string>
+    <string name="type">Type</string>
+    <string name="helmet_gloves_glasses">Helmet, gloves, glasses</string>
+    <string name="subject">Subject</string>
+    <string name="calc_biology_chemistry_etc">Calc, Biology, Chemistry, etc.</string>
+    <string name="reference">Reference</string>
+    <string name="texas_ti_99_4a">Texas TI-99/4A</string>
+    <string name="author">Author</string>
+    <string name="red_blue_green_etc">red, blue, green, etc.</string>
+    <string name="color_s">Color(s)</string>
+    <string name="standard">#/standard</string>
+    <string name="size">Size</string>
+
 </resources>

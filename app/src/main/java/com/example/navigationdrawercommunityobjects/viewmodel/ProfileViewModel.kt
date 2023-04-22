@@ -1,14 +1,35 @@
 package com.example.navigationdrawercommunityobjects.viewmodel
 
-import android.widget.TextView
+import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import com.example.navigationdrawercommunityobjects.model.UserBuilderClass
 
 class ProfileViewModel : ViewModel() {
-    var nameUser: String? = null
-    var emailUser: String? = null
-    var usernameUser: String? = null
-    // This is where you would put your code to retrieve and store user information
+
+    val user = MutableLiveData<UserBuilderClass>()
+    private val instanceId = Integer.toHexString(hashCode())
+
+    fun setUser(user: UserBuilderClass) {
+        this.user.value = user
+        //Log.d("ProfileViewModel", "setUser() called on instance $instanceId")
+    }
+
+    fun getUser(): LiveData<UserBuilderClass> {
+        return this.user
+        //Log.d("ProfileViewModel", "getUser() called on instance $instanceId")
+    }
+
+    // Singleton
+    // I made this because there were multiple instances of the ProfileViewModel (I struggled with this for a while)
+    // I wanted to make sure that there was only one instance of the ProfileViewModel
+    // That instance is called in the ProfileFragment and LoginActivity (update: it is also called in the MainActivity)
+    companion object {
+        private val instance = ProfileViewModel()
+
+        fun getInstance(): ProfileViewModel {
+            return instance
+        }
+    }
 }

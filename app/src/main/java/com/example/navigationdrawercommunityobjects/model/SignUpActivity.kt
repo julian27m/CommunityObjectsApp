@@ -1,6 +1,7 @@
 package com.example.navigationdrawercommunityobjects.model;
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -10,7 +11,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.navigationdrawercommunityobjects.R
-import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -29,6 +29,7 @@ class SignUpActivity: AppCompatActivity() {
     lateinit var reference: DatabaseReference
     private var completeName: Boolean = true
     private var completeUserName: Boolean = true
+    private var completeUserNameC : Boolean = true
     private var completeEmail: Boolean = true
     private var completePass: Boolean = true
     private var completeGender: Boolean = true
@@ -40,6 +41,10 @@ class SignUpActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         window.statusBarColor = ContextCompat.getColor(this, R.color.white)
         setContentView(R.layout.activity_sign_up)
+
+        //Im using this to unable landscape mode
+        this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         auth = FirebaseAuth.getInstance()
         signupName = findViewById(R.id.signup_name)
 
@@ -62,7 +67,6 @@ class SignUpActivity: AppCompatActivity() {
             val pass = signupPassword.getText().toString().trim { it <= ' ' }
 
 
-
             if (user.isEmpty()) {
                 completeEmail = false
                 signupEmail.setError("Email cannot be empty")
@@ -77,6 +81,13 @@ class SignUpActivity: AppCompatActivity() {
             if (username.isEmpty()) {
                 completeUserName = false
                 signupUsername.setError("Username cannot be empty")
+            }
+            //check if the username has '.', '#', '$', '[', or ']' characters
+            if (username.contains(".") || username.contains("#") || username.contains("$") || username.contains("[") || username.contains("]")) {
+                completeUserNameC = false
+                signupUsername.setError("Username cannot contain '.', '#', '$', '[', or ']'")
+            } else if (username.isNotEmpty() && !username.contains(".") && !username.contains("#") && !username.contains("$") && !username.contains("[") && !username.contains("]")) {
+                completeUserNameC = true
             }
 
             if (username.length > 30) {
@@ -112,37 +123,45 @@ class SignUpActivity: AppCompatActivity() {
             {
                 completeGender = true
             }
-           if (age.isEmpty()) {
-               completeAge = false
-               signupAge.setError("Age cannot be empty")
-           }
-           //check if age.int throws an exception
-           try {
-                age.toInt()
-              } catch (e: NumberFormatException) {
+            if (age.isEmpty()) {
+                completeAge = false
+                signupAge.setError("Age cannot be empty")
+            }
+
+            if (isNumeric(age)){
+                completeAgeN = true
+                if (age.toInt() < 16){
+                    completeAgeC = false
+                    signupAge.setError("Age must be 16 or older")
+                }else if (age.toInt() >= 16 && completeAgeN){
+                    completeAgeC = true
+                }
+            }else{
                 completeAgeN = false
                 signupAge.setError("Age must be a number")
-           }
+            }
 
-           if (age.length > 2){
-               completeAge = false
-               signupAge.setError("Age cannot be more than 2 characters")
-              }else if (age.length <= 2 && age.isNotEmpty() && completeAgeN) {
-               completeAge = true
+            if (age.length > 2){
+                completeAge = false
+                signupAge.setError("Age cannot be more than 2 characters")
+            }else if (age.length <= 2 && age.isNotEmpty() && completeAgeN) {
+                completeAge = true
 
-           }
-           if (age.toInt() < 16){
-               completeAgeC = false
-               signupAge.setError("Age must be 16 or older")
-              }else if (age.toInt() >= 16 && completeAgeN){
-               completeAgeC = true
-              }
+            }
 
-            if (completeName && completeUserName && completeEmail && completePass && completeGender && completeAge && completeAgeN && completeAgeC) {
+
+            if (completeName && completeUserNameC && completeUserName && completeEmail && completePass && completeGender && completeAge && completeAgeN && completeAgeC){
 
                 auth!!.createUserWithEmailAndPassword(user, pass).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        val userBuilderClass = UserBuilderClass(name, gender, age, user, username, pass)
+                        val userBuilderClass = UserBuilderClass.Builder()
+                            .setName(name)
+                            .setGender(gender)
+                            .setAge(age)
+                            .setEmail(user)
+                            .setUsername(username)
+                            .setPassword(pass)
+                            .build()
                         reference!!.child(username).setValue(userBuilderClass)
                         Toast.makeText(this@SignUpActivity, "SignUp Successful", Toast.LENGTH_SHORT)
                             .show()
@@ -165,5 +184,9 @@ class SignUpActivity: AppCompatActivity() {
                 )
             )
         })
+    }
+
+    fun isNumeric(toCheck: String): Boolean {
+        return toCheck.all { char -> char.isDigit() }
     }
 }

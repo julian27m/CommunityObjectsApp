@@ -18,14 +18,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/navName"
-        android:text="Julian Camilo Mora Valbuena"
+        android:text="Name"
         android:textColor="@color/white"
         android:textStyle="bold"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="j.morav@uniandes.edu.co"
+        android:text="mail"
         android:id="@+id/navEmail"
         android:textColor="@color/white"
         android:textSize="14sp"
