@@ -8,13 +8,12 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -37,9 +36,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var mFBanalytics: FirebaseAnalytics
+    val viewModel = ProfileViewModel
+    val instance = viewModel.getInstance()
+    val user = instance.getUser().value
+
+
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
 
         //Im using this to unable landscape mode
@@ -127,7 +135,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     .build()
                 val mGoogleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(this, gso)
                 mGoogleSignInClient.signOut()
-                val intent = Intent(this, LoginActivity::class.java)
+                instance.setUser(null)
+                val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
             }
@@ -148,6 +157,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
     private fun showBottomDialog() {
+
         val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.bottomsheetlayout)
@@ -158,12 +168,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             dialog.dismiss()
             //Toast.makeText(this@MainActivity, "Upload donation is clicked", Toast.LENGTH_SHORT).show()
 //            set the donate fragment
-            replaceFragment(DonateFragment())
+            if (user != null){
+                replaceFragment(DonateFragment())
+            }else
+                showLoginDialog()
+
         }
         requestLayout.setOnClickListener {
             dialog.dismiss()
-            Toast.makeText(this@MainActivity, "I have a request is Clicked", Toast.LENGTH_SHORT)
-                .show()
+            if (user != null){
+                Toast.makeText(this@MainActivity, "I have a request is Clicked", Toast.LENGTH_SHORT)
+                    .show()
+            }else
+                showLoginDialog()
+
         }
         cancelButton.setOnClickListener { dialog.dismiss() }
         dialog.show()
@@ -175,5 +193,34 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         dialog.window!!.attributes.windowAnimations = R.style.DialogAnimation
         dialog.window!!.setGravity(Gravity.BOTTOM)
     }
+
+    private fun showLoginDialog() {
+        val loginConstraintLayout = findViewById<ConstraintLayout>(R.id.LoginConstraintLayout)
+        val view = LayoutInflater.from(this@MainActivity).inflate(R.layout.login_dialog, loginConstraintLayout, false)
+        val btnLogin = view.findViewById<Button>(R.id.issueDone)
+        val btnNotNow = view.findViewById<Button>(R.id.notNow)
+        val builder = AlertDialog.Builder(this@MainActivity)
+        builder.setView(view)
+        val alertDialog = builder.create()
+        btnLogin.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            alertDialog.dismiss()
+        }
+        btnNotNow.setOnClickListener { alertDialog.dismiss() }
+        if (alertDialog.window != null) {
+            alertDialog.window!!.setBackgroundDrawable(ColorDrawable(0))
+        }
+        alertDialog.show()
+    }
+
+
+
 }
+
+
+
+
+
+
 

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/LoginConstraintLayout"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/dialogBox"
+        android:background="@drawable/white_box"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/issueTitle"
+            android:textColor="@color/light_cyan"
+            android:textSize="20dp"
+            android:paddingTop="28dp"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
+            android:text="Access Denied"
+            app:layout_constraintTop_toTopOf="@+id/dialogBox"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/loginFirst"
+            android:textColor="@color/light_cyan"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:textSize="18dp"
+            android:gravity="center_horizontal"
+            android:text="Please login first"
+            app:layout_constraintTop_toBottomOf="@+id/issueTitle"
+            app:layout_constraintBottom_toTopOf="@id/issueDone"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/issueDone"
+            android:text="Login"
+            android:textSize="14sp"
+            app:cornerRadius = "12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="150dp"
+            android:backgroundTint="@color/tulip"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/loginFirst"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/notNow"
+            android:text="Not now"
+            android:textSize="14sp"
+            app:cornerRadius = "12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="150dp"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="@color/light_cyan"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/loginFirst"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/issueImage"
+        android:src="@drawable/baseline_lock_24"
+        android:layout_marginEnd="40dp"
+        android:layout_marginStart="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/dialogBox"
+        app:layout_constraintBottom_toTopOf="@id/dialogBox"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

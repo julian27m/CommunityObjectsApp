@@ -21,6 +21,7 @@ import com.example.navigationdrawercommunityobjects.R
 import com.example.navigationdrawercommunityobjects.databinding.FragmentDonateBinding
 import com.example.navigationdrawercommunityobjects.model.Item
 import com.example.navigationdrawercommunityobjects.viewmodel.ItemViewModel
+import com.example.navigationdrawercommunityobjects.viewmodel.ProfileViewModel
 
 class DonateFragment : Fragment() {
 
@@ -53,11 +54,11 @@ class DonateFragment : Fragment() {
             item["size"] = binding.etItemSize.text.toString()
             item["reference"] = binding.etItemReference.text.toString()
 
-//            println("Item: $item")
-//            println("ImageUri: $imageUri")
+            //            println("Item: $item")
+            //            println("ImageUri: $imageUri")
             if (imageUri != null) {
                 viewModel.addItem(item, imageUri!!) { success ->
-//                    println("intenta publicar")
+                    //                    println("intenta publicar")
                     if (success) {
                         Toast.makeText(
                             requireContext(),
@@ -72,7 +73,7 @@ class DonateFragment : Fragment() {
                             Toast.LENGTH_SHORT
                         ).show()
                     }
-//            set the home fragment
+                    //            set the home fragment
                     val supportFragmentManager = requireActivity().supportFragmentManager
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, HomeFragment()).commit()
@@ -87,24 +88,24 @@ class DonateFragment : Fragment() {
         }
 
         binding.btnCancel.setOnClickListener {
-//            set the home fragment
+            //            set the home fragment
             val supportFragmentManager = requireActivity().supportFragmentManager
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, HomeFragment()).commit()
         }
 
-//        // Observar el resultado de la operación de agregar item
-//        viewModel.addItemResult.observe(viewLifecycleOwner) { success ->
-//            if (success) {
-//                Toast.makeText(requireContext(), "Item agregado correctamente", Toast.LENGTH_SHORT)
-//                    .show()
-//            } else {
-//                Toast.makeText(requireContext(), "Error al agregar item", Toast.LENGTH_SHORT).show()
-//            }
-////            set the home fragment
-//            val supportFragmentManager = requireActivity().supportFragmentManager
-//            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, HomeFragment()).commit()
-//        }
+        //        // Observar el resultado de la operación de agregar item
+        //        viewModel.addItemResult.observe(viewLifecycleOwner) { success ->
+        //            if (success) {
+        //                Toast.makeText(requireContext(), "Item agregado correctamente", Toast.LENGTH_SHORT)
+        //                    .show()
+        //            } else {
+        //                Toast.makeText(requireContext(), "Error al agregar item", Toast.LENGTH_SHORT).show()
+        //            }
+        ////            set the home fragment
+        //            val supportFragmentManager = requireActivity().supportFragmentManager
+        //            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, HomeFragment()).commit()
+        //        }
 
         binding.spCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -115,7 +116,7 @@ class DonateFragment : Fragment() {
             ) {
                 when (binding.spCategory.selectedItem.toString()) {
                     "Clothes" -> {
-    //                        let color and size be visible
+                        //                        let color and size be visible
                         binding.etItemColors.visibility = View.VISIBLE
                         binding.etItemSize.visibility = View.VISIBLE
                         binding.lblColor.visibility = View.VISIBLE
@@ -134,10 +135,10 @@ class DonateFragment : Fragment() {
 
                     }
                     "Books" -> {
-    //                        let author and subject be visible
+                        //                        let author and subject be visible
                         binding.etItemAuthor.visibility = View.VISIBLE
                         binding.etItemSubject.visibility = View.VISIBLE
-binding.lblAuthor.visibility = View.VISIBLE
+                        binding.lblAuthor.visibility = View.VISIBLE
                         binding.lblSubject.visibility = View.VISIBLE
 
                         binding.etItemDegree.visibility = View.GONE
@@ -146,13 +147,13 @@ binding.lblAuthor.visibility = View.VISIBLE
                         binding.etItemSize.visibility = View.GONE
                         binding.etItemReference.visibility = View.GONE
                         binding.lblDegree.visibility = View.GONE
-binding.lblType.visibility = View.GONE
+                        binding.lblType.visibility = View.GONE
                         binding.lblColor.visibility = View.GONE
                         binding.lblSize.visibility = View.GONE
                         binding.lblReference.visibility = View.GONE
                     }
                     "Protective equipment" -> {
-    //                        let type and degree be visible
+                        //                        let type and degree be visible
                         binding.etItemDegree.visibility = View.VISIBLE
                         binding.etItemType.visibility = View.VISIBLE
                         binding.lblDegree.visibility = View.VISIBLE
@@ -170,7 +171,7 @@ binding.lblType.visibility = View.GONE
                         binding.lblReference.visibility = View.GONE
                     }
                     "School and University Supplies" -> {
-    //                        let reference be visible
+                        //                        let reference be visible
                         binding.etItemReference.visibility = View.VISIBLE
                         binding.lblReference.visibility = View.VISIBLE
 
@@ -189,7 +190,7 @@ binding.lblType.visibility = View.GONE
 
                     }
                     "Other" -> {
-    //                        let none be visible
+                        //                        let none be visible
                         binding.etItemDegree.visibility = View.GONE
                         binding.etItemType.visibility = View.GONE
                         binding.etItemAuthor.visibility = View.GONE
@@ -209,20 +210,20 @@ binding.lblType.visibility = View.GONE
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-    //                set the first element
+                //                set the first element
                 binding.spCategory.setSelection(0)
             }
         }
 
-//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-//            if (result.resultCode == RESULT_OK) {
-//                val _photoUri: Uri? = result.data?.data
-////                println("photoUri: $_photoUri")
-//                imageUri = _photoUri
-////                println("imageUri: $imageUri")
-//                binding.ivItemImage.setImageURI(_photoUri)
-//            }
-//        }
+        //        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        //            if (result.resultCode == RESULT_OK) {
+        //                val _photoUri: Uri? = result.data?.data
+        ////                println("photoUri: $_photoUri")
+        //                imageUri = _photoUri
+        ////                println("imageUri: $imageUri")
+        //                binding.ivItemImage.setImageURI(_photoUri)
+        //            }
+        //        }
 
         // Agregar un botón para seleccionar una imagen
         binding.btnAddImage.setOnClickListener {
