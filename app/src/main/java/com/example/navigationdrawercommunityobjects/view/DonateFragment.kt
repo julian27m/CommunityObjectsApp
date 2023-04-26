@@ -52,8 +52,8 @@ class DonateFragment : Fragment() {
             item["reference"] = binding.etItemReference.text.toString()
             item["user"] = profileViewModel.getUser().value?.username.toString()
 
-//            println("Item: $item")
-//            println("ImageUri: $imageUri")
+            //            println("Item: $item")
+            //            println("ImageUri: $imageUri")
             if (imageUri != null) {
                 itemViewModel.addItem(item, imageUri!!) { success ->
 //                    println("intenta publicar")
@@ -71,7 +71,7 @@ class DonateFragment : Fragment() {
                             Toast.LENGTH_SHORT
                         ).show()
                     }
-//            set the home fragment
+                    //            set the home fragment
                     val supportFragmentManager = requireActivity().supportFragmentManager
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, HomeFragment()).commit()
@@ -86,24 +86,24 @@ class DonateFragment : Fragment() {
         }
 
         binding.btnCancel.setOnClickListener {
-//            set the home fragment
+            //            set the home fragment
             val supportFragmentManager = requireActivity().supportFragmentManager
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, HomeFragment()).commit()
         }
 
-//        // Observar el resultado de la operación de agregar item
-//        viewModel.addItemResult.observe(viewLifecycleOwner) { success ->
-//            if (success) {
-//                Toast.makeText(requireContext(), "Item agregado correctamente", Toast.LENGTH_SHORT)
-//                    .show()
-//            } else {
-//                Toast.makeText(requireContext(), "Error al agregar item", Toast.LENGTH_SHORT).show()
-//            }
-////            set the home fragment
-//            val supportFragmentManager = requireActivity().supportFragmentManager
-//            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, HomeFragment()).commit()
-//        }
+        //        // Observar el resultado de la operación de agregar item
+        //        viewModel.addItemResult.observe(viewLifecycleOwner) { success ->
+        //            if (success) {
+        //                Toast.makeText(requireContext(), "Item agregado correctamente", Toast.LENGTH_SHORT)
+        //                    .show()
+        //            } else {
+        //                Toast.makeText(requireContext(), "Error al agregar item", Toast.LENGTH_SHORT).show()
+        //            }
+        ////            set the home fragment
+        //            val supportFragmentManager = requireActivity().supportFragmentManager
+        //            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, HomeFragment()).commit()
+        //        }
 
         binding.spCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -213,15 +213,15 @@ class DonateFragment : Fragment() {
             }
         }
 
-//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-//            if (result.resultCode == RESULT_OK) {
-//                val _photoUri: Uri? = result.data?.data
-////                println("photoUri: $_photoUri")
-//                imageUri = _photoUri
-////                println("imageUri: $imageUri")
-//                binding.ivItemImage.setImageURI(_photoUri)
-//            }
-//        }
+        //        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        //            if (result.resultCode == RESULT_OK) {
+        //                val _photoUri: Uri? = result.data?.data
+        ////                println("photoUri: $_photoUri")
+        //                imageUri = _photoUri
+        ////                println("imageUri: $imageUri")
+        //                binding.ivItemImage.setImageURI(_photoUri)
+        //            }
+        //        }
 
         // Agregar un botón para seleccionar una imagen
         binding.btnAddImage.setOnClickListener {

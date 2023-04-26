@@ -11,7 +11,7 @@ class ProfileViewModel : ViewModel() {
     val user = MutableLiveData<UserBuilderClass>()
     private val instanceId = Integer.toHexString(hashCode())
 
-    fun setUser(user: UserBuilderClass) {
+    fun setUser(user: UserBuilderClass?) {
         this.user.value = user
         //Log.d("ProfileViewModel", "setUser() called on instance $instanceId")
     }
@@ -19,6 +19,7 @@ class ProfileViewModel : ViewModel() {
     fun getUser(): LiveData<UserBuilderClass> {
         return this.user
         //Log.d("ProfileViewModel", "getUser() called on instance $instanceId")
+        Log.d("ProfileFragment", user.value.toString())
     }
 
     // Singleton
