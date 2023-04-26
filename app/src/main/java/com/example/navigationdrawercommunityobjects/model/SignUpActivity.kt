@@ -22,7 +22,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlin.properties.Delegates
 
-class SignUpActivity: AppCompatActivity() {
+class SignUpActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     lateinit var signupName: EditText
     lateinit var signupUsername: EditText
@@ -37,7 +37,7 @@ class SignUpActivity: AppCompatActivity() {
     lateinit var reference: DatabaseReference
     private var completeName: Boolean = true
     private var completeUserName: Boolean = true
-    private var completeUserNameC : Boolean = true
+    private var completeUserNameC: Boolean = true
     private var completeEmail: Boolean = true
     private var completePass: Boolean = true
     private var completeGender: Boolean = true
@@ -113,10 +113,16 @@ class SignUpActivity: AppCompatActivity() {
                 signupUsername.setError("Username cannot be empty")
             }
             //check if the username has '.', '#', '$', '[', or ']' characters
-            if (username.contains(".") || username.contains("#") || username.contains("$") || username.contains("[") || username.contains("]")) {
+            if (username.contains(".") || username.contains("#") || username.contains("$") || username.contains(
+                    "["
+                ) || username.contains("]")
+            ) {
                 completeUserNameC = false
                 signupUsername.setError("Username cannot contain '.', '#', '$', '[', or ']'")
-            } else if (username.isNotEmpty() && !username.contains(".") && !username.contains("#") && !username.contains("$") && !username.contains("[") && !username.contains("]")) {
+            } else if (username.isNotEmpty() && !username.contains(".") && !username.contains("#") && !username.contains(
+                    "$"
+                ) && !username.contains("[") && !username.contains("]")
+            ) {
                 completeUserNameC = true
             }
 
@@ -142,39 +148,38 @@ class SignUpActivity: AppCompatActivity() {
             } else if (pass.isNotEmpty()) {
                 completePass = true
             }
-            if (gender.isEmpty()){
+            if (gender.isEmpty()) {
                 completeGender = false
                 signupGender.setError("Gender cannot be empty")
             }
-            if (gender.length >30){
+            if (gender.length > 30) {
                 completeGender = false
                 signupGender.setError("Gender cannot be more than 30 characters")
-            }else if (gender.length <= 30 && gender.isNotEmpty())
-            {
+            } else if (gender.length <= 30 && gender.isNotEmpty()) {
                 completeGender = true
             }
             if (age.isEmpty() || age == "") {
                 completeAge = false
                 signupAge.setError("Age cannot be empty")
-            }else if (isNumeric(age)){
+            } else if (isNumeric(age)) {
                 completeAgeN = true
-                if (age.toInt() < 16){
+                if (age.toInt() < 16) {
                     completeAgeC = false
                     signupAge.setError("Age must be 16 or older")
-                }else if (age.toInt() >= 16 && completeAgeN){
+                } else if (age.toInt() >= 16 && completeAgeN) {
                     completeAgeC = true
                 }
-            }else{
+            } else {
                 completeAgeN = false
                 signupAge.setError("Age must be a number")
             }
 
 
 
-            if (age.length > 2){
+            if (age.length > 2) {
                 completeAge = false
                 signupAge.setError("Age cannot be more than 2 characters")
-            }else if (age.length <= 2 && age.isNotEmpty() && completeAgeN) {
+            } else if (age.length <= 2 && age.isNotEmpty() && completeAgeN) {
                 completeAge = true
 
             }
@@ -188,7 +193,7 @@ class SignUpActivity: AppCompatActivity() {
                         showNetworkDialog()
                         fallbackBoolean = false
                         registerUser(user, pass, name, gender, age, username)
-                    }else{
+                    } else {
                         //User has internet connection fro the start
                         registerUser(user, pass, name, gender, age, username)
                     }
@@ -198,14 +203,20 @@ class SignUpActivity: AppCompatActivity() {
                     fallbackBoolean = true
                 }
             })
-    })
+        })
     }
 
 
-
-    private fun registerUser(user:String, pass:String, name:String, gender:String, age:String, username:String) {
+    private fun registerUser(
+        user: String,
+        pass: String,
+        name: String,
+        gender: String,
+        age: String,
+        username: String
+    ) {
         auth = FirebaseAuth.getInstance()
-        if (completeName && completeUserNameC && completeUserName && completeEmail && completePass && completeGender && completeAge && completeAgeN && completeAgeC){
+        if (completeName && completeUserNameC && completeUserName && completeEmail && completePass && completeGender && completeAge && completeAgeN && completeAgeC) {
             //TODO: Check if the user is already registered
             val reference = FirebaseDatabase.getInstance().getReference("users")
             val checkUserDatabase = reference.orderByChild("username").equalTo(username)
@@ -260,9 +271,8 @@ class SignUpActivity: AppCompatActivity() {
                     ).show()
                 }
             })
-            }
         }
-
+    }
 
 
     fun isNumeric(toCheck: String): Boolean {
@@ -271,7 +281,8 @@ class SignUpActivity: AppCompatActivity() {
 
     private fun showNetworkDisconnectedDialog() {
         val loginConstraintLayout = findViewById<ConstraintLayout>(R.id.NetworkConstraintLayout)
-        val view = LayoutInflater.from(this@SignUpActivity).inflate(R.layout.dialog_network, loginConstraintLayout, false)
+        val view = LayoutInflater.from(this@SignUpActivity)
+            .inflate(R.layout.dialog_network, loginConstraintLayout, false)
         val builder = AlertDialog.Builder(this@SignUpActivity)
         builder.setView(view)
         val alertDialog = builder.create()
@@ -288,8 +299,10 @@ class SignUpActivity: AppCompatActivity() {
     }
 
     private fun showNetworkDialog() {
-        val loginConstraintLayout = findViewById<ConstraintLayout>(R.id.NetworkConnectedConstraintLayout)
-        val view = LayoutInflater.from(this@SignUpActivity).inflate(R.layout.dialog_network_connected, loginConstraintLayout, false)
+        val loginConstraintLayout =
+            findViewById<ConstraintLayout>(R.id.NetworkConnectedConstraintLayout)
+        val view = LayoutInflater.from(this@SignUpActivity)
+            .inflate(R.layout.dialog_network_connected, loginConstraintLayout, false)
         val builder = AlertDialog.Builder(this@SignUpActivity)
         builder.setView(view)
         val alertDialog = builder.create()
