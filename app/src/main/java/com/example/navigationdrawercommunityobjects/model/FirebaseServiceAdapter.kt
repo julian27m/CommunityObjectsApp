@@ -44,7 +44,8 @@ class FirebaseServiceAdapter {
                             item["category"].toString(),
                             item["description"].toString(),
                             uri.toString(),
-                            itemId
+                            itemId,
+                            item["user"].toString()
                         )
                         "Protective equipment" -> newItem = EPP(
                             item["name"].toString(),
@@ -53,33 +54,37 @@ class FirebaseServiceAdapter {
                             uri.toString(),
                             itemId,
                             item["degree"].toString(),
-                            item["type"].toString()
+                            item["type"].toString(),
+                            item["user"].toString()
                         )
-                        "Books" -> newItem = EPP(
+                        "Books" -> newItem = Book(
                             item["name"].toString(),
                             item["category"].toString(),
                             item["description"].toString(),
                             uri.toString(),
                             itemId,
                             item["degree"].toString(),
-                            item["type"].toString()
+                            item["type"].toString(),
+                            item["user"].toString()
                         )
-                        "Clothes" -> newItem = EPP(
+                        "Clothes" -> newItem = Clothes(
                             item["name"].toString(),
                             item["category"].toString(),
                             item["description"].toString(),
                             uri.toString(),
                             itemId,
                             item["colors"].toString(),
-                            item["size"].toString()
+                            item["size"].toString(),
+                            item["user"].toString()
                         )
-                        "School and University Supplies" -> newItem = EPP(
+                        "School and University Supplies" -> newItem = Supplies(
                             item["name"].toString(),
                             item["category"].toString(),
                             item["description"].toString(),
                             uri.toString(),
                             itemId,
-                            item["reference"].toString()
+                            item["reference"].toString(),
+                            item["type"].toString(),
                         )
                     }
                     // Agregar el nuevo item a Firestore
@@ -151,8 +156,7 @@ class FirebaseServiceAdapter {
                                     items.add(item)
                                 }
                                 println("items length after clothes: ${items.size}")
-                                firestore.collection("school_university")
-                                    .whereEqualTo("photo", true)
+                                firestore.collection("school_university").whereNotEqualTo("photo", "")
                                     .get()
                                     .addOnSuccessListener { docs ->
                                         for (doc in docs) {

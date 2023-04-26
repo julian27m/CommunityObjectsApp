@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 
 import com.example.navigationdrawercommunityobjects.R
@@ -21,6 +22,7 @@ import com.example.navigationdrawercommunityobjects.viewmodel.ProfileViewModel
 class DonateFragment : Fragment() {
 
     private var imageUri: Uri? = null
+    private var user: String? = null
     private val binding: FragmentDonateBinding by lazy {
         FragmentDonateBinding.inflate(layoutInflater)
     }
@@ -37,6 +39,12 @@ class DonateFragment : Fragment() {
         itemViewModel = ViewModelProvider(this)[ItemViewModel::class.java]
         profileViewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
 
+        profileViewModel.getUser().observe(viewLifecycleOwner, Observer { user ->
+            if (user != null) {
+                this.user = user.username
+            }
+        })
+
         // Configurar el botón de agregar item
         binding.btnPublish.setOnClickListener {
             val item = HashMap<String, String>()
@@ -50,7 +58,8 @@ class DonateFragment : Fragment() {
             item["colors"] = binding.etItemColors.text.toString()
             item["size"] = binding.etItemSize.text.toString()
             item["reference"] = binding.etItemReference.text.toString()
-            item["user"] = profileViewModel.getUser().value?.username.toString()
+            print("User set")
+            item["user"] = user.toString()
 
             //            println("Item: $item")
             //            println("ImageUri: $imageUri")
@@ -60,14 +69,14 @@ class DonateFragment : Fragment() {
                     if (success) {
                         Toast.makeText(
                             requireContext(),
-                            "Item agregado correctamente",
+                            "Item added successfully",
                             Toast.LENGTH_SHORT
                         )
                             .show()
                     } else {
                         Toast.makeText(
                             requireContext(),
-                            "Error al agregar item",
+                            "Error adding the item",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -79,7 +88,7 @@ class DonateFragment : Fragment() {
             } else {
                 Toast.makeText(
                     requireContext(),
-                    "Por favor seleccione una imagen",
+                    "Please select an image first",
                     Toast.LENGTH_SHORT
                 ).show()
             }

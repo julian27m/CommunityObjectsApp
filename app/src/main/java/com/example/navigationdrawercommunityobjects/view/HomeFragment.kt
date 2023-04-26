@@ -6,9 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import com.example.navigationdrawercommunityobjects.R
 import com.example.navigationdrawercommunityobjects.model.NetworkConnection
+import com.example.navigationdrawercommunityobjects.databinding.FragmentHomeBinding
 import com.example.navigationdrawercommunityobjects.viewmodel.HomeViewModel
+import com.example.navigationdrawercommunityobjects.viewmodel.ItemViewModel
 
 class HomeFragment : Fragment() {
 
@@ -16,7 +19,10 @@ class HomeFragment : Fragment() {
         fun newInstance() = HomeFragment()
     }
 
-    private lateinit var viewModel: HomeViewModel
+    private lateinit var viewModel: ItemViewModel
+    private val binding: FragmentHomeBinding by lazy {
+        FragmentHomeBinding.inflate(layoutInflater)
+    }
 
 
 
@@ -24,13 +30,53 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        val view = binding.root
+        viewModel = ViewModelProvider(this)[ItemViewModel::class.java]
+        return view
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this)[ItemViewModel::class.java]
+
+        if (!isAdded) {
+            return
+        }
+//        get the greeting label
+        val greetingLabel = binding.lblGreeting
+//        set the text based on time
+        val currentHour = java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY)
+        if (currentHour in 0..11) {
+            greetingLabel.text = "Good morning!"
+        } else if (currentHour in 12..17) {
+            greetingLabel.text = "Good afternoon!"
+        } else if (currentHour in 18..20) {
+            greetingLabel.text = "Good evening!"
+        } else {
+            greetingLabel.text = "Good night!"
+        }
+
+        val productsContainer = binding.lytProducts
+
+//        get all the products
+//        viewModel.getAllItems { items ->
+//            for (item in items) {
+//                println("item: $item")
+//                val productView = ProductView(requireContext())
+//                productView.setProduct(item)
+//                productsContainer.addView(productView)
+//            }
+//        }
+
+        viewModel.items.observe(viewLifecycleOwner, Observer { items ->
+            for (item in items) {
+                println("item: $item")
+                val productView = ProductView(requireContext())
+                productView.setProduct(item)
+                productsContainer.addView(productView)
+            }
+        })
+
     }
 
 }
