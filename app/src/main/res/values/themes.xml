@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.NavigationDrawerCommunityObjects" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.NavigationDrawerCommunityObjects" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/light_cyan</item>
         <item name="colorPrimaryVariant">@color/cyan</item>
@@ -12,6 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/cyan</item>
         <!-- Customize your theme here. -->
+        <item name="android:forceDarkAllowed">false</item>
     </style>
 
     <style name="Theme.MainActivity" parent="Theme.MaterialComponents.DayNight.NoActionBar">
