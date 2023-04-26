@@ -1,7 +1,6 @@
 package com.example.navigationdrawercommunityobjects.view
 
 import android.app.Activity.RESULT_OK
-import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -11,16 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 
 import com.example.navigationdrawercommunityobjects.R
 import com.example.navigationdrawercommunityobjects.databinding.FragmentDonateBinding
-import com.example.navigationdrawercommunityobjects.model.Item
 import com.example.navigationdrawercommunityobjects.viewmodel.ItemViewModel
+import com.example.navigationdrawercommunityobjects.viewmodel.ProfileViewModel
 
 class DonateFragment : Fragment() {
 
@@ -28,7 +24,8 @@ class DonateFragment : Fragment() {
     private val binding: FragmentDonateBinding by lazy {
         FragmentDonateBinding.inflate(layoutInflater)
     }
-    private lateinit var viewModel: ItemViewModel
+    private lateinit var itemViewModel: ItemViewModel
+    private lateinit var profileViewModel: ProfileViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +34,8 @@ class DonateFragment : Fragment() {
     ): View? {
         val view = binding.root
 
-        viewModel = ViewModelProvider(this)[ItemViewModel::class.java]
+        itemViewModel = ViewModelProvider(this)[ItemViewModel::class.java]
+        profileViewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
 
         // Configurar el botón de agregar item
         binding.btnPublish.setOnClickListener {
@@ -52,11 +50,12 @@ class DonateFragment : Fragment() {
             item["colors"] = binding.etItemColors.text.toString()
             item["size"] = binding.etItemSize.text.toString()
             item["reference"] = binding.etItemReference.text.toString()
+            item["user"] = profileViewModel.getUser().value?.username.toString()
 
 //            println("Item: $item")
 //            println("ImageUri: $imageUri")
             if (imageUri != null) {
-                viewModel.addItem(item, imageUri!!) { success ->
+                itemViewModel.addItem(item, imageUri!!) { success ->
 //                    println("intenta publicar")
                     if (success) {
                         Toast.makeText(
@@ -115,7 +114,7 @@ class DonateFragment : Fragment() {
             ) {
                 when (binding.spCategory.selectedItem.toString()) {
                     "Clothes" -> {
-    //                        let color and size be visible
+                        //                        let color and size be visible
                         binding.etItemColors.visibility = View.VISIBLE
                         binding.etItemSize.visibility = View.VISIBLE
                         binding.lblColor.visibility = View.VISIBLE
@@ -134,10 +133,10 @@ class DonateFragment : Fragment() {
 
                     }
                     "Books" -> {
-    //                        let author and subject be visible
+                        //                        let author and subject be visible
                         binding.etItemAuthor.visibility = View.VISIBLE
                         binding.etItemSubject.visibility = View.VISIBLE
-binding.lblAuthor.visibility = View.VISIBLE
+                        binding.lblAuthor.visibility = View.VISIBLE
                         binding.lblSubject.visibility = View.VISIBLE
 
                         binding.etItemDegree.visibility = View.GONE
@@ -146,13 +145,13 @@ binding.lblAuthor.visibility = View.VISIBLE
                         binding.etItemSize.visibility = View.GONE
                         binding.etItemReference.visibility = View.GONE
                         binding.lblDegree.visibility = View.GONE
-binding.lblType.visibility = View.GONE
+                        binding.lblType.visibility = View.GONE
                         binding.lblColor.visibility = View.GONE
                         binding.lblSize.visibility = View.GONE
                         binding.lblReference.visibility = View.GONE
                     }
                     "Protective equipment" -> {
-    //                        let type and degree be visible
+                        //                        let type and degree be visible
                         binding.etItemDegree.visibility = View.VISIBLE
                         binding.etItemType.visibility = View.VISIBLE
                         binding.lblDegree.visibility = View.VISIBLE
@@ -170,7 +169,7 @@ binding.lblType.visibility = View.GONE
                         binding.lblReference.visibility = View.GONE
                     }
                     "School and University Supplies" -> {
-    //                        let reference be visible
+                        //                        let reference be visible
                         binding.etItemReference.visibility = View.VISIBLE
                         binding.lblReference.visibility = View.VISIBLE
 
@@ -189,7 +188,7 @@ binding.lblType.visibility = View.GONE
 
                     }
                     "Other" -> {
-    //                        let none be visible
+                        //                        let none be visible
                         binding.etItemDegree.visibility = View.GONE
                         binding.etItemType.visibility = View.GONE
                         binding.etItemAuthor.visibility = View.GONE
@@ -209,7 +208,7 @@ binding.lblType.visibility = View.GONE
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-    //                set the first element
+                //                set the first element
                 binding.spCategory.setSelection(0)
             }
         }
@@ -237,8 +236,6 @@ binding.lblType.visibility = View.GONE
             intent.type = "image/*"
             startActivityForResult(intent, 1)
         }
-
-
 
         return view
     }

@@ -82,7 +82,6 @@ class FirebaseServiceAdapter {
                             item["reference"].toString()
                         )
                     }
-
                     // Agregar el nuevo item a Firestore
                     if (newItem != null) {
                         firestore.collection(category)
@@ -111,50 +110,69 @@ class FirebaseServiceAdapter {
     }
 
     fun getItems(callback: (List<Item>) -> Unit) {
+//        test the conection getting a single item
+        firestore.collection("EPP").document("Wn2jIYyIbcp8ICHRKTxU").get()
+            .addOnSuccessListener { doc ->
+                println("doc: $doc")
+            }
+
+
         // Obtener todos los items de Firestore y llamar al callback con ellos
         val items = mutableListOf<Item>()
-        firestore.collection("EPP").whereEqualTo("photo", true)
+        firestore.collection("EPP").whereNotEqualTo("photo", "")
             .get()
             .addOnSuccessListener { docs ->
                 for (doc in docs) {
-                    println("doc: $doc")
-                    val item = doc.toObject(EPP::class.java)
-                    items.add(item)
+//                    println("doc: $doc")
+                    if (doc.get("photo") != null) {
+                        println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+                        val item = doc.toObject(EPP::class.java)
+                        items.add(item)
+                    }
+//                    val item = doc.toObject(EPP::class.java)
+//                    items.add(item)
                 }
-            }
-        firestore.collection("books_printed").whereEqualTo("photo", true)
-            .get()
-            .addOnSuccessListener { docs ->
-                for (doc in docs) {
-                    println("doc: $doc")
-                    val item = doc.toObject(Book::class.java)
-                    items.add(item)
-                }
-            }
-        firestore.collection("clothes").whereEqualTo("photo", true)
-            .get()
-            .addOnSuccessListener { docs ->
-                for (doc in docs) {
-                    val item = doc.toObject(Clothes::class.java)
-                    items.add(item)
-                }
-            }
-        firestore.collection("school_university").whereEqualTo("photo", true)
-            .get()
-            .addOnSuccessListener { docs ->
-                for (doc in docs) {
-                    val item = doc.toObject(Supplies::class.java)
-                    items.add(item)
-                }
-            }
-        firestore.collection("items").whereEqualTo("photo", true)
-            .get()
-            .addOnSuccessListener { docs ->
-                for (doc in docs) {
-                    val item = doc.toObject(Item::class.java)
-                    items.add(item)
-                }
-                callback(items)
+                println("items length after EPP: ${items.size}")
+                firestore.collection("books_printed").whereNotEqualTo("photo", "")
+                    .get()
+                    .addOnSuccessListener { docs ->
+                        for (doc in docs) {
+                            println("doc: $doc")
+                            val item = doc.toObject(Book::class.java)
+                            items.add(item)
+                        }
+
+                        println("items length after books: ${items.size}")
+                        firestore.collection("clothes").whereNotEqualTo("photo", "")
+                            .get()
+                            .addOnSuccessListener { docs ->
+                                for (doc in docs) {
+                                    val item = doc.toObject(Clothes::class.java)
+                                    items.add(item)
+                                }
+                                println("items length after clothes: ${items.size}")
+                                firestore.collection("school_university")
+                                    .whereEqualTo("photo", true)
+                                    .get()
+                                    .addOnSuccessListener { docs ->
+                                        for (doc in docs) {
+                                            val item = doc.toObject(Supplies::class.java)
+                                            items.add(item)
+                                        }
+                                        println("items length after school_university: ${items.size}")
+                                        firestore.collection("items").whereNotEqualTo("photo", "")
+                                            .get()
+                                            .addOnSuccessListener { docs ->
+                                                for (doc in docs) {
+                                                    val item = doc.toObject(Item::class.java)
+                                                    items.add(item)
+                                                }
+                                                println("items length after items: ${items.size}")
+                                                callback(items)
+                                            }
+                                    }
+                            }
+                    }
             }
     }
 
