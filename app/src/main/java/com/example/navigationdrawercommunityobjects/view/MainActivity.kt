@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.*
 import android.widget.*
@@ -20,6 +21,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.example.navigationdrawercommunityobjects.R
 import com.example.navigationdrawercommunityobjects.model.LoginActivity
+import com.example.navigationdrawercommunityobjects.model.NetworkConnection
 import com.example.navigationdrawercommunityobjects.viewmodel.ProfileViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -29,6 +31,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.analytics.FirebaseAnalytics
+import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -36,12 +39,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var mFBanalytics: FirebaseAnalytics
+    private var fallbackBoolean by Delegates.notNull<Boolean>()
     val viewModel = ProfileViewModel
     val instance = viewModel.getInstance()
     val user = instance.getUser().value
-
-
-
 
 
 
@@ -52,6 +53,26 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         //Im using this to unable landscape mode
         this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
+        fallbackBoolean = false
+
+        val networkConnection = NetworkConnection(applicationContext)
+        networkConnection.observe(this, Observer { isConnected ->
+            if (isConnected) {
+                if (fallbackBoolean) {
+                    //Log.d("MainActivity", "NetworkConnection: isConnected")
+                    showNetworkDialog()
+                    //dismissNetworkDialog()
+                    fallbackBoolean = false
+                }
+                //Log.d("MainActivity", "NetworkConnection: isConnected")
+                //showNetworkDialog()
+            } else {
+                //Log.d("MainActivity", "NetworkConnection: isNotConnected")
+                showNetworkDisconnectedDialog()
+                fallbackBoolean = true
+            }
+        })
 
         mFBanalytics = FirebaseAnalytics.getInstance(this)
 
@@ -130,16 +151,29 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             //logout
             R.id.nav_logout -> {
-                val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestEmail()
-                    .build()
-                val mGoogleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(this, gso)
-                mGoogleSignInClient.signOut()
-                instance.setUser(null)
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
+                if(instance.user.value != null){
+                    val networkConnection = NetworkConnection(applicationContext)
+                    networkConnection.observe(this, Observer { isConnected ->
+                        if (!isConnected) {
+                            showNetworkDisconnectedDialog()
+                            fallbackBoolean = true
+                        }else{
+                            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                                .requestEmail()
+                                .build()
+                            val mGoogleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(this, gso)
+                            mGoogleSignInClient.signOut()
+                            instance.setUser(null)
+                            val intent = Intent(this, MainActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+                }
+                )}else{
+                    showLoginDialog()
+                }
+                }
+
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
@@ -214,6 +248,40 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         alertDialog.show()
     }
 
+
+    private fun showNetworkDisconnectedDialog() {
+        val loginConstraintLayout = findViewById<ConstraintLayout>(R.id.NetworkConstraintLayout)
+        val view = LayoutInflater.from(this@MainActivity).inflate(R.layout.dialog_network, loginConstraintLayout, false)
+        val builder = AlertDialog.Builder(this@MainActivity)
+        builder.setView(view)
+        val alertDialog = builder.create()
+        if (alertDialog.window != null) {
+            alertDialog.window!!.setBackgroundDrawable(ColorDrawable(0))
+        }
+        alertDialog.show()
+
+        //dissmiss the dialog after 5 seconds
+        val handler = Handler()
+        handler.postDelayed({ alertDialog.dismiss() }, 5000)
+
+
+    }
+
+    private fun showNetworkDialog() {
+        val loginConstraintLayout = findViewById<ConstraintLayout>(R.id.NetworkConnectedConstraintLayout)
+        val view = LayoutInflater.from(this@MainActivity).inflate(R.layout.dialog_network_connected, loginConstraintLayout, false)
+        val builder = AlertDialog.Builder(this@MainActivity)
+        builder.setView(view)
+        val alertDialog = builder.create()
+        if (alertDialog.window != null) {
+            alertDialog.window!!.setBackgroundDrawable(ColorDrawable(0))
+        }
+        alertDialog.show()
+
+        val handler = Handler()
+        handler.postDelayed({ alertDialog.dismiss() }, 5000)
+
+    }
 
 
 }

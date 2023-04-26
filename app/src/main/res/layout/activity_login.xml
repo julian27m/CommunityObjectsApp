@@ -10,6 +10,15 @@
     android:background="@drawable/pagebkg_logo_login"
     tools:context=".model.LoginActivity">
 
+    <Button
+        android:layout_width="match_parent"
+        android:id="@+id/home_button"
+        android:layout_height="360dp"
+        android:layout_marginBottom="30dp"
+        android:background="@android:color/transparent">
+
+    </Button>
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="330dp"

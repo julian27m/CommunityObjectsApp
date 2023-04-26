@@ -26,5 +26,7 @@
     <string name="color_s">Color(s)</string>
     <string name="standard">#/standard</string>
     <string name="size">Size</string>
+    <string name="about_disconnect">You are not connected to the internet. Make sure Wifi is on, Airplane mode is off and try again.</string>
+    <string name="about_connected">Now you are online, I won\'t play with your cables again.</string>
 
 </resources>

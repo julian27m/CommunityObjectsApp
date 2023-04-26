@@ -35,7 +35,7 @@ class ProfileFragment : Fragment() {
         viewModel = ProfileViewModel.getInstance()
         val user = viewModel.getUser().value
         if (user != null) {
-            Log.d("ProfileFragment", "User is logged in" + user.email)
+            //Log.d("ProfileFragment", "User is logged in" + user.email)
             val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
 

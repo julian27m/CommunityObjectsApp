@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.navigationdrawercommunityobjects.R
+import com.example.navigationdrawercommunityobjects.model.NetworkConnection
 import com.example.navigationdrawercommunityobjects.viewmodel.HomeViewModel
 
 class HomeFragment : Fragment() {
@@ -16,6 +17,8 @@ class HomeFragment : Fragment() {
     }
 
     private lateinit var viewModel: HomeViewModel
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
