@@ -1,11 +1,17 @@
 package com.example.navigationdrawercommunityobjects.model;
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.drawable.ColorDrawable
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
+import android.os.Handler
 import android.text.TextUtils
+import android.util.Log
 import android.util.Patterns
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -13,7 +19,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import com.example.navigationdrawercommunityobjects.R
 import com.example.navigationdrawercommunityobjects.view.MainActivity
 import com.example.navigationdrawercommunityobjects.viewmodel.ProfileViewModel
@@ -22,16 +30,22 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import kotlin.properties.Delegates
 
 class LoginActivity: AppCompatActivity() {
     lateinit var loginUsername: EditText
     lateinit var loginPassword: EditText
     lateinit var loginButton: Button
+    lateinit var homeButton: Button
     private lateinit var auth: FirebaseAuth
     lateinit var forgotPassword: TextView
     lateinit var signupRedirectText: TextView
+    private var fallbackBoolean by Delegates.notNull<Boolean>()
+
 
     val viewModel = ProfileViewModel.getInstance()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.statusBarColor = ContextCompat.getColor(this, R.color.white)
@@ -43,21 +57,47 @@ class LoginActivity: AppCompatActivity() {
         loginUsername = findViewById(R.id.login_username)
         loginPassword = findViewById(R.id.login_password)
         loginButton = findViewById(R.id.login_button)
+        homeButton = findViewById(R.id.home_button)
         signupRedirectText = findViewById(R.id.signUpRedirectText)
         forgotPassword = findViewById(R.id.forgot_password)
         auth = FirebaseAuth.getInstance()
+
+
+        fallbackBoolean = false
 
         loginButton.setOnClickListener(View.OnClickListener {
 
             if (!validateUsername() or !validatePassword()) {
             } else {
-                checkUser()
+                val networkConnection = NetworkConnection(applicationContext)
+                networkConnection.observe(this, Observer { isConnected ->
+                    if (isConnected) {
+                        if (fallbackBoolean) {
+                            showNetworkDialog()
+                            fallbackBoolean = false
+                            checkUser()
+                        }else{
+                            checkUser()
+                        }
+                    } else {
+                        showNetworkDisconnectedDialog()
+                        fallbackBoolean = true
+                    }
+                })
             }
         })
+
+
         signupRedirectText.setOnClickListener(View.OnClickListener {
             val intent = Intent(this@LoginActivity, SignUpActivity::class.java)
             startActivity(intent)
         })
+        homeButton.setOnClickListener(View.OnClickListener {
+            val intent = Intent(this@LoginActivity, MainActivity::class.java)
+            startActivity(intent)
+        })
+
+
         forgotPassword.setOnClickListener(View.OnClickListener {
             val builder = AlertDialog.Builder(this@LoginActivity)
             val dialogView = layoutInflater.inflate(R.layout.dialog_forgot, null)
@@ -166,7 +206,7 @@ class LoginActivity: AppCompatActivity() {
 
                         startActivity(Intent(this@LoginActivity, MainActivity::class.java))
 
-                        Toast.makeText(applicationContext, "Welcome ${nameFromDB}!", Toast.LENGTH_LONG).show()
+                        //Toast.makeText(applicationContext, "Welcome ${nameFromDB}!", Toast.LENGTH_LONG).show()
 
                     } else {
                         loginPassword!!.error = "Invalid Credentials"
@@ -181,4 +221,39 @@ class LoginActivity: AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {}
         })
     }
+
+    private fun showNetworkDisconnectedDialog() {
+        val loginConstraintLayout = findViewById<ConstraintLayout>(R.id.NetworkConstraintLayout)
+        val view = LayoutInflater.from(this@LoginActivity).inflate(R.layout.dialog_network, loginConstraintLayout, false)
+        val builder = AlertDialog.Builder(this@LoginActivity)
+        builder.setView(view)
+        val alertDialog = builder.create()
+        if (alertDialog.window != null) {
+            alertDialog.window!!.setBackgroundDrawable(ColorDrawable(0))
+        }
+        alertDialog.show()
+
+        //dissmiss the dialog after 5 seconds
+        val handler = Handler()
+        handler.postDelayed({ alertDialog.dismiss() }, 5000)
+
+
+    }
+
+    private fun showNetworkDialog() {
+        val loginConstraintLayout = findViewById<ConstraintLayout>(R.id.NetworkConnectedConstraintLayout)
+        val view = LayoutInflater.from(this@LoginActivity).inflate(R.layout.dialog_network_connected, loginConstraintLayout, false)
+        val builder = AlertDialog.Builder(this@LoginActivity)
+        builder.setView(view)
+        val alertDialog = builder.create()
+        if (alertDialog.window != null) {
+            alertDialog.window!!.setBackgroundDrawable(ColorDrawable(0))
+        }
+        alertDialog.show()
+
+        val handler = Handler()
+        handler.postDelayed({ alertDialog.dismiss() }, 5000)
+
+    }
+
 }

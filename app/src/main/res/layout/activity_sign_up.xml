@@ -10,6 +10,14 @@
     android:background="@drawable/pagebkg_logo_signup"
     tools:context=".model.SignUpActivity">
 
+    <Button
+        android:layout_width="match_parent"
+        android:id="@+id/home_button"
+        android:layout_height="200dp"
+        android:layout_marginBottom="30dp"
+        android:background="@android:color/transparent">
+
+    </Button>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="480dp"
@@ -118,8 +126,8 @@
                 android:id="@+id/loginRedirectText"
                 android:text="Already an user? Login"
                 android:layout_gravity="center"
-                android:padding="8dp"
-                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:layout_marginTop="6dp"
                 android:textColor="@color/light_cyan"
                 android:textSize="18sp"/>
 

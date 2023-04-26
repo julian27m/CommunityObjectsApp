@@ -9,7 +9,8 @@
 
 
     <item
-        android:title=""/>
+        android:title=""
+        android:enabled="false"/>
 
     <item
         android:id="@+id/profile"

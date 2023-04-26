@@ -18,14 +18,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/navName"
-        android:text="Name"
+        android:text="No user logged in"
         android:textColor="@color/white"
         android:textStyle="bold"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="mail"
+        android:text="No email logged in"
         android:id="@+id/navEmail"
         android:textColor="@color/white"
         android:textSize="14sp"
