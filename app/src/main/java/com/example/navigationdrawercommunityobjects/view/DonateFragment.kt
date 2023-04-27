@@ -1,7 +1,6 @@
 package com.example.navigationdrawercommunityobjects.view
 
 import android.app.Activity.RESULT_OK
-import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -11,25 +10,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 
 import com.example.navigationdrawercommunityobjects.R
 import com.example.navigationdrawercommunityobjects.databinding.FragmentDonateBinding
-import com.example.navigationdrawercommunityobjects.model.Item
 import com.example.navigationdrawercommunityobjects.viewmodel.ItemViewModel
 import com.example.navigationdrawercommunityobjects.viewmodel.ProfileViewModel
 
 class DonateFragment : Fragment() {
 
     private var imageUri: Uri? = null
+    private var user: String? = null
     private val binding: FragmentDonateBinding by lazy {
         FragmentDonateBinding.inflate(layoutInflater)
     }
-    private lateinit var viewModel: ItemViewModel
+    private lateinit var itemViewModel: ItemViewModel
+    private lateinit var username: String
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,7 +37,16 @@ class DonateFragment : Fragment() {
     ): View? {
         val view = binding.root
 
-        viewModel = ViewModelProvider(this)[ItemViewModel::class.java]
+        itemViewModel = ViewModelProvider(this)[ItemViewModel::class.java]
+
+        val profileViewModel = ProfileViewModel.getInstance()
+
+        profileViewModel.getUser().observe(viewLifecycleOwner, Observer { user ->
+            //Log.d("ProfileFragment", "getUser().observe() called")
+            if (user != null) {
+                username = user.username.toString()
+            }
+        })
 
         // Configurar el botón de agregar item
         binding.btnPublish.setOnClickListener {
@@ -53,23 +61,25 @@ class DonateFragment : Fragment() {
             item["colors"] = binding.etItemColors.text.toString()
             item["size"] = binding.etItemSize.text.toString()
             item["reference"] = binding.etItemReference.text.toString()
+//            print("User set")
+            item["user"] = username
 
             //            println("Item: $item")
             //            println("ImageUri: $imageUri")
             if (imageUri != null) {
-                viewModel.addItem(item, imageUri!!) { success ->
-                    //                    println("intenta publicar")
+                itemViewModel.addItem(item, imageUri!!) { success ->
+//                    println("intenta publicar")
                     if (success) {
                         Toast.makeText(
                             requireContext(),
-                            "Item agregado correctamente",
+                            "Item added successfully",
                             Toast.LENGTH_SHORT
                         )
                             .show()
                     } else {
                         Toast.makeText(
                             requireContext(),
-                            "Error al agregar item",
+                            "Error adding the item",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -81,7 +91,7 @@ class DonateFragment : Fragment() {
             } else {
                 Toast.makeText(
                     requireContext(),
-                    "Por favor seleccione una imagen",
+                    "Please select an image first",
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -238,8 +248,6 @@ class DonateFragment : Fragment() {
             intent.type = "image/*"
             startActivityForResult(intent, 1)
         }
-
-
 
         return view
     }

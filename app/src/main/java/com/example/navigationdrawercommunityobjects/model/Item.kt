@@ -5,7 +5,8 @@ open class Item(
     var category: String = "",
     var description: String = "",
     var photo: String = "",
-    var id: String = ""
+    var id: String = "",
+    var user: String = ""
 )
 
 class EPP(
@@ -20,7 +21,8 @@ class EPP(
         photo: String = "",
         id: String = "",
         degree: String = "",
-        type: String = ""
+        type: String = "",
+        user: String = ""
     ) : this(degree, type) {
         this.name = name
         this.category = category
@@ -29,6 +31,7 @@ class EPP(
         this.id = id
         this.degree = degree
         this.type = type
+        this.user = user
     }
 
     constructor() : this("", "")
@@ -46,7 +49,8 @@ class Book(
             photo: String = "",
             id: String = "",
             author: String = "",
-            subject: String = ""
+            subject: String = "",
+            user: String = ""
         ) : this(author, subject) {
             this.name = name
             this.category = category
@@ -55,6 +59,7 @@ class Book(
             this.id = id
             this.author = author
             this.subject = subject
+            this.user = user
         }
     constructor() : this("", "")
 }
@@ -70,7 +75,8 @@ class Clothes(
         photo: String = "",
         id: String = "",
         colors: String = "",
-        size: String = ""
+        size: String = "",
+        user: String = ""
     ) : this(colors, size) {
         this.name = name
         this.category = category
@@ -79,6 +85,7 @@ class Clothes(
         this.id = id
         this.colors = colors
         this.size = size
+        this.user = user
     }
 
     constructor() : this("", "")
@@ -93,7 +100,8 @@ class Supplies(
         description: String = "",
         photo: String = "",
         id: String = "",
-        reference: String = ""
+        reference: String = "",
+        user: String = ""
     ) : this(reference) {
         this.name = name
         this.category = category
@@ -101,6 +109,7 @@ class Supplies(
         this.photo = photo
         this.id = id
         this.reference = reference
+        this.user = user
     }
 
     constructor() : this("")

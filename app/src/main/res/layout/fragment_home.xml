@@ -1,17 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    app:layout_anchorGravity="center|center_horizontal|center_vertical"
     tools:context=".view.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Home fragment"
-        android:gravity="center"
-        android:textSize="30sp"
-        android:textColor="@color/light_cyan"/>
+    <data>
 
-</FrameLayout>
+        <variable
+            name="viewModel"
+            type="com.example.navigationdrawercommunityobjects.viewmodel.ItemViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <TextView
+                android:id="@+id/lblGreeting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Good morning!"
+                android:textColor="@color/cyan"
+                android:textSize="34sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_light"
+                android:text="Categories"
+                android:textColor="@android:color/primary_text_light"
+                android:textSize="24sp"
+                />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:id="@+id/cat1"
+                    android:layout_width="160dp"
+                    android:layout_height="180dp"
+                    tools:ignore="UselessLeaf">
+
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                    <FrameLayout
+                        android:id="@+id/cat2"
+                        android:layout_width="110dp"
+                        android:layout_height="90dp"
+                        tools:ignore="UselessLeaf">
+
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/cat4"
+                        android:layout_width="110dp"
+                        android:layout_height="90dp"
+                        tools:ignore="UselessLeaf">
+
+                    </FrameLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                    <FrameLayout
+                        android:id="@+id/cat3"
+                        android:layout_width="110dp"
+                        android:layout_height="90dp"
+                        tools:ignore="UselessLeaf">
+
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/cat5"
+                        android:layout_width="110dp"
+                        android:layout_height="90dp"
+                        tools:ignore="UselessLeaf">
+
+                    </FrameLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/lblProducts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_light"
+                android:text="Products"
+                android:textColor="@android:color/primary_text_light"
+                android:textSize="24sp" />
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/lytProducts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:alignContent="stretch"
+                app:alignItems="stretch"
+                app:flexWrap="wrap"
+                app:justifyContent="center">
+
+            </com.google.android.flexbox.FlexboxLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </ScrollView>
+</layout>

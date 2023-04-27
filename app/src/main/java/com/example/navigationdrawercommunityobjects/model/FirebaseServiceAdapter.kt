@@ -5,6 +5,14 @@ import android.widget.ImageView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
+import com.google.firebase.Timestamp
+import java.time.LocalDate
+import java.util.*
+import kotlin.collections.HashMap
 
 class FirebaseServiceAdapter {
     private val firestore = Firebase.firestore
@@ -44,7 +52,8 @@ class FirebaseServiceAdapter {
                             item["category"].toString(),
                             item["description"].toString(),
                             uri.toString(),
-                            itemId
+                            itemId,
+                            item["user"].toString()
                         )
                         "Protective equipment" -> newItem = EPP(
                             item["name"].toString(),
@@ -53,36 +62,39 @@ class FirebaseServiceAdapter {
                             uri.toString(),
                             itemId,
                             item["degree"].toString(),
-                            item["type"].toString()
+                            item["type"].toString(),
+                            item["user"].toString()
                         )
-                        "Books" -> newItem = EPP(
+                        "Books" -> newItem = Book(
                             item["name"].toString(),
                             item["category"].toString(),
                             item["description"].toString(),
                             uri.toString(),
                             itemId,
                             item["degree"].toString(),
-                            item["type"].toString()
+                            item["type"].toString(),
+                            item["user"].toString()
                         )
-                        "Clothes" -> newItem = EPP(
+                        "Clothes" -> newItem = Clothes(
                             item["name"].toString(),
                             item["category"].toString(),
                             item["description"].toString(),
                             uri.toString(),
                             itemId,
                             item["colors"].toString(),
-                            item["size"].toString()
+                            item["size"].toString(),
+                            item["user"].toString()
                         )
-                        "School and University Supplies" -> newItem = EPP(
+                        "School and University Supplies" -> newItem = Supplies(
                             item["name"].toString(),
                             item["category"].toString(),
                             item["description"].toString(),
                             uri.toString(),
                             itemId,
-                            item["reference"].toString()
+                            item["reference"].toString(),
+                            item["type"].toString(),
                         )
                     }
-
                     // Agregar el nuevo item a Firestore
                     if (newItem != null) {
                         firestore.collection(category)
@@ -111,50 +123,69 @@ class FirebaseServiceAdapter {
     }
 
     fun getItems(callback: (List<Item>) -> Unit) {
+//        test the conection getting a single item
+//        firestore.collection("EPP").document("Wn2jIYyIbcp8ICHRKTxU").get()
+//            .addOnSuccessListener { doc ->
+//                println("doc: $doc")
+//            }
+
+
         // Obtener todos los items de Firestore y llamar al callback con ellos
         val items = mutableListOf<Item>()
-        firestore.collection("EPP").whereEqualTo("photo", true)
+        firestore.collection("EPP").whereNotEqualTo("photo", "")
             .get()
             .addOnSuccessListener { docs ->
                 for (doc in docs) {
-                    println("doc: $doc")
-                    val item = doc.toObject(EPP::class.java)
-                    items.add(item)
+//                    println("doc: $doc")
+                    if (doc.get("photo") != null) {
+//                        println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+                        val item = doc.toObject(EPP::class.java)
+                        items.add(item)
+                    }
+//                    val item = doc.toObject(EPP::class.java)
+//                    items.add(item)
                 }
-            }
-        firestore.collection("books_printed").whereEqualTo("photo", true)
-            .get()
-            .addOnSuccessListener { docs ->
-                for (doc in docs) {
-                    println("doc: $doc")
-                    val item = doc.toObject(Book::class.java)
-                    items.add(item)
-                }
-            }
-        firestore.collection("clothes").whereEqualTo("photo", true)
-            .get()
-            .addOnSuccessListener { docs ->
-                for (doc in docs) {
-                    val item = doc.toObject(Clothes::class.java)
-                    items.add(item)
-                }
-            }
-        firestore.collection("school_university").whereEqualTo("photo", true)
-            .get()
-            .addOnSuccessListener { docs ->
-                for (doc in docs) {
-                    val item = doc.toObject(Supplies::class.java)
-                    items.add(item)
-                }
-            }
-        firestore.collection("items").whereEqualTo("photo", true)
-            .get()
-            .addOnSuccessListener { docs ->
-                for (doc in docs) {
-                    val item = doc.toObject(Item::class.java)
-                    items.add(item)
-                }
-                callback(items)
+                println("items length after EPP: ${items.size}")
+                firestore.collection("books_printed").whereNotEqualTo("photo", "")
+                    .get()
+                    .addOnSuccessListener { docs ->
+                        for (doc in docs) {
+//                            println("doc: $doc")
+                            val item = doc.toObject(Book::class.java)
+                            items.add(item)
+                        }
+
+                        println("items length after books: ${items.size}")
+                        firestore.collection("clothes").whereNotEqualTo("photo", "")
+                            .get()
+                            .addOnSuccessListener { docs ->
+                                for (doc in docs) {
+                                    val item = doc.toObject(Clothes::class.java)
+                                    items.add(item)
+                                }
+                                println("items length after clothes: ${items.size}")
+                                firestore.collection("school_university")
+                                    .whereNotEqualTo("photo", "")
+                                    .get()
+                                    .addOnSuccessListener { docs ->
+                                        for (doc in docs) {
+                                            val item = doc.toObject(Supplies::class.java)
+                                            items.add(item)
+                                        }
+                                        println("items length after school_university: ${items.size}")
+                                        firestore.collection("items").whereNotEqualTo("photo", "")
+                                            .get()
+                                            .addOnSuccessListener { docs ->
+                                                for (doc in docs) {
+                                                    val item = doc.toObject(Item::class.java)
+                                                    items.add(item)
+                                                }
+                                                println("items length after items: ${items.size}")
+                                                callback(items)
+                                            }
+                                    }
+                            }
+                    }
             }
     }
 
@@ -166,6 +197,49 @@ class FirebaseServiceAdapter {
             .addOnSuccessListener { doc ->
                 val item = doc.toObject(Item::class.java)
                 callback(item)
+            }
+    }
+
+    suspend fun getImageUrl(imageRef: StorageReference): String {
+        return withContext(Dispatchers.IO) {
+            val url = imageRef.downloadUrl.await()
+            url.toString()
+        }
+    }
+
+    fun getVisits(callback: (List<Visit>) -> Unit) {
+        // Obtener todas las visitas del dia desde Firestore y llamar al callback con ellas
+//        println("getVisits")
+        val visits = mutableListOf<Visit>()
+//        .whereGreaterThan("time", Timestamp.now().seconds - 86400)
+        firestore.collection("category_popularity").whereNotEqualTo("time", null)
+            .get()
+            .addOnSuccessListener { docs ->
+                for (doc in docs) {
+//                    println("doc: $doc")
+//                    filter the visits from the last 24 hours
+                    val actual = Timestamp.now()
+//                    println("actual: $actual")
+                    val saved = doc.get("time") as Timestamp
+                    val diff = actual.seconds - saved.seconds
+//                    println("diff: $diff")
+                    if (diff < 86400) {
+                        val visit = doc.toObject(Visit::class.java)
+                        visits.add(visit)
+                    }
+//                    val visit = doc.toObject(Visit::class.java)
+//                    visits.add(visit)
+                }
+                callback(visits)
+            }
+    }
+
+    fun saveVisit(visit: Visit) {
+        // Guardar una visita en Firestore
+        firestore.collection("category_popularity")
+            .add(visit)
+            .addOnSuccessListener { doc ->
+                println("Visit saved")
             }
     }
 
