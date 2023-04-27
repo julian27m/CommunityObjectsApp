@@ -27,7 +27,8 @@ class DonateFragment : Fragment() {
         FragmentDonateBinding.inflate(layoutInflater)
     }
     private lateinit var itemViewModel: ItemViewModel
-    private lateinit var profileViewModel: ProfileViewModel
+    private lateinit var username: String
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,11 +38,13 @@ class DonateFragment : Fragment() {
         val view = binding.root
 
         itemViewModel = ViewModelProvider(this)[ItemViewModel::class.java]
-        profileViewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
+
+        val profileViewModel = ProfileViewModel.getInstance()
 
         profileViewModel.getUser().observe(viewLifecycleOwner, Observer { user ->
+            //Log.d("ProfileFragment", "getUser().observe() called")
             if (user != null) {
-                this.user = user.username
+                username = user.username.toString()
             }
         })
 
@@ -59,7 +62,7 @@ class DonateFragment : Fragment() {
             item["size"] = binding.etItemSize.text.toString()
             item["reference"] = binding.etItemReference.text.toString()
             print("User set")
-            item["user"] = user.toString()
+            item["user"] = username
 
             //            println("Item: $item")
             //            println("ImageUri: $imageUri")
