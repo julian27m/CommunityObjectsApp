@@ -50,6 +50,10 @@ class DonateFragment : Fragment() {
 
         // Configurar el botón de agregar item
         binding.btnPublish.setOnClickListener {
+//            disable the buttons
+            binding.btnPublish.isEnabled = false
+            binding.btnCancel.isEnabled = false
+
             val item = HashMap<String, String>()
             item["name"] = binding.etItemName.text.toString()
             item["description"] = binding.etItemDescription.text.toString()
@@ -76,7 +80,7 @@ class DonateFragment : Fragment() {
                             Toast.LENGTH_SHORT
                         )
                             .show()
-                    } else {
+                    } else {5
                         Toast.makeText(
                             requireContext(),
                             "Error adding the item",
