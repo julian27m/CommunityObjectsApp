@@ -20,7 +20,7 @@ class ItemRepository {
     }
 
     fun getItems(callback: (List<Item>) -> Unit) {
-        println("ItemRepository.getItems")
+//        println("ItemRepository.getItems")
         serviceAdapter.getItems { items ->
             callback(items)
         }

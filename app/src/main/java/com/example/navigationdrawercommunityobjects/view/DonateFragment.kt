@@ -61,7 +61,7 @@ class DonateFragment : Fragment() {
             item["colors"] = binding.etItemColors.text.toString()
             item["size"] = binding.etItemSize.text.toString()
             item["reference"] = binding.etItemReference.text.toString()
-            print("User set")
+//            print("User set")
             item["user"] = username
 
             //            println("Item: $item")

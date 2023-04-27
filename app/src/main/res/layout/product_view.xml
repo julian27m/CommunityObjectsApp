@@ -21,18 +21,19 @@
 
 
         <ImageView
-            android:id="@+id/product_image"
+            android:id="@+id/productImage"
             android:layout_width="150dp"
-            android:layout_height="100dp"
+            android:layout_height="150dp"
             android:adjustViewBounds="true"
             app:imageUrl="@{item.photo}"
             android:scaleType="center"
-
+            android:background="@drawable/rounded_corner"
+            android:clipToOutline="true"
         />
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/product_name"
+            android:id="@+id/productName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{item.name}" />

@@ -5,6 +5,14 @@ import android.widget.ImageView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
+import com.google.firebase.Timestamp
+import java.time.LocalDate
+import java.util.*
+import kotlin.collections.HashMap
 
 class FirebaseServiceAdapter {
     private val firestore = Firebase.firestore
@@ -116,10 +124,10 @@ class FirebaseServiceAdapter {
 
     fun getItems(callback: (List<Item>) -> Unit) {
 //        test the conection getting a single item
-        firestore.collection("EPP").document("Wn2jIYyIbcp8ICHRKTxU").get()
-            .addOnSuccessListener { doc ->
-                println("doc: $doc")
-            }
+//        firestore.collection("EPP").document("Wn2jIYyIbcp8ICHRKTxU").get()
+//            .addOnSuccessListener { doc ->
+//                println("doc: $doc")
+//            }
 
 
         // Obtener todos los items de Firestore y llamar al callback con ellos
@@ -130,7 +138,7 @@ class FirebaseServiceAdapter {
                 for (doc in docs) {
 //                    println("doc: $doc")
                     if (doc.get("photo") != null) {
-                        println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+//                        println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
                         val item = doc.toObject(EPP::class.java)
                         items.add(item)
                     }
@@ -142,7 +150,7 @@ class FirebaseServiceAdapter {
                     .get()
                     .addOnSuccessListener { docs ->
                         for (doc in docs) {
-                            println("doc: $doc")
+//                            println("doc: $doc")
                             val item = doc.toObject(Book::class.java)
                             items.add(item)
                         }
@@ -156,7 +164,8 @@ class FirebaseServiceAdapter {
                                     items.add(item)
                                 }
                                 println("items length after clothes: ${items.size}")
-                                firestore.collection("school_university").whereNotEqualTo("photo", "")
+                                firestore.collection("school_university")
+                                    .whereNotEqualTo("photo", "")
                                     .get()
                                     .addOnSuccessListener { docs ->
                                         for (doc in docs) {
@@ -188,6 +197,39 @@ class FirebaseServiceAdapter {
             .addOnSuccessListener { doc ->
                 val item = doc.toObject(Item::class.java)
                 callback(item)
+            }
+    }
+
+    suspend fun getImageUrl(imageRef: StorageReference): String {
+        return withContext(Dispatchers.IO) {
+            val url = imageRef.downloadUrl.await()
+            url.toString()
+        }
+    }
+
+    fun getVisits(callback: (List<Visit>) -> Unit) {
+        // Obtener todas las visitas del dia desde Firestore y llamar al callback con ellas
+        println("getVisits")
+        val visits = mutableListOf<Visit>()
+//        .whereGreaterThan("timestamp", Timestamp.now().seconds - 86400)
+        firestore.collection("category_popularity").whereNotEqualTo("time", null)
+            .get()
+            .addOnSuccessListener { docs ->
+                for (doc in docs) {
+//                    println("doc: $doc")
+                    val visit = doc.toObject(Visit::class.java)
+                    visits.add(visit)
+                }
+                callback(visits)
+            }
+    }
+
+    fun saveVisit(visit: Visit) {
+        // Guardar una visita en Firestore
+        firestore.collection("category_popularity")
+            .add(visit)
+            .addOnSuccessListener { doc ->
+                println("Visit saved")
             }
     }
 

@@ -26,13 +26,15 @@ class ProductView : FrameLayout {
 //        get screen size for the product image
         val displayMetrics = context.resources.displayMetrics
         val screenWidth = displayMetrics.widthPixels
-        this.width = (screenWidth - 120) / 2
+        this.width = (screenWidth - 100) / 2
         binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.product_view, this, true)
     }
 
     fun setProduct(item: Item) {
         binding.item = item
         binding.productImage.layoutParams.width = width
+//      set the alignment to center
+
     }
 }
 

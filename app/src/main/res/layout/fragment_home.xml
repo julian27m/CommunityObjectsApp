@@ -14,7 +14,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,14 +42,70 @@
                 android:fontFamily="@font/roboto_light"
                 android:text="Categories"
                 android:textColor="@android:color/primary_text_light"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                />
 
-            <FrameLayout
-                android:id="@+id/lytCategory"
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="180dp"
+                android:orientation="horizontal">
 
-            </FrameLayout>
+                <FrameLayout
+                    android:id="@+id/cat1"
+                    android:layout_width="160dp"
+                    android:layout_height="180dp"
+                    tools:ignore="UselessLeaf">
+
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                    <FrameLayout
+                        android:id="@+id/cat2"
+                        android:layout_width="110dp"
+                        android:layout_height="90dp"
+                        tools:ignore="UselessLeaf">
+
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/cat4"
+                        android:layout_width="110dp"
+                        android:layout_height="90dp"
+                        tools:ignore="UselessLeaf">
+
+                    </FrameLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                    <FrameLayout
+                        android:id="@+id/cat3"
+                        android:layout_width="110dp"
+                        android:layout_height="90dp"
+                        tools:ignore="UselessLeaf">
+
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/cat5"
+                        android:layout_width="110dp"
+                        android:layout_height="90dp"
+                        tools:ignore="UselessLeaf">
+
+                    </FrameLayout>
+                </LinearLayout>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/lblProducts"
@@ -64,8 +122,8 @@
                 android:layout_height="match_parent"
                 app:alignContent="stretch"
                 app:alignItems="stretch"
-                app:flexWrap="wrap">
-                >
+                app:flexWrap="wrap"
+                app:justifyContent="center">
 
             </com.google.android.flexbox.FlexboxLayout>
 
