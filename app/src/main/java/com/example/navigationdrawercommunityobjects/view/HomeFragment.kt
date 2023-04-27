@@ -103,7 +103,7 @@ class HomeFragment : Fragment() {
                 }
                 //Log.d("HomeFragment", "popularity: $popularity")
                 println("popularity: $popularity")
-                println("popularity is not nullllllllllllllllllllllllllllllllllllllllllllllllllll")
+//                println("popularity is not nullllllllllllllllllllllllllllllllllllllllllllllllllll")
 //                save only the keys for the categories sorted by popularity
                 val sortedPopularity =
                     popularity.toList().sortedByDescending { (_, value) -> value }

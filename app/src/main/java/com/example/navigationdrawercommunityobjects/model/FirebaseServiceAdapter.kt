@@ -209,16 +209,26 @@ class FirebaseServiceAdapter {
 
     fun getVisits(callback: (List<Visit>) -> Unit) {
         // Obtener todas las visitas del dia desde Firestore y llamar al callback con ellas
-        println("getVisits")
+//        println("getVisits")
         val visits = mutableListOf<Visit>()
-//        .whereGreaterThan("timestamp", Timestamp.now().seconds - 86400)
+//        .whereGreaterThan("time", Timestamp.now().seconds - 86400)
         firestore.collection("category_popularity").whereNotEqualTo("time", null)
             .get()
             .addOnSuccessListener { docs ->
                 for (doc in docs) {
 //                    println("doc: $doc")
-                    val visit = doc.toObject(Visit::class.java)
-                    visits.add(visit)
+//                    filter the visits from the last 24 hours
+                    val actual = Timestamp.now()
+//                    println("actual: $actual")
+                    val saved = doc.get("time") as Timestamp
+                    val diff = actual.seconds - saved.seconds
+//                    println("diff: $diff")
+                    if (diff < 86400) {
+                        val visit = doc.toObject(Visit::class.java)
+                        visits.add(visit)
+                    }
+//                    val visit = doc.toObject(Visit::class.java)
+//                    visits.add(visit)
                 }
                 callback(visits)
             }
