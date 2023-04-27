@@ -39,11 +39,11 @@
                 android:id="@+id/textView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/roboto_light"
                 android:text="Categories"
                 android:textColor="@android:color/primary_text_light"
-                android:textSize="24sp"
-                />
+                android:textSize="24sp" />
 
 
             <LinearLayout
@@ -111,6 +111,7 @@
                 android:id="@+id/lblProducts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/roboto_light"
                 android:text="Products"
                 android:textColor="@android:color/primary_text_light"
