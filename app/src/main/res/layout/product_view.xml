@@ -17,7 +17,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="5dp">
+            app:cardCornerRadius="10dp">
 
 
         <ImageView
@@ -27,7 +27,6 @@
             android:adjustViewBounds="true"
             app:imageUrl="@{item.photo}"
             android:scaleType="center"
-            android:background="@drawable/rounded_corner"
             android:clipToOutline="true"
         />
         </androidx.cardview.widget.CardView>
