@@ -159,6 +159,9 @@ class DonateFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
+//            enable the buttons again
+            binding.btnPublish.isEnabled = true
+            binding.btnCancel.isEnabled = true
         }
 
         binding.btnCancel.setOnClickListener {
