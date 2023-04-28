@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/CareerConstraintLayout"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/dialogBox"
+        android:background="@drawable/white_box"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/issueTitle"
+            android:textColor="@color/light_cyan"
+            android:textSize="20dp"
+            android:paddingTop="28dp"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
+            android:text="List of Careers"
+            app:layout_constraintTop_toTopOf="@+id/dialogBox"/>
+
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/FirstCareers"
+            android:textColor="@color/light_cyan"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:textSize="10dp"
+            android:gravity="center_horizontal"
+            android:text="ESTUDIOS DIRIGIDOS
+             ECONOMÍA
+             GOBIERNO Y ASUNTOS PÚBLICOS
+             BIOLOGÍA
+             FÍSICA
+             GEOCIENCIAS
+             MATEMÁTICAS
+             MICROBIOLOGÍA
+             QUÍMICA
+             MEDICINA
+             ARQUITECTURA
+             DISEÑO
+             ARTE
+             HISTORIA DEL ARTE
+             LITERATURA MÚSICA
+             NARRATIVAS DIGITALES
+             INGENIERÍA AMBIENTAL
+             INGENIERÍA DE ALIMENTOS
+             INGENIERÍA BIOMÉDICA
+             INGENIERÍA CIVIL
+             INGENIERÍA ELÉCTRICA
+             INGENIERÍA ELECTRÓNICA
+             INGENIERÍA INDUSTRIAL
+             INGENIERÍA MECÁNICA
+             INGENIERÍA QUÍMICA
+"
+            app:layout_constraintStart_toStartOf="@id/dialogBox"
+            app:layout_constraintTop_toBottomOf="@+id/issueTitle"
+            app:layout_constraintBottom_toTopOf="@id/notNow"/>
+
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/SecondCareers"
+            android:textColor="@color/light_cyan"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:textSize="10dp"
+            android:gravity="center_horizontal"
+            android:text="INGENIERÍA DE SISTEMAS Y COMPUTACIÓN
+            DERECHO
+            ANTROPOLOGÍA
+            CIENCIA POLÍTICA
+            ESTUDIOS GLOBALES
+            FILOSOFÍA HISTORIA
+            LENGUAS Y CULTURA
+            PSICOLOGÍA
+            LICENCIATURA EN ARTES
+            LICENCIATURA EN BIOLOGÍA
+            LICENCIATURA EN EDUCACIÓN INFANTIL
+            LICENCIATURA EN ESPAÑOL Y FILOLOGÍA
+            LICENCIATURA EN FILOSOFÍA
+            LICENCIATURA EN FÍSICA
+            LICENCIATURA EN HISTORIA
+            LICENCIATURA EN MATEMÁTICAS
+            LICENCIATURA EN QUÍMICA"
+            app:layout_constraintEnd_toEndOf="@id/dialogBox"
+            app:layout_constraintTop_toBottomOf="@+id/issueTitle"
+            app:layout_constraintBottom_toTopOf="@id/notNow"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/notNow"
+            android:text="Close"
+            android:textSize="14sp"
+            app:cornerRadius = "12dp"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="@color/tulip"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/FirstCareers"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/issueImage"
+        android:src="@drawable/baseline_school_24"
+        android:layout_marginEnd="40dp"
+        android:layout_marginStart="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/dialogBox"
+        app:layout_constraintBottom_toTopOf="@id/dialogBox"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
