@@ -52,7 +52,6 @@ class FirebaseServiceAdapter {
                             item["category"].toString(),
                             item["description"].toString(),
                             uri.toString(),
-                            itemId,
                             item["user"].toString()
                         )
                         "Protective equipment" -> newItem = EPP(
@@ -60,7 +59,6 @@ class FirebaseServiceAdapter {
                             item["category"].toString(),
                             item["description"].toString(),
                             uri.toString(),
-                            itemId,
                             item["degree"].toString(),
                             item["type"].toString(),
                             item["user"].toString()
@@ -70,7 +68,6 @@ class FirebaseServiceAdapter {
                             item["category"].toString(),
                             item["description"].toString(),
                             uri.toString(),
-                            itemId,
                             item["degree"].toString(),
                             item["type"].toString(),
                             item["user"].toString()
@@ -80,7 +77,6 @@ class FirebaseServiceAdapter {
                             item["category"].toString(),
                             item["description"].toString(),
                             uri.toString(),
-                            itemId,
                             item["colors"].toString(),
                             item["size"].toString(),
                             item["user"].toString()
@@ -90,7 +86,6 @@ class FirebaseServiceAdapter {
                             item["category"].toString(),
                             item["description"].toString(),
                             uri.toString(),
-                            itemId,
                             item["reference"].toString(),
                             item["type"].toString(),
                         )
@@ -132,12 +127,12 @@ class FirebaseServiceAdapter {
 
         // Obtener todos los items de Firestore y llamar al callback con ellos
         val items = mutableListOf<Item>()
-        firestore.collection("EPP").whereNotEqualTo("photo", "")
+        firestore.collection("EPP")
             .get()
             .addOnSuccessListener { docs ->
                 for (doc in docs) {
 //                    println("doc: $doc")
-                    if (doc.get("photo") != null) {
+                    if (doc.get("imageURL") != null) {
 //                        println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
                         val item = doc.toObject(EPP::class.java)
                         items.add(item)
@@ -146,7 +141,7 @@ class FirebaseServiceAdapter {
 //                    items.add(item)
                 }
                 println("items length after EPP: ${items.size}")
-                firestore.collection("books_printed").whereNotEqualTo("photo", "")
+                firestore.collection("books_printed")
                     .get()
                     .addOnSuccessListener { docs ->
                         for (doc in docs) {
@@ -156,7 +151,7 @@ class FirebaseServiceAdapter {
                         }
 
                         println("items length after books: ${items.size}")
-                        firestore.collection("clothes").whereNotEqualTo("photo", "")
+                        firestore.collection("clothes")
                             .get()
                             .addOnSuccessListener { docs ->
                                 for (doc in docs) {
@@ -165,7 +160,6 @@ class FirebaseServiceAdapter {
                                 }
                                 println("items length after clothes: ${items.size}")
                                 firestore.collection("school_university")
-                                    .whereNotEqualTo("photo", "")
                                     .get()
                                     .addOnSuccessListener { docs ->
                                         for (doc in docs) {
@@ -173,7 +167,7 @@ class FirebaseServiceAdapter {
                                             items.add(item)
                                         }
                                         println("items length after school_university: ${items.size}")
-                                        firestore.collection("items").whereNotEqualTo("photo", "")
+                                        firestore.collection("items")
                                             .get()
                                             .addOnSuccessListener { docs ->
                                                 for (doc in docs) {
