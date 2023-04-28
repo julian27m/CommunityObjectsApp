@@ -25,7 +25,7 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:adjustViewBounds="true"
-            app:imageUrl="@{item.photo}"
+            app:imageUrl="@{item.imageURL}"
             android:scaleType="center"
             android:background="@drawable/rounded_corner"
             android:clipToOutline="true"
@@ -36,6 +36,6 @@
             android:id="@+id/productName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{item.name}" />
+            android:text="@{item.name}"/>
     </LinearLayout>
 </layout>
