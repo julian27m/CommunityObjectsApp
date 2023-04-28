@@ -50,6 +50,66 @@ class DonateFragment : Fragment() {
 
         // Configurar el botón de agregar item
         binding.btnPublish.setOnClickListener {
+//            check the min length of the visible Text
+            if (binding.etItemName.text.length < 3 && binding.etItemName.visibility == View.VISIBLE) {
+                binding.etItemName.error = "Name must be at least 3 characters long"
+                return@setOnClickListener
+            }
+            if (binding.etItemDescription.text.length < 20 && binding.etItemDescription.visibility == View.VISIBLE) {
+                binding.etItemDescription.error = "Description must be at least 20 characters long"
+                return@setOnClickListener
+            }
+            if (binding.etItemDegree.text.length < 3 && binding.etItemDegree.visibility == View.VISIBLE) {
+                binding.etItemDegree.error = "Degree must be at least 3 characters long"
+                return@setOnClickListener
+            }
+            if (binding.etItemType.text.length < 3 && binding.etItemType.visibility == View.VISIBLE) {
+                binding.etItemType.error = "Type must be at least 3 characters long"
+                return@setOnClickListener
+            }
+            if (binding.etItemAuthor.text.isEmpty() && binding.etItemAuthor.visibility == View.VISIBLE) {
+                binding.etItemAuthor.error = "Author must not be empty"
+                return@setOnClickListener
+            }
+            if (binding.etItemSubject.text.length < 3 && binding.etItemSubject.visibility == View.VISIBLE) {
+                binding.etItemSubject.error = "Subject must be at least 3 characters long"
+                return@setOnClickListener
+            }
+            if (binding.etItemColors.text.length < 3 && binding.etItemColors.visibility == View.VISIBLE) {
+                binding.etItemColors.error = "Colors must be at least 3 characters long"
+                return@setOnClickListener
+            }
+            if (binding.etItemSize.text.isEmpty() && binding.etItemSize.visibility == View.VISIBLE) {
+                binding.etItemSize.error = "Size can't be empty"
+                return@setOnClickListener
+            }
+            if (binding.etItemReference.text.length < 3 && binding.etItemReference.visibility == View.VISIBLE) {
+                binding.etItemReference.error = "Reference must be at least 3 characters long"
+                return@setOnClickListener
+            }
+
+//          check that any of the visible text input has errors
+            if (binding.etItemName.error != null && binding.etItemName.visibility == View.VISIBLE) {
+                return@setOnClickListener
+            } else if (binding.etItemDescription.error != null && binding.etItemDescription.visibility == View.VISIBLE) {
+                return@setOnClickListener
+            } else if (binding.etItemDegree.error != null && binding.etItemDegree.visibility == View.VISIBLE) {
+                return@setOnClickListener
+            } else if (binding.etItemType.error != null && binding.etItemType.visibility == View.VISIBLE) {
+                return@setOnClickListener
+            } else if (binding.etItemAuthor.error != null && binding.etItemAuthor.visibility == View.VISIBLE) {
+                return@setOnClickListener
+            } else if (binding.etItemSubject.error != null && binding.etItemSubject.visibility == View.VISIBLE) {
+                return@setOnClickListener
+            } else if (binding.etItemColors.error != null && binding.etItemColors.visibility == View.VISIBLE) {
+                return@setOnClickListener
+            } else if (binding.etItemSize.error != null && binding.etItemSize.visibility == View.VISIBLE) {
+                return@setOnClickListener
+            } else if (binding.etItemReference.error != null && binding.etItemReference.visibility == View.VISIBLE) {
+                return@setOnClickListener
+            }
+
+
 //            disable the buttons
             binding.btnPublish.isEnabled = false
             binding.btnCancel.isEnabled = false
@@ -259,11 +319,8 @@ class DonateFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 //        println("onActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResult")
-//        println(requestCode)
-//        println(resultCode)
 //        println(data)
         if (requestCode == 1 && resultCode == RESULT_OK) {
-//            println("Funcionanananannananannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn")
             val photoUri: Uri? = data?.data
 //            print(photoUri)
             imageUri = photoUri
