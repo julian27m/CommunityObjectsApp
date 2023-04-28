@@ -6,8 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.navigationdrawercommunityobjects.model.EPP
-import com.example.navigationdrawercommunityobjects.model.FirebaseServiceAdapter
 import com.example.navigationdrawercommunityobjects.model.Item
 import com.example.navigationdrawercommunityobjects.model.ItemRepository
 import kotlinx.coroutines.launch
