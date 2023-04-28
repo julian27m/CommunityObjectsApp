@@ -4,7 +4,7 @@ open class Item(
     var name: String = "",
     var category: String = "",
     var description: String = "",
-    var photo: String = "",
+    var imageURL: String = "",
     var id: String = "",
     var user: String = ""
 )
@@ -18,7 +18,7 @@ class EPP(
         name: String = "",
         category: String = "",
         description: String = "",
-        photo: String = "",
+        imageURL: String = "",
         id: String = "",
         degree: String = "",
         type: String = "",
@@ -27,7 +27,7 @@ class EPP(
         this.name = name
         this.category = category
         this.description = description
-        this.photo = photo
+        this.imageURL = imageURL
         this.id = id
         this.degree = degree
         this.type = type
@@ -40,26 +40,29 @@ class EPP(
 class Book(
     private var author: String,
     private var subject: String,
+    var title: String,
 ) : Item() {
 
         constructor(
             name: String = "",
             category: String = "",
             description: String = "",
-            photo: String = "",
+            imageURL: String = "",
             id: String = "",
             author: String = "",
             subject: String = "",
-            user: String = ""
-        ) : this(author, subject) {
+            user: String = "",
+            title: String = ""
+        ) : this(author, subject, title) {
             this.name = name
             this.category = category
             this.description = description
-            this.photo = photo
+            this.imageURL = imageURL
             this.id = id
             this.author = author
             this.subject = subject
             this.user = user
+            this.title = title
         }
     constructor() : this("", "")
 }
@@ -72,7 +75,7 @@ class Clothes(
         name: String = "",
         category: String = "",
         description: String = "",
-        photo: String = "",
+        imageURL: String = "",
         id: String = "",
         colors: String = "",
         size: String = "",
@@ -81,7 +84,7 @@ class Clothes(
         this.name = name
         this.category = category
         this.description = description
-        this.photo = photo
+        this.imageURL = imageURL
         this.id = id
         this.colors = colors
         this.size = size
@@ -92,24 +95,27 @@ class Clothes(
 }
 
 class Supplies(
-    private var reference: String
+    private var reference: String,
+    var title: String
 ) : Item() {
     constructor(
         name: String = "",
         category: String = "",
         description: String = "",
-        photo: String = "",
+        imageURL: String = "",
         id: String = "",
         reference: String = "",
-        user: String = ""
-    ) : this(reference) {
+        user: String = "",
+        title: String = ""
+    ) : this(reference, title) {
         this.name = name
         this.category = category
         this.description = description
-        this.photo = photo
+        this.imageURL = imageURL
         this.id = id
         this.reference = reference
         this.user = user
+        this.title = title
     }
 
     constructor() : this("")

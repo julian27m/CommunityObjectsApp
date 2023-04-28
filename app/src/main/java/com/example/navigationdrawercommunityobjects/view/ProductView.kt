@@ -9,6 +9,8 @@ import androidx.databinding.DataBindingUtil
 import com.example.navigationdrawercommunityobjects.R
 import com.example.navigationdrawercommunityobjects.databinding.ProductViewBinding
 import com.example.navigationdrawercommunityobjects.model.Item
+import com.example.navigationdrawercommunityobjects.model.Book
+import com.example.navigationdrawercommunityobjects.model.Supplies
 
 class ProductView : FrameLayout {
 

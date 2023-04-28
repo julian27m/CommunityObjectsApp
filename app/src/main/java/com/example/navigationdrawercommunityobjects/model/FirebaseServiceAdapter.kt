@@ -28,10 +28,10 @@ class FirebaseServiceAdapter {
         val categorystr = item["category"].toString()
         var category = ""
         when (categorystr) {
-            "Protective equipment" -> category = "EPP"
-            "Books" -> category = "books_printed"
-            "Clothes" -> category = "clothes"
-            "School and University Supplies" -> category = "school_university"
+            "Protective equipment" -> category = "Equipment"
+            "Books" -> category = "Printed"
+            "Clothes" -> category = "Clothes"
+            "School and University Supplies" -> category = "Supplies"
             "Other" -> category = "items"
         }
 
@@ -132,12 +132,12 @@ class FirebaseServiceAdapter {
 
         // Obtener todos los items de Firestore y llamar al callback con ellos
         val items = mutableListOf<Item>()
-        firestore.collection("EPP").whereNotEqualTo("photo", "")
+        firestore.collection("Equipment").whereNotEqualTo("imageURL", "")
             .get()
             .addOnSuccessListener { docs ->
                 for (doc in docs) {
 //                    println("doc: $doc")
-                    if (doc.get("photo") != null) {
+                    if (doc.get("imageURL") != null) {
 //                        println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
                         val item = doc.toObject(EPP::class.java)
                         items.add(item)
@@ -146,17 +146,18 @@ class FirebaseServiceAdapter {
 //                    items.add(item)
                 }
                 println("items length after EPP: ${items.size}")
-                firestore.collection("books_printed").whereNotEqualTo("photo", "")
+                firestore.collection("Printed").whereNotEqualTo("imageURL", "")
                     .get()
                     .addOnSuccessListener { docs ->
                         for (doc in docs) {
 //                            println("doc: $doc")
                             val item = doc.toObject(Book::class.java)
+                            item.name = item.title
                             items.add(item)
                         }
 
                         println("items length after books: ${items.size}")
-                        firestore.collection("clothes").whereNotEqualTo("photo", "")
+                        firestore.collection("Clothes").whereNotEqualTo("imageURL", "")
                             .get()
                             .addOnSuccessListener { docs ->
                                 for (doc in docs) {
@@ -164,16 +165,17 @@ class FirebaseServiceAdapter {
                                     items.add(item)
                                 }
                                 println("items length after clothes: ${items.size}")
-                                firestore.collection("school_university")
-                                    .whereNotEqualTo("photo", "")
+                                firestore.collection("Supplies")
+                                    .whereNotEqualTo("imageURL", "")
                                     .get()
                                     .addOnSuccessListener { docs ->
                                         for (doc in docs) {
                                             val item = doc.toObject(Supplies::class.java)
+                                            item.name = item.title
                                             items.add(item)
                                         }
                                         println("items length after school_university: ${items.size}")
-                                        firestore.collection("items").whereNotEqualTo("photo", "")
+                                        firestore.collection("items").whereNotEqualTo("imageURL", "")
                                             .get()
                                             .addOnSuccessListener { docs ->
                                                 for (doc in docs) {
