@@ -6,14 +6,12 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.databinding.DataBindingUtil
 import com.example.navigationdrawercommunityobjects.R
-import com.example.navigationdrawercommunityobjects.databinding.ProductViewBinding
+import com.example.navigationdrawercommunityobjects.databinding.ProductThumbnailViewBinding
 import com.example.navigationdrawercommunityobjects.model.Item
-import com.example.navigationdrawercommunityobjects.model.Book
-import com.example.navigationdrawercommunityobjects.model.Supplies
 
 class ProductView : FrameLayout {
 
-    private lateinit var binding: ProductViewBinding
+    private lateinit var binding: ProductThumbnailViewBinding
     private var width: Int = 0
 
     constructor(context: Context) : super(context) {
@@ -29,7 +27,7 @@ class ProductView : FrameLayout {
         val displayMetrics = context.resources.displayMetrics
         val screenWidth = displayMetrics.widthPixels
         this.width = (screenWidth - 100) / 2
-        binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.product_view, this, true)
+        binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.product_thumbnail_view, this, true)
     }
 
     fun setProduct(item: Item) {
