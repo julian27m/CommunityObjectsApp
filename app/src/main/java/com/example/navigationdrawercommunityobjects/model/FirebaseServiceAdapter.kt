@@ -52,7 +52,6 @@ class FirebaseServiceAdapter {
                             item["category"].toString(),
                             item["description"].toString(),
                             uri.toString(),
-                            itemId,
                             item["user"].toString()
                         )
                         "Protective equipment" -> newItem = EPP(
@@ -60,7 +59,6 @@ class FirebaseServiceAdapter {
                             item["category"].toString(),
                             item["description"].toString(),
                             uri.toString(),
-                            itemId,
                             item["degree"].toString(),
                             item["type"].toString(),
                             item["user"].toString()
@@ -70,7 +68,6 @@ class FirebaseServiceAdapter {
                             item["category"].toString(),
                             item["description"].toString(),
                             uri.toString(),
-                            itemId,
                             item["degree"].toString(),
                             item["type"].toString(),
                             item["user"].toString()
@@ -80,7 +77,6 @@ class FirebaseServiceAdapter {
                             item["category"].toString(),
                             item["description"].toString(),
                             uri.toString(),
-                            itemId,
                             item["colors"].toString(),
                             item["size"].toString(),
                             item["user"].toString()
@@ -90,7 +86,6 @@ class FirebaseServiceAdapter {
                             item["category"].toString(),
                             item["description"].toString(),
                             uri.toString(),
-                            itemId,
                             item["reference"].toString(),
                             item["type"].toString(),
                         )

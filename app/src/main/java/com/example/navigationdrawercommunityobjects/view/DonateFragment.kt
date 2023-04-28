@@ -16,8 +16,10 @@ import androidx.lifecycle.ViewModelProvider
 
 import com.example.navigationdrawercommunityobjects.R
 import com.example.navigationdrawercommunityobjects.databinding.FragmentDonateBinding
+import com.example.navigationdrawercommunityobjects.model.UserBuilderClass
 import com.example.navigationdrawercommunityobjects.viewmodel.ItemViewModel
 import com.example.navigationdrawercommunityobjects.viewmodel.ProfileViewModel
+import com.google.firebase.database.*
 
 class DonateFragment : Fragment() {
 
@@ -29,6 +31,8 @@ class DonateFragment : Fragment() {
     private lateinit var itemViewModel: ItemViewModel
     private lateinit var username: String
 
+    lateinit var database: FirebaseDatabase
+    lateinit var reference: DatabaseReference
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,6 +51,10 @@ class DonateFragment : Fragment() {
                 username = user.username.toString()
             }
         })
+
+        val reference = FirebaseDatabase.getInstance().getReference("users")
+
+
 
         // Configurar el botón de agregar item
         binding.btnPublish.setOnClickListener {
@@ -134,10 +142,64 @@ class DonateFragment : Fragment() {
                 itemViewModel.addItem(item, imageUri!!) { success ->
 //                    println("intenta publicar")
                     if (success) {
+                        val checkUserDatabase = reference.orderByChild("username").equalTo(username)
+                        checkUserDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                if (snapshot.exists()) {
+                                    val nameFromDB = snapshot.child(username).child("name").getValue(
+                                        String::class.java
+                                    )
+                                    val passwordFromDB = snapshot.child(username).child("password").getValue(
+                                        String::class.java
+                                    )
+                                    val emailFromDB = snapshot.child(username).child("email").getValue(
+                                        String::class.java
+                                    )
+                                    val usernameFromDB =
+                                        snapshot.child(username).child("username").getValue(
+                                            String::class.java
+                                        )
+                                    val ageFromDB =
+                                        snapshot.child(username).child("age").getValue(
+                                            String::class.java
+                                        )
+                                    val genderFromDB =
+                                        snapshot.child(username).child("gender").getValue(
+                                            String::class.java
+                                        )
+                                    val donationsFromDB =
+                                        snapshot.child(username).child("donations").getValue(
+                                            String::class.java
+                                        )
+                                    val donationsNum = donationsFromDB.toString().toInt() + 1
+
+                                    val userBuilder = UserBuilderClass.Builder()
+                                        .setName(nameFromDB.toString())
+                                        .setEmail(emailFromDB.toString())
+                                        .setUsername(usernameFromDB.toString())
+                                        .setPassword(passwordFromDB.toString())
+                                        .setGender(genderFromDB.toString())
+                                        .setAge(ageFromDB.toString())
+                                        .setDonations(donationsNum.toString())
+                                        .build()
+
+                                    reference.child(username).setValue(userBuilder)
+                                    profileViewModel.setUser(userBuilder)
+                                    }
+                                }
+
+                            override fun onCancelled(error: DatabaseError) {
+                                TODO("Not yet implemented")
+                            }
+                        })
+
+                        //val donations = signupPassword.getText().toString().trim { it <= ' ' }
+
                         Toast.makeText(
                             requireContext(),
                             "Item added successfully",
                             Toast.LENGTH_SHORT
+
                         )
                             .show()
                     } else {5

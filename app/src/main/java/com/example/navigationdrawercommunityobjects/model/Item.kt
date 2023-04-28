@@ -5,7 +5,6 @@ open class Item(
     var category: String = "",
     var description: String = "",
     var imageURL: String = "",
-    var id: String = "",
     var user: String = ""
 )
 
@@ -19,7 +18,6 @@ class EPP(
         category: String = "",
         description: String = "",
         imageURL: String = "",
-        id: String = "",
         degree: String = "",
         type: String = "",
         user: String = ""
@@ -28,7 +26,6 @@ class EPP(
         this.category = category
         this.description = description
         this.imageURL = imageURL
-        this.id = id
         this.degree = degree
         this.type = type
         this.user = user
@@ -48,7 +45,6 @@ class Book(
             category: String = "",
             description: String = "",
             imageURL: String = "",
-            id: String = "",
             author: String = "",
             subject: String = "",
             user: String = "",
@@ -58,7 +54,6 @@ class Book(
             this.category = category
             this.description = description
             this.imageURL = imageURL
-            this.id = id
             this.author = author
             this.subject = subject
             this.user = user
@@ -76,7 +71,6 @@ class Clothes(
         category: String = "",
         description: String = "",
         imageURL: String = "",
-        id: String = "",
         colors: String = "",
         size: String = "",
         user: String = ""
@@ -85,7 +79,6 @@ class Clothes(
         this.category = category
         this.description = description
         this.imageURL = imageURL
-        this.id = id
         this.colors = colors
         this.size = size
         this.user = user
@@ -103,7 +96,6 @@ class Supplies(
         category: String = "",
         description: String = "",
         imageURL: String = "",
-        id: String = "",
         reference: String = "",
         user: String = "",
         title: String = ""
@@ -112,7 +104,6 @@ class Supplies(
         this.category = category
         this.description = description
         this.imageURL = imageURL
-        this.id = id
         this.reference = reference
         this.user = user
         this.title = title

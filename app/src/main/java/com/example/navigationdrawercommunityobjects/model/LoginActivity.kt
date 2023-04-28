@@ -1,15 +1,11 @@
 package com.example.navigationdrawercommunityobjects.model;
 
-import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.drawable.ColorDrawable
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
-import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -31,15 +27,13 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlin.properties.Delegates
+import com.example.navigationdrawercommunityobjects.databinding.ActivityLoginBinding
+import com.example.navigationdrawercommunityobjects.view.showNetworkDialog
+import com.example.navigationdrawercommunityobjects.view.showNetworkDisconnectedDialog
 
 class LoginActivity: AppCompatActivity() {
-    lateinit var loginUsername: EditText
-    lateinit var loginPassword: EditText
-    lateinit var loginButton: Button
-    lateinit var homeButton: Button
+    private lateinit var binding: ActivityLoginBinding
     private lateinit var auth: FirebaseAuth
-    lateinit var forgotPassword: TextView
-    lateinit var signupRedirectText: TextView
     private var fallbackBoolean by Delegates.notNull<Boolean>()
 
 
@@ -49,23 +43,18 @@ class LoginActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.statusBarColor = ContextCompat.getColor(this, R.color.white)
-        setContentView(R.layout.activity_login)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         //Im using this to unable landscape mode
         this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-        loginUsername = findViewById(R.id.login_username)
-        loginPassword = findViewById(R.id.login_password)
-        loginButton = findViewById(R.id.login_button)
-        homeButton = findViewById(R.id.home_button)
-        signupRedirectText = findViewById(R.id.signUpRedirectText)
-        forgotPassword = findViewById(R.id.forgot_password)
         auth = FirebaseAuth.getInstance()
 
 
         fallbackBoolean = false
 
-        loginButton.setOnClickListener(View.OnClickListener {
+        binding.loginButton.setOnClickListener(View.OnClickListener {
 
             if (!validateUsername() or !validatePassword()) {
             } else {
@@ -88,17 +77,17 @@ class LoginActivity: AppCompatActivity() {
         })
 
 
-        signupRedirectText.setOnClickListener(View.OnClickListener {
+        binding.signUpRedirectText.setOnClickListener(View.OnClickListener {
             val intent = Intent(this@LoginActivity, SignUpActivity::class.java)
             startActivity(intent)
         })
-        homeButton.setOnClickListener(View.OnClickListener {
+        binding.homeButton.setOnClickListener(View.OnClickListener {
             val intent = Intent(this@LoginActivity, MainActivity::class.java)
             startActivity(intent)
         })
 
 
-        forgotPassword.setOnClickListener(View.OnClickListener {
+        binding.forgotPassword.setOnClickListener(View.OnClickListener {
             val builder = AlertDialog.Builder(this@LoginActivity)
             val dialogView = layoutInflater.inflate(R.layout.dialog_forgot, null)
             val emailBox = dialogView.findViewById<EditText>(R.id.emailBox)
@@ -116,7 +105,7 @@ class LoginActivity: AppCompatActivity() {
                     ).show()
                     return@OnClickListener
                 }
-                auth!!.sendPasswordResetEmail(userEmail).addOnCompleteListener { task ->
+                auth.sendPasswordResetEmail(userEmail).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Toast.makeText(this@LoginActivity, "Check your email", Toast.LENGTH_SHORT)
                             .show()
@@ -139,41 +128,41 @@ class LoginActivity: AppCompatActivity() {
     }
 
     fun validateUsername(): Boolean {
-        val `val` = loginUsername!!.text.toString()
+        val `val` = binding.loginUsername.text.toString()
         return if (`val`.isEmpty()) {
-            loginUsername!!.error = "Username cannot be empty"
+            binding.loginUsername.error = "Username cannot be empty"
             false
         } else {
-            loginUsername!!.error = null
+            binding.loginUsername.error = null
             true
         }
     }
 
     fun validatePassword(): Boolean {
-        val `val` = loginPassword!!.text.toString()
+        val `val` = binding.loginPassword.text.toString()
         return if (`val`.isEmpty()) {
-            loginPassword!!.error = "Password cannot be empty"
+            binding.loginPassword.error = "Password cannot be empty"
             false
         } else {
-            loginPassword!!.error = null
+            binding.loginPassword.error = null
             true
         }
     }
 
     fun checkUser() {
-        val userUsername = loginUsername!!.text.toString().trim { it <= ' ' }
-        val userPassword = loginPassword!!.text.toString().trim { it <= ' ' }
+        val userUsername = binding.loginUsername.text.toString().trim { it <= ' ' }
+        val userPassword = binding.loginPassword.text.toString().trim { it <= ' ' }
         val reference = FirebaseDatabase.getInstance().getReference("users")
         val checkUserDatabase = reference.orderByChild("username").equalTo(userUsername)
         checkUserDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
-                    loginUsername!!.error = null
+                    binding.loginUsername.error = null
                     val passwordFromDB = snapshot.child(userUsername).child("password").getValue(
                         String::class.java
                     )
                     if (passwordFromDB == userPassword) {
-                        loginUsername!!.error = null
+                        binding.loginUsername.error = null
                         val nameFromDB = snapshot.child(userUsername).child("name").getValue(
                             String::class.java
                         )
@@ -192,6 +181,10 @@ class LoginActivity: AppCompatActivity() {
                             snapshot.child(userUsername).child("gender").getValue(
                                 String::class.java
                             )
+                        val donationsFromDB =
+                            snapshot.child(userUsername).child("donations").getValue(
+                                String::class.java
+                            )
 
                         val userBuilder = UserBuilderClass.Builder()
                             .setName(nameFromDB.toString())
@@ -200,6 +193,7 @@ class LoginActivity: AppCompatActivity() {
                             .setPassword(passwordFromDB.toString())
                             .setGender(genderFromDB.toString())
                             .setAge(ageFromDB.toString())
+                            .setDonations(donationsFromDB.toString())
                             .build()
 
                         viewModel.setUser(userBuilder)
@@ -209,51 +203,17 @@ class LoginActivity: AppCompatActivity() {
                         //Toast.makeText(applicationContext, "Welcome ${nameFromDB}!", Toast.LENGTH_LONG).show()
 
                     } else {
-                        loginPassword!!.error = "Invalid Credentials"
-                        loginPassword!!.requestFocus()
+                        binding.loginPassword.error = "Invalid Credentials"
+                        binding.loginPassword.requestFocus()
                     }
                 } else {
-                    loginUsername!!.error = "User does not exist"
-                    loginUsername!!.requestFocus()
+                    binding.loginUsername.error = "User does not exist"
+                    binding.loginUsername.requestFocus()
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {}
         })
-    }
-
-    private fun showNetworkDisconnectedDialog() {
-        val loginConstraintLayout = findViewById<ConstraintLayout>(R.id.NetworkConstraintLayout)
-        val view = LayoutInflater.from(this@LoginActivity).inflate(R.layout.dialog_network, loginConstraintLayout, false)
-        val builder = AlertDialog.Builder(this@LoginActivity)
-        builder.setView(view)
-        val alertDialog = builder.create()
-        if (alertDialog.window != null) {
-            alertDialog.window!!.setBackgroundDrawable(ColorDrawable(0))
-        }
-        alertDialog.show()
-
-        //dissmiss the dialog after 5 seconds
-        val handler = Handler()
-        handler.postDelayed({ alertDialog.dismiss() }, 5000)
-
-
-    }
-
-    private fun showNetworkDialog() {
-        val loginConstraintLayout = findViewById<ConstraintLayout>(R.id.NetworkConnectedConstraintLayout)
-        val view = LayoutInflater.from(this@LoginActivity).inflate(R.layout.dialog_network_connected, loginConstraintLayout, false)
-        val builder = AlertDialog.Builder(this@LoginActivity)
-        builder.setView(view)
-        val alertDialog = builder.create()
-        if (alertDialog.window != null) {
-            alertDialog.window!!.setBackgroundDrawable(ColorDrawable(0))
-        }
-        alertDialog.show()
-
-        val handler = Handler()
-        handler.postDelayed({ alertDialog.dismiss() }, 5000)
-
     }
 
 }

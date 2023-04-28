@@ -6,26 +6,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import com.example.navigationdrawercommunityobjects.R
+import com.example.navigationdrawercommunityobjects.databinding.FragmentProfileBinding
+import com.example.navigationdrawercommunityobjects.databinding.FragmentProfileNotLoggedInBinding
 import com.example.navigationdrawercommunityobjects.model.LoginActivity
 import com.example.navigationdrawercommunityobjects.model.SignUpActivity
 import com.example.navigationdrawercommunityobjects.viewmodel.ProfileViewModel
-import com.google.firebase.auth.FirebaseAuth
 
 class ProfileFragment : Fragment() {
 
     private lateinit var viewModel: ProfileViewModel
-    private lateinit var profileName: TextView
-    private lateinit var profileEmail: TextView
-    private lateinit var profileUsername: TextView
-    private lateinit var titleName: TextView
-    private lateinit var titleUsername: TextView
-    private lateinit var signupRedirectText: TextView
-
+    private lateinit var binding: FragmentProfileBinding
+    private lateinit var bindingNotLoggedIn: FragmentProfileNotLoggedInBinding
 
 
     override fun onCreateView(
@@ -36,14 +29,14 @@ class ProfileFragment : Fragment() {
         val user = viewModel.getUser().value
         if (user != null) {
             //Log.d("ProfileFragment", "User is logged in" + user.email)
-            val view = inflater.inflate(R.layout.fragment_profile, container, false)
+            binding = FragmentProfileBinding.inflate(inflater, container, false)
 
-
-            profileName = view.findViewById(R.id.profileName)
-            profileEmail = view.findViewById(R.id.profileEmail)
-            profileUsername = view.findViewById(R.id.profileUsername)
-            titleName = view.findViewById(R.id.titleName)
-            titleUsername = view.findViewById(R.id.titleUsername)
+            val profileName = binding.profileName
+            val profileEmail = binding.profileEmail
+            val profileUsername = binding.profileUsername
+            val titleName = binding.titleName
+            val titleUsername = binding.titleUsername
+            val donations = binding.donationsNo
 
             val viewModel = ProfileViewModel.getInstance()
 
@@ -55,19 +48,20 @@ class ProfileFragment : Fragment() {
                     profileUsername.text = user.username
                     titleName.text = user.name
                     titleUsername.text = user.username
+                    donations.text = user.donations.toString()
                 }
             })
 
-
-            return view
-
+            return binding.root
 
         } else {
             Log.d("ProfileFragment", "User is not logged in" )
             // User is not logged in
-            val view = inflater.inflate(R.layout.fragment_profile_not_logged_in, container, false)
-            val loginButton = view.findViewById<Button>(R.id.login_button)
-            signupRedirectText = view.findViewById(R.id.signupRedirectText)
+            bindingNotLoggedIn = FragmentProfileNotLoggedInBinding.inflate(inflater, container, false)
+
+            val loginButton = bindingNotLoggedIn.loginButton
+            val signupRedirectText = bindingNotLoggedIn.signupRedirectText
+
             loginButton.setOnClickListener {
                 val intent = Intent(activity, LoginActivity::class.java)
                 startActivity(intent)
@@ -77,7 +71,8 @@ class ProfileFragment : Fragment() {
                 val intent = Intent(activity, SignUpActivity::class.java)
                 startActivity(intent)
             })
-            return view
+
+            return bindingNotLoggedIn.root
         }
     }
 }
