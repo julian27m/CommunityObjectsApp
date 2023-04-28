@@ -46,6 +46,14 @@ class CategoryThumbnailView : FrameLayout {
 
     fun setCategory(category: String) {
         binding.categoryName.text = category
+        when (category) {
+            "EPP" -> binding.categoryImage.setImageResource(R.drawable.epp)
+            "Clothes" -> binding.categoryImage.setImageResource(R.drawable.clothes)
+            "Books" -> binding.categoryImage.setImageResource(R.drawable.book)
+            "Supplies" -> binding.categoryImage.setImageResource(R.drawable.supplies)
+            "Other" -> binding.categoryImage.setImageResource(R.drawable.smartphone)
+        }
+
     }
 
     fun setCategoryImage(image: Unit) {

@@ -9,7 +9,7 @@
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:padding="5dp"
-            app:cardCornerRadius="5dp">
+            app:cardCornerRadius="10dp">
 
 
                 <ImageView
@@ -17,16 +17,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
-                    android:background="@drawable/round_corner"
-                    android:clipToOutline="true"
-                    android:scaleType="center" />
+                    android:padding="2dp"
+                    android:src="@drawable/clothes" />
 
                 <TextView
                     android:id="@+id/categoryName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:fontFamily="@font/roboto_regular"
+                    android:layout_marginLeft="5dp"
+                    android:fontFamily="@font/roboto_bold"
                     android:text="AAAAAAAAAA"
                     android:textSize="20sp" />
 
@@ -35,7 +35,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|end"
-                    android:fontFamily="@font/roboto_regular"
+                    android:fontFamily="@font/roboto_bold"
                     android:text="Popular today!"
                     android:textAlignment="textEnd"
                     android:textSize="20sp"

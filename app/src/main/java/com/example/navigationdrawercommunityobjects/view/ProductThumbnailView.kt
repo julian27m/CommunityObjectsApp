@@ -4,12 +4,13 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.example.navigationdrawercommunityobjects.R
 import com.example.navigationdrawercommunityobjects.databinding.ProductThumbnailViewBinding
 import com.example.navigationdrawercommunityobjects.model.Item
 
-class ProductView : FrameLayout {
+class ProductThumbnailView : FrameLayout {
 
     private lateinit var binding: ProductThumbnailViewBinding
     private var width: Int = 0
@@ -28,6 +29,15 @@ class ProductView : FrameLayout {
         val screenWidth = displayMetrics.widthPixels
         this.width = (screenWidth - 100) / 2
         binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.product_thumbnail_view, this, true)
+
+        binding.root.setOnClickListener {
+            Toast.makeText(
+                 context,
+                binding.item!!.category,
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
     }
 
     fun setProduct(item: Item) {
