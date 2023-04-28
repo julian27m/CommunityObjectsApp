@@ -135,9 +135,9 @@ class HomeFragment : Fragment() {
         { items ->
             for (item in items) {
 //                println("item: $item")
-                val productView = ProductView(requireContext())
-                productView.setProduct(item)
-                productsContainer.addView(productView)
+                val productThumbnailView = ProductThumbnailView(requireContext())
+                productThumbnailView.setProduct(item)
+                productsContainer.addView(productThumbnailView)
             }
         })
 

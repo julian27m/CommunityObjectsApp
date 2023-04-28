@@ -35,6 +35,6 @@
             android:id="@+id/productName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{item.name}" />
+            android:text="@{item.name}"/>
     </LinearLayout>
 </layout>

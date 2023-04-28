@@ -37,6 +37,7 @@ class EPP(
 class Book(
     private var author: String,
     private var subject: String,
+    var title: String,
 ) : Item() {
 
         constructor(
@@ -46,8 +47,9 @@ class Book(
             imageURL: String = "",
             author: String = "",
             subject: String = "",
-            user: String = ""
-        ) : this(author, subject) {
+            user: String = "",
+            title: String = ""
+        ) : this(author, subject, title) {
             this.name = name
             this.category = category
             this.description = description
@@ -55,6 +57,7 @@ class Book(
             this.author = author
             this.subject = subject
             this.user = user
+            this.title = title
         }
     constructor() : this("", "")
 }
@@ -85,7 +88,8 @@ class Clothes(
 }
 
 class Supplies(
-    private var reference: String
+    private var reference: String,
+    var title: String
 ) : Item() {
     constructor(
         name: String = "",
@@ -93,14 +97,16 @@ class Supplies(
         description: String = "",
         imageURL: String = "",
         reference: String = "",
-        user: String = ""
-    ) : this(reference) {
+        user: String = "",
+        title: String = ""
+    ) : this(reference, title) {
         this.name = name
         this.category = category
         this.description = description
         this.imageURL = imageURL
         this.reference = reference
         this.user = user
+        this.title = title
     }
 
     constructor() : this("")

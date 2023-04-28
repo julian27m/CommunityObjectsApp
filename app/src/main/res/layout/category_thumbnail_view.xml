@@ -22,23 +22,29 @@
 
                 <TextView
                     android:id="@+id/categoryName"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:layout_marginLeft="5dp"
-                    android:fontFamily="@font/roboto_bold"
+                    android:background="@drawable/color_round_all"
+                    android:fontFamily="@font/roboto_regular"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
                     android:text="AAAAAAAAAA"
-                    android:textSize="20sp" />
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/lblPopular"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|end"
+                    android:background="@drawable/round_corner"
                     android:fontFamily="@font/roboto_bold"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
                     android:text="Popular today!"
                     android:textAlignment="textEnd"
-                    android:textSize="20sp"
-                    android:visibility="gone" />
+                    android:textSize="16sp"
+                    android:visibility="invisible" />
         </androidx.cardview.widget.CardView>
 </FrameLayout>
