@@ -6,7 +6,8 @@ class UserBuilderClass public constructor(
     val age: String?,
     val email: String?,
     val username: String?,
-    val password: String?
+    val password: String?,
+    val donations: String?
 ) {
     class Builder {
         private var name: String? = null
@@ -15,6 +16,7 @@ class UserBuilderClass public constructor(
         private var email: String? = null
         private var username: String? = null
         private var password: String? = null
+        private var donations: String? = null
 
         fun setName(name: String?): Builder {
             this.name = name
@@ -46,8 +48,13 @@ class UserBuilderClass public constructor(
             return this
         }
 
+        fun setDonations(donations: String?): Builder {
+            this.donations = donations
+            return this
+        }
+
         fun build(): UserBuilderClass {
-            return UserBuilderClass(name, gender, age, email, username, password)
+            return UserBuilderClass(name, gender, age, email, username, password, donations)
         }
     }
 }

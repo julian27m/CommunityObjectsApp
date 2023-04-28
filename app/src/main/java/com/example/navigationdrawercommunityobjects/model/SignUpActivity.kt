@@ -95,6 +95,7 @@ class SignUpActivity : AppCompatActivity() {
             val username = signupUsername.getText().toString().trim { it <= ' ' }
             val user = signupEmail.getText().toString().trim { it <= ' ' }
             val pass = signupPassword.getText().toString().trim { it <= ' ' }
+            val donations = "0"
 
 
             if (user.isEmpty()) {
@@ -192,10 +193,10 @@ class SignUpActivity : AppCompatActivity() {
                         //User recovered internet connection
                         showNetworkDialog()
                         fallbackBoolean = false
-                        registerUser(user, pass, name, gender, age, username)
+                        registerUser(user, pass, name, gender, age, username, donations)
                     } else {
                         //User has internet connection fro the start
-                        registerUser(user, pass, name, gender, age, username)
+                        registerUser(user, pass, name, gender, age, username, donations)
                     }
                 } else {
                     //User doesn't have internet connection
@@ -213,7 +214,8 @@ class SignUpActivity : AppCompatActivity() {
         name: String,
         gender: String,
         age: String,
-        username: String
+        username: String,
+        donations: String
     ) {
         auth = FirebaseAuth.getInstance()
         if (completeName && completeUserNameC && completeUserName && completeEmail && completePass && completeGender && completeAge && completeAgeN && completeAgeC) {
@@ -236,6 +238,7 @@ class SignUpActivity : AppCompatActivity() {
                                         .setEmail(user)
                                         .setUsername(username)
                                         .setPassword(pass)
+                                        .setDonations(donations)
                                         .build()
                                     reference.child(username).setValue(userBuilderClass)
                                     Toast.makeText(

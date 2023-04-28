@@ -25,6 +25,7 @@ class ProfileFragment : Fragment() {
     private lateinit var titleName: TextView
     private lateinit var titleUsername: TextView
     private lateinit var signupRedirectText: TextView
+    private lateinit var donations: TextView
 
 
 
@@ -44,6 +45,7 @@ class ProfileFragment : Fragment() {
             profileUsername = view.findViewById(R.id.profileUsername)
             titleName = view.findViewById(R.id.titleName)
             titleUsername = view.findViewById(R.id.titleUsername)
+            donations = view.findViewById(R.id.donationsNo)
 
             val viewModel = ProfileViewModel.getInstance()
 
@@ -55,6 +57,7 @@ class ProfileFragment : Fragment() {
                     profileUsername.text = user.username
                     titleName.text = user.name
                     titleUsername.text = user.username
+                    donations.text = user.donations.toString()
                 }
             })
 

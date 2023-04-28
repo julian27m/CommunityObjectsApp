@@ -192,6 +192,10 @@ class LoginActivity: AppCompatActivity() {
                             snapshot.child(userUsername).child("gender").getValue(
                                 String::class.java
                             )
+                        val donationsFromDB =
+                            snapshot.child(userUsername).child("donations").getValue(
+                                String::class.java
+                            )
 
                         val userBuilder = UserBuilderClass.Builder()
                             .setName(nameFromDB.toString())
@@ -200,6 +204,7 @@ class LoginActivity: AppCompatActivity() {
                             .setPassword(passwordFromDB.toString())
                             .setGender(genderFromDB.toString())
                             .setAge(ageFromDB.toString())
+                            .setDonations(donationsFromDB.toString())
                             .build()
 
                         viewModel.setUser(userBuilder)
