@@ -136,7 +136,7 @@ class HomeFragment : Fragment() {
             for (item in items) {
 //                println("item: $item")
                 val productThumbnailView = ProductThumbnailView(requireContext())
-                productThumbnailView.setProduct(item)
+                productThumbnailView.setProduct(item, binding.lytProducts.width)
                 productsContainer.addView(productThumbnailView)
             }
         })

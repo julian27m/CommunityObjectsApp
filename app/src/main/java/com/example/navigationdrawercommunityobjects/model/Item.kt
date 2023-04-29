@@ -9,8 +9,8 @@ open class Item(
 )
 
 class EPP(
-    private var degree: String,
-    private var type: String
+    var degree: String,
+    var type: String
 ) : Item() {
 
     constructor(
@@ -35,36 +35,18 @@ class EPP(
 }
 
 class Book(
-    private var author: String,
-    private var subject: String,
-    var title: String,
-) : Item() {
-
-        constructor(
-            name: String = "",
-            category: String = "",
-            description: String = "",
-            imageURL: String = "",
-            author: String = "",
-            subject: String = "",
-            user: String = "",
-            title: String = ""
-        ) : this(author, subject, title) {
-            this.name = name
-            this.category = category
-            this.description = description
-            this.imageURL = imageURL
-            this.author = author
-            this.subject = subject
-            this.user = user
-            this.title = title
-        }
-    constructor() : this("", "")
-}
+    var title: String = "",
+    var category: String = "",
+    var description: String = "",
+    var imageURL: String = "",
+    var user: String = "",
+    var author: String = "",
+    var subject: String = ""
+)
 
 class Clothes(
-    private var colors: String,
-    private var size: String,
+    var colors: String,
+    var size: String,
 ) : Item() {
     constructor(
         name: String = "",
@@ -88,26 +70,12 @@ class Clothes(
 }
 
 class Supplies(
-    private var reference: String,
-    var title: String
-) : Item() {
-    constructor(
-        name: String = "",
-        category: String = "",
-        description: String = "",
-        imageURL: String = "",
-        reference: String = "",
-        user: String = "",
-        title: String = ""
-    ) : this(reference, title) {
-        this.name = name
-        this.category = category
-        this.description = description
-        this.imageURL = imageURL
-        this.reference = reference
-        this.user = user
-        this.title = title
-    }
+    var title: String = "",
+    var category: String = "",
+    var description: String = "",
+    var imageURL: String = "",
+    var reference: String = "",
+    var user: String = ""
+)
 
-    constructor() : this("")
-}
+

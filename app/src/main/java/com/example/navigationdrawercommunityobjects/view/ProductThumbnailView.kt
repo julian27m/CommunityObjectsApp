@@ -8,7 +8,9 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.example.navigationdrawercommunityobjects.R
 import com.example.navigationdrawercommunityobjects.databinding.ProductThumbnailViewBinding
+import com.example.navigationdrawercommunityobjects.model.Book
 import com.example.navigationdrawercommunityobjects.model.Item
+import com.example.navigationdrawercommunityobjects.model.Supplies
 
 class ProductThumbnailView : FrameLayout {
 
@@ -24,10 +26,6 @@ class ProductThumbnailView : FrameLayout {
     }
 
     private fun initView() {
-//        get screen size for the product image
-        val displayMetrics = context.resources.displayMetrics
-        val screenWidth = displayMetrics.widthPixels
-        this.width = (screenWidth - 100) / 2
         binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.product_thumbnail_view, this, true)
 
         binding.root.setOnClickListener {
@@ -40,11 +38,16 @@ class ProductThumbnailView : FrameLayout {
 
     }
 
-    fun setProduct(item: Item) {
-        binding.item = item
-        binding.productImage.layoutParams.width = width
-//      set the alignment to center
+    fun setProduct(item: Any , width: Int) {
+        if (item is Item) {
+            binding.item = item
+        } else if (item is Supplies) {
+            binding.item = Item(item.title, item.category, item.description, item.imageURL, item.user)
+        } else if (item is Book) {
+            binding.item = Item(item.title, item.category, item.description, item.imageURL, item.user)
+        }
 
+        binding.productImage.layoutParams.width = (width - 100) / 2
     }
 }
 
