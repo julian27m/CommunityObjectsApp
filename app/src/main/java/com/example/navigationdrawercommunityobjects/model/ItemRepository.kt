@@ -15,13 +15,13 @@ class ItemRepository {
     }
 
 
-    fun getItem(itemId: String, callback: (Item?) -> Unit) {
+    fun getItem(itemId: String, callback: (Any?) -> Unit) {
         serviceAdapter.getItem(itemId) { item ->
             callback(item)
         }
     }
 
-    fun getItems(callback: (List<Item>) -> Unit) {
+    fun getItems(callback: (List<Any>) -> Unit) {
 //        println("ItemRepository.getItems")
 //        create a coroutine to call get items from the service adapter
         GlobalScope.launch {

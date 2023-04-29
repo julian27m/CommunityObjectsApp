@@ -13,8 +13,8 @@ import kotlin.reflect.typeOf
 
 class ItemViewModel() : ViewModel() {
     private val repository = ItemRepository()
-    private val itemsLiveData = MutableLiveData<List<Item>>()
-    val items: LiveData<List<Item>>
+    private val itemsLiveData = MutableLiveData<List<Any>>()
+    val items: LiveData<List<Any>>
         get() = itemsLiveData
 
     init {
@@ -34,13 +34,13 @@ class ItemViewModel() : ViewModel() {
     }
 
 
-    fun getItem(itemId: String, callback: (Item?) -> Unit) {
+    fun getItem(itemId: String, callback: (Any?) -> Unit) {
         repository.getItem(itemId) { item ->
             callback(item)
         }
     }
 
-    fun getAllItems(callback: (List<Item>) -> Unit) {
+    fun getAllItems(callback: (List<Any>) -> Unit) {
 //        println("ItemViewModel.getAllItems")
         repository.getItems() { items ->
             callback(items)

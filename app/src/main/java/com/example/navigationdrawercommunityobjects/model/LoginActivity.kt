@@ -183,7 +183,7 @@ class LoginActivity: AppCompatActivity() {
                             )
                         val donationsFromDB =
                             snapshot.child(userUsername).child("donations").getValue(
-                                Long::class.java
+                                String::class.java
                             )
 
                         val userBuilder = UserBuilderClass.Builder()

@@ -135,6 +135,7 @@ class DonateFragment : Fragment() {
             item["reference"] = binding.etItemReference.text.toString()
 //            print("User set")
             item["user"] = username
+            item["title"] = binding.etItemName.text.toString()
 
             //            println("Item: $item")
             //            println("ImageUri: $imageUri")
@@ -189,7 +190,7 @@ class DonateFragment : Fragment() {
                                 }
 
                             override fun onCancelled(error: DatabaseError) {
-                                TODO("Not yet implemented")
+                                println("Error: $error")
                             }
                         })
 
@@ -202,7 +203,7 @@ class DonateFragment : Fragment() {
 
                         )
                             .show()
-                    } else {5
+                    } else {
                         Toast.makeText(
                             requireContext(),
                             "Error adding the item",

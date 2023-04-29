@@ -8,7 +8,9 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.example.navigationdrawercommunityobjects.R
 import com.example.navigationdrawercommunityobjects.databinding.ProductThumbnailViewBinding
+import com.example.navigationdrawercommunityobjects.model.Book
 import com.example.navigationdrawercommunityobjects.model.Item
+import com.example.navigationdrawercommunityobjects.model.Supplies
 
 class ProductThumbnailView : FrameLayout {
 
@@ -40,10 +42,15 @@ class ProductThumbnailView : FrameLayout {
 
     }
 
-    fun setProduct(item: Item) {
-        binding.item = item
-        binding.productImage.layoutParams.width = width
-//      set the alignment to center
+    fun setProduct(item: Any) {
+        if (item is Item) {
+            binding.item = item
+        } else if (item is Supplies) {
+            binding.item = Item(item.title, item.category, item.description, item.imageURL, item.user)
+        } else if (item is Book) {
+            binding.item = Item(item.title, item.category, item.description, item.imageURL, item.user)
+        }
+
 
     }
 }
