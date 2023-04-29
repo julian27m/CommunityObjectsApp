@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import com.example.navigationdrawercommunityobjects.R
 import com.example.navigationdrawercommunityobjects.databinding.ActivitySignUpBinding
 import com.example.navigationdrawercommunityobjects.view.MainActivity
+import com.example.navigationdrawercommunityobjects.view.showCareersDialog
 import com.example.navigationdrawercommunityobjects.view.showNetworkDialog
 import com.example.navigationdrawercommunityobjects.view.showNetworkDisconnectedDialog
 import com.google.firebase.auth.FirebaseAuth
@@ -30,6 +31,7 @@ class SignUpActivity : AppCompatActivity() {
     private var completeAgeN: Boolean = true
     private var completeAgeC: Boolean = true
     private var fallbackBoolean: Boolean = false
+    private var completeCareer: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_NavigationDrawerCommunityObjects)
@@ -56,8 +58,16 @@ class SignUpActivity : AppCompatActivity() {
             val age = binding.signupAge.text.toString().trim { it <= ' ' }
             val username = binding.signupUsername.text.toString().trim { it <= ' ' }
             val user = binding.signupEmail.text.toString().trim { it <= ' ' }
-            val pass = binding.signupPassword.text.toString().trim { it <= ' ' }
             val donations = "0"
+            val career = binding.signupCareer.text.toString().trim { it <= ' ' }.replace("á", "a")
+                .replace("é", "e")
+                .replace("í", "i")
+                .replace("ó", "o")
+                .replace("ú", "u")
+                .uppercase()
+            //This is for development purposes only, it will be removed in the final version
+            val pass = binding.signupPassword.text.toString().trim { it <= ' ' }
+
 
 
             if (user.isEmpty()) {
@@ -89,9 +99,9 @@ class SignUpActivity : AppCompatActivity() {
                 completeUserNameC = true
             }
 
-            if (username.length > 30) {
+            if (username.length > 10) {
                 completeUserName = false
-                binding.signupUsername.error = "Username cannot be more than 30 characters"
+                binding.signupUsername.error = "Username cannot be more than 10 characters"
             } else if (username.length <= 30 && username.isNotEmpty()) {
                 completeUserName = true
             }
@@ -147,6 +157,16 @@ class SignUpActivity : AppCompatActivity() {
 
             }
 
+            if (career.isEmpty()) {
+                completeCareer = false
+                binding.signupCareer.error = "Career cannot be empty"
+            } else if (isInAndes(career)) {
+                completeCareer = true
+            } else {
+                completeCareer = false
+                binding.signupCareer.error = "Check your career name"
+                showCareersDialog()
+            }
 
             val networkConnection = NetworkConnection(applicationContext)
             networkConnection.observe(this, Observer { isConnected ->
@@ -155,10 +175,10 @@ class SignUpActivity : AppCompatActivity() {
                         //User recovered internet connection
                         showNetworkDialog()
                         fallbackBoolean = false
-                        registerUser(user, pass, name, gender, age, username, donations)
+                        registerUser(user, pass, name, gender, age, username, donations, career)
                     } else {
                         //User has internet connection fro the start
-                        registerUser(user, pass, name, gender, age, username, donations)
+                        registerUser(user, pass, name, gender, age, username, donations, career)
                     }
                 } else {
                     //User doesn't have internet connection
@@ -177,10 +197,11 @@ class SignUpActivity : AppCompatActivity() {
         gender: String,
         age: String,
         username: String,
-        donations: String
+        donations: String,
+        career: String
     ) {
         auth = FirebaseAuth.getInstance()
-        if (completeName && completeUserNameC && completeUserName && completeEmail && completePass && completeGender && completeAge && completeAgeN && completeAgeC) {
+        if (completeName && completeUserNameC && completeUserName && completeEmail && completePass && completeGender && completeAge && completeAgeN && completeAgeC && completeCareer) {
             //TODO: Check if the user is already registered
             val reference = FirebaseDatabase.getInstance().getReference("users")
             val checkUserDatabase = reference.orderByChild("username").equalTo(username)
@@ -201,6 +222,7 @@ class SignUpActivity : AppCompatActivity() {
                                         .setUsername(username)
                                         .setPassword(pass)
                                         .setDonations(donations)
+                                        .setCareer(career)
                                         .build()
                                     reference.child(username).setValue(userBuilderClass)
                                     Toast.makeText(
@@ -242,5 +264,54 @@ class SignUpActivity : AppCompatActivity() {
 
     fun isNumeric(toCheck: String): Boolean {
         return toCheck.all { char -> char.isDigit() }
+    }
+
+    fun isInAndes(toCheck: String): Boolean {
+        val names = listOf("ESTUDIOS DIRIGIDOS",
+            "ADMINISTRACION",
+            "ECONOMIA",
+            "GOBIERNO Y ASUNTOS PUBLICOS",
+            "BIOLOGIA",
+            "FISICA",
+            "GEOCIENCIAS",
+            "MATEMATICAS",
+            "MICROBIOLOGIA",
+            "QUIMICA",
+            "MEDICINA",
+            "ARQUITECTURA",
+            "DISEÑO",
+            "ARTE",
+            "HISTORIA DEL ARTE",
+            "LITERATURA",
+            "MUSICA",
+            "NARRATIVAS DIGITALES",
+            "INGENIERIA AMBIENTAL",
+            "INGENIERIA DE ALIMENTOS",
+            "INGENIERIA BIOMEDICA",
+            "INGENIERIA CIVIL",
+            "INGENIERIA ELECTRICA",
+            "INGENIERIA ELECTRONICA",
+            "INGENIERIA INDUSTRIAL",
+            "INGENIERIA MECANICA",
+            "INGENIERIA QUIMICA",
+            "INGENIERIA DE SISTEMAS Y COMPUTACION",
+            "DERECHO",
+            "ANTROPOLOGIA",
+            "CIENCIA POLITICA",
+            "ESTUDIOS GLOBALES",
+            "FILOSOFIA",
+            "HISTORIA",
+            "LENGUAS Y CULTURA",
+            "PSICOLOGIA",
+            "LICENCIATURA EN ARTES",
+            "LICENCIATURA EN BIOLOGIA",
+            "LICENCIATURA EN EDUCACION INFANTIL",
+            "LICENCIATURA EN ESPAÑOL Y FILOLOGIA",
+            "LICENCIATURA EN FILOSOFIA",
+            "LICENCIATURA EN FISICA",
+            "LICENCIATURA EN HISTORIA",
+            "LICENCIATURA EN MATEMATICAS",
+            "LICENCIATURA EN QUIMICA")
+        return names.contains(toCheck)
     }
 }

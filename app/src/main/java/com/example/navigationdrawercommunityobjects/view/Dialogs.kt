@@ -4,7 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Handler
+import android.os.Looper
 import androidx.appcompat.app.AlertDialog
+import com.example.navigationdrawercommunityobjects.databinding.DialogCareersBinding
 import com.example.navigationdrawercommunityobjects.databinding.DialogNetworkBinding
 import com.example.navigationdrawercommunityobjects.databinding.DialogNetworkConnectedBinding
 import com.example.navigationdrawercommunityobjects.databinding.LoginDialogBinding
@@ -57,4 +59,19 @@ fun Activity.showLoginDialog() {
         alertDialog.window!!.setBackgroundDrawable(ColorDrawable(0))
     }
     alertDialog.show()
+}
+fun Activity.showCareersDialog() {
+    Handler(Looper.getMainLooper()).postDelayed({
+        val binding = DialogCareersBinding.inflate(layoutInflater)
+        val btnClose = binding.notNow
+        val builder = AlertDialog.Builder(this)
+        builder.setView(binding.root)
+        val alertDialog = builder.create()
+        btnClose.setOnClickListener { alertDialog.dismiss() }
+        if (alertDialog.window != null) {
+            alertDialog.window!!.setBackgroundDrawable(ColorDrawable(0))
+        }
+        alertDialog.show()
+    }, 4000)
+
 }

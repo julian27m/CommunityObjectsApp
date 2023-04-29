@@ -4,22 +4,20 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.os.Handler
 import android.text.TextUtils
 import android.util.Patterns
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.example.navigationdrawercommunityobjects.R
+import com.example.navigationdrawercommunityobjects.databinding.ActivityLoginBinding
 import com.example.navigationdrawercommunityobjects.view.MainActivity
+import com.example.navigationdrawercommunityobjects.view.showNetworkDialog
+import com.example.navigationdrawercommunityobjects.view.showNetworkDisconnectedDialog
 import com.example.navigationdrawercommunityobjects.viewmodel.ProfileViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -27,9 +25,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlin.properties.Delegates
-import com.example.navigationdrawercommunityobjects.databinding.ActivityLoginBinding
-import com.example.navigationdrawercommunityobjects.view.showNetworkDialog
-import com.example.navigationdrawercommunityobjects.view.showNetworkDisconnectedDialog
 
 class LoginActivity: AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -185,6 +180,10 @@ class LoginActivity: AppCompatActivity() {
                             snapshot.child(userUsername).child("donations").getValue(
                                 String::class.java
                             )
+                        val careerFromDB =
+                            snapshot.child(userUsername).child("career").getValue(
+                                String::class.java
+                            )
 
                         val userBuilder = UserBuilderClass.Builder()
                             .setName(nameFromDB.toString())
@@ -194,6 +193,7 @@ class LoginActivity: AppCompatActivity() {
                             .setGender(genderFromDB.toString())
                             .setAge(ageFromDB.toString())
                             .setDonations(donationsFromDB.toString())
+                            .setCareer(careerFromDB.toString())
                             .build()
 
                         viewModel.setUser(userBuilder)

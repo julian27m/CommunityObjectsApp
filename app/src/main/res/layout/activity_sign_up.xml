@@ -7,20 +7,20 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="bottom"
-    android:background="@drawable/pagebkg_logo_signup"
+    android:background="@drawable/signupbkg"
     tools:context=".model.SignUpActivity">
 
     <Button
         android:layout_width="match_parent"
         android:id="@+id/home_button"
-        android:layout_height="200dp"
-        android:layout_marginBottom="30dp"
+        android:layout_height="160dp"
+        android:layout_marginBottom="40dp"
         android:background="@android:color/transparent">
 
     </Button>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="480dp"
+        android:layout_height="530dp"
         android:layout_margin="0dp"
         android:background="@color/cyan"
         app:cardBackgroundColor="@color/cyan">
@@ -68,6 +68,19 @@
                 android:hint="Age (Enter the number)"
                 android:backgroundTint="@color/white"
                 android:drawableLeft="@drawable/baseline_numbers_24"
+                android:drawablePadding="8dp"
+                android:textColor="@color/black"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:id="@+id/signup_career"
+                android:background="@drawable/custom_edittext"
+                android:layout_marginTop="10dp"
+                android:padding="8dp"
+                android:backgroundTint="@color/white"
+                android:hint="What are you studying?"
+                android:drawableLeft="@drawable/baseline_school_24"
                 android:drawablePadding="8dp"
                 android:textColor="@color/black"/>
 
