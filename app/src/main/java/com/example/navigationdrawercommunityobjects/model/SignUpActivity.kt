@@ -99,9 +99,9 @@ class SignUpActivity : AppCompatActivity() {
                 completeUserNameC = true
             }
 
-            if (username.length > 30) {
+            if (username.length > 10) {
                 completeUserName = false
-                binding.signupUsername.error = "Username cannot be more than 30 characters"
+                binding.signupUsername.error = "Username cannot be more than 10 characters"
             } else if (username.length <= 30 && username.isNotEmpty()) {
                 completeUserName = true
             }
