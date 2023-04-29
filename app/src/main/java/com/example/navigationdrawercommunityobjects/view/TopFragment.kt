@@ -1,72 +1,112 @@
 package com.example.navigationdrawercommunityobjects.view
 
-import android.content.Intent
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.navigationdrawercommunityobjects.R
-import com.example.navigationdrawercommunityobjects.databinding.FragmentProfileBinding
-import com.example.navigationdrawercommunityobjects.databinding.FragmentProfileNotLoggedInBinding
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.navigationdrawercommunityobjects.databinding.FragmentTopBinding
-import com.example.navigationdrawercommunityobjects.model.LoginActivity
-import com.example.navigationdrawercommunityobjects.model.SignUpActivity
-import com.example.navigationdrawercommunityobjects.viewmodel.ProfileViewModel
-import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 class TopFragment : Fragment() {
-
     private lateinit var binding: FragmentTopBinding
-
+    private var job: Job? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentTopBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-            val titleUsername1 = binding.titleUsername
-            val donations1 = binding.donationsNo
-            val titleUsername2 = binding.titleUsername2
-            val donations2 = binding.donationsNo2
-            val titleUsername3 = binding.titleUsername3
-            val donations3 = binding.donationsNo3
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        job = lifecycleScope.launch(Dispatchers.Main) {
+            while (true) {
+                fetchDataFromRealtimeDatabase()
+                delay(5000L)
+            }
+        }
+    }
 
-            val reference = FirebaseDatabase.getInstance().getReference("users")
-            //check the user Realtime Database to search for the three users with the most donations
-            reference.orderByChild("donations").limitToLast(3).addValueEventListener(object :
-                ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
+    override fun onDestroyView() {
+        super.onDestroyView()
+        job?.cancel()
+        job = null
+    }
+
+    private suspend fun fetchDataFromRealtimeDatabase() {
+        withContext(Dispatchers.IO) {
+            try {
+                val reference = FirebaseDatabase.getInstance().getReference("users")
+                val dataSnapshot = reference.orderByChild("donations").limitToLast(3).get().await()
+                val data = mutableListOf<String>()
+                for (ds in dataSnapshot.children) {
+                    val username = ds.child("username").getValue(String::class.java)
+                    val donations = ds.child("donations").getValue(String::class.java)
+                    data.add("$username:$donations")
+                }
+                withContext(Dispatchers.Main) {
                     var i = 0
-                    for (ds in dataSnapshot.children) {
+                    for (d in data) {
+                        val parts = d.split(":")
                         if (i == 0) {
-                            titleUsername3.text = ds.child("username").getValue(String::class.java)
-                            donations3.text =
-                                ds.child("donations").getValue(String::class.java)
+                            binding.titleUsername2.text = parts[0]
+                            binding.donationsNo2.text = parts[1]
                         } else if (i == 1) {
-                            titleUsername2.text = ds.child("username").getValue(String::class.java)
-                            donations2.text =
-                                ds.child("donations").getValue(String::class.java)
+                            binding.titleUsername.text = parts[0]
+                            binding.donationsNo.text = parts[1]
                         } else if (i == 2) {
-                            titleUsername1.text = ds.child("username").getValue(String::class.java)
-                            donations1.text =
-                                ds.child("donations").getValue(String::class.java)
+                            binding.titleUsername3.text = parts[0]
+                            binding.donationsNo3.text = parts[1]
                         }
                         i++
                     }
                 }
+                // Store the fetched data in SharedPreferences
+                val prefs = requireContext().getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
+                val editor = prefs.edit()
+                editor.putStringSet("top_users", data.toSet())
+                editor.apply()
+            } catch (e: Exception) {
+                Log.d("TopFragment", "Failed to fetch data from database: ${e.message}")
 
-                override fun onCancelled(error: com.google.firebase.database.DatabaseError) {
-                    Log.d("TopFragment", "Failed to read value.", error.toException())
+                // If fetch from database fails, try to load from shared preferences
+                val prefs = requireContext().getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
+                val data = prefs.getStringSet("top_users", null)?.toList()
+                if (data != null) {
+                    withContext(Dispatchers.Main) {
+                        var i = 0
+                        for (d in data) {
+                            val parts = d.split(":")
+                            if (i == 0) {
+                                binding.titleUsername2.text = parts[0]
+                                binding.donationsNo2.text = parts[1]
+                            } else if (i == 1) {
+                                binding.titleUsername.text = parts[0]
+                                binding.donationsNo.text = parts[1]
+                            } else if (i == 2) {
+                                binding.titleUsername3.text = parts[0]
+                                binding.donationsNo3.text = parts[1]
+                            }
+                            i++
+                        }
+                    }
                 }
-            })
-
-            return binding.root
+            }
         }
+    }
+
 
 }
