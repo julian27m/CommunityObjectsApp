@@ -6,14 +6,18 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import com.bumptech.glide.Glide
 import com.example.navigationdrawercommunityobjects.R
 import com.example.navigationdrawercommunityobjects.databinding.ProductThumbnailViewBinding
 import com.example.navigationdrawercommunityobjects.model.Book
 import com.example.navigationdrawercommunityobjects.model.Item
 import com.example.navigationdrawercommunityobjects.model.Supplies
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class ProductThumbnailView : FrameLayout {
 
+    private lateinit var image: Any
     private lateinit var binding: ProductThumbnailViewBinding
     private var width: Int = 0
 
@@ -26,11 +30,16 @@ class ProductThumbnailView : FrameLayout {
     }
 
     private fun initView() {
-        binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.product_thumbnail_view, this, true)
+        binding = DataBindingUtil.inflate(
+            LayoutInflater.from(context),
+            R.layout.product_thumbnail_view,
+            this,
+            true
+        )
 
         binding.root.setOnClickListener {
             Toast.makeText(
-                 context,
+                context,
                 binding.item!!.category,
                 Toast.LENGTH_SHORT
             ).show()
@@ -38,16 +47,19 @@ class ProductThumbnailView : FrameLayout {
 
     }
 
-    fun setProduct(item: Any , width: Int) {
+    fun setProduct(item: Any, width: Int) {
         if (item is Item) {
             binding.item = item
         } else if (item is Supplies) {
-            binding.item = Item(item.title, item.category, item.description, item.imageURL, item.user)
+            binding.item =
+                Item(item.title, item.category, item.description, item.imageURL, item.user)
         } else if (item is Book) {
-            binding.item = Item(item.title, item.category, item.description, item.imageURL, item.user)
+            binding.item =
+                Item(item.title, item.category, item.description, item.imageURL, item.user)
         }
 
         binding.productImage.layoutParams.width = (width - 100) / 2
+
     }
 }
 

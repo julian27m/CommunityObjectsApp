@@ -206,7 +206,6 @@ class FirebaseServiceAdapter {
             val items = mutableListOf<Any>()
             try {
                 val eppTask = firestore.collection("Equipment")
-                    .whereNotEqualTo("imageURL", "")
                     .get()
                 val eppDocs = eppTask.await()
                 for (doc in eppDocs) {
@@ -217,7 +216,6 @@ class FirebaseServiceAdapter {
                 }
 
                 val booksTask = firestore.collection("Printed")
-                    .whereNotEqualTo("imageURL", "")
                     .get()
                 val bookDocs = booksTask.await()
                 for (doc in bookDocs) {
@@ -226,7 +224,6 @@ class FirebaseServiceAdapter {
                 }
 
                 val clothesTask = firestore.collection("Clothes")
-                    .whereNotEqualTo("imageURL", "")
                     .get()
                 val clothesDocs = clothesTask.await()
                 for (doc in clothesDocs) {
@@ -235,11 +232,18 @@ class FirebaseServiceAdapter {
                 }
 
                 val suppliesTask = firestore.collection("Supplies")
-                    .whereNotEqualTo("imageURL", "")
                     .get()
                 val suppliesDocs = suppliesTask.await()
                 for (doc in suppliesDocs) {
                     val item = doc.toObject(Supplies::class.java)
+                    items.add(item)
+                }
+
+                val itemsTask = firestore.collection("items")
+                    .get()
+                val itemsDocs = itemsTask.await()
+                for (doc in itemsDocs) {
+                    val item = doc.toObject(Item::class.java)
                     items.add(item)
                 }
 

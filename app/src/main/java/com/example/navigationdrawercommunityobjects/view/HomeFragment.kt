@@ -7,7 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.navigationdrawercommunityobjects.R
 import com.example.navigationdrawercommunityobjects.databinding.FragmentHomeBinding
+import com.example.navigationdrawercommunityobjects.model.NetworkConnection
 import com.example.navigationdrawercommunityobjects.viewmodel.ImageViewModel
 import com.example.navigationdrawercommunityobjects.viewmodel.ItemViewModel
 import com.example.navigationdrawercommunityobjects.viewmodel.ProfileViewModel
@@ -60,6 +64,29 @@ class HomeFragment : Fragment() {
             greetingLabel.text = "Good night!"
         }
 
+        var fallbackBoolean = false
+
+        val networkConnection = NetworkConnection(requireContext())
+        networkConnection.observe(viewLifecycleOwner, Observer { isConnected ->
+            if (isConnected) {
+                if (fallbackBoolean) {
+                    //Log.d("MainActivity", "NetworkConnection: isConnected")
+                    //dismissNetworkDialog()
+                    fallbackBoolean = false
+                    binding.lblNoInternet.visibility = View.GONE
+                }
+                //Log.d("MainActivity", "NetworkConnection: isConnected")
+                //showNetworkDialog()
+            } else {
+                //Log.d("MainActivity", "NetworkConnection: isNotConnected")
+                fallbackBoolean = true
+//                return to the home fragment
+                binding.lblNoInternet.visibility = View.VISIBLE
+            }
+        })
+
+
+
         val profileViewModel = ProfileViewModel.getInstance()
 
         profileViewModel.getUser().observe(viewLifecycleOwner, Observer { user ->
@@ -70,6 +97,7 @@ class HomeFragment : Fragment() {
         })
 
         val productsContainer = binding.lytProducts
+
 
         val categories = listOf("EPP", "Books", "Clothes", "Supplies", "Other")
 //        get the category popularity from VisitviewModel
@@ -116,7 +144,9 @@ class HomeFragment : Fragment() {
                     categoryThumbnailView.setCategory(category)
                     when (i) {
                         1 -> {
+                            if (!fallbackBoolean){
                             categoryThumbnailView.setPopular()
+                            }
                             binding.cat1.addView(categoryThumbnailView)
                         }
                         2 -> binding.cat2.addView(categoryThumbnailView)

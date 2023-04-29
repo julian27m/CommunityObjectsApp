@@ -1,25 +1,35 @@
 package com.example.navigationdrawercommunityobjects.view
 
 import android.app.Activity.RESULT_OK
+import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 
+
 import com.example.navigationdrawercommunityobjects.R
+import com.example.navigationdrawercommunityobjects.databinding.DialogNetworkPostBinding
 import com.example.navigationdrawercommunityobjects.databinding.FragmentDonateBinding
+import com.example.navigationdrawercommunityobjects.model.NetworkConnection
+import com.example.navigationdrawercommunityobjects.model.Post
 import com.example.navigationdrawercommunityobjects.model.UserBuilderClass
 import com.example.navigationdrawercommunityobjects.viewmodel.ItemViewModel
 import com.example.navigationdrawercommunityobjects.viewmodel.ProfileViewModel
 import com.google.firebase.database.*
+import com.google.gson.Gson
 
 class DonateFragment : Fragment() {
 
@@ -55,72 +65,117 @@ class DonateFragment : Fragment() {
         val reference = FirebaseDatabase.getInstance().getReference("users")
 
 
+        var fallbackBoolean = false
+
+        val networkConnection = NetworkConnection(requireContext())
+        networkConnection.observe(viewLifecycleOwner, Observer { isConnected ->
+            if (isConnected) {
+                if (fallbackBoolean) {
+                    //Log.d("MainActivity", "NetworkConnection: isConnected")
+                    //dismissNetworkDialog()
+                    fallbackBoolean = false
+                }
+                //Log.d("MainActivity", "NetworkConnection: isConnected")
+                //showNetworkDialog()
+            } else {
+                //Log.d("MainActivity", "NetworkConnection: isNotConnected")
+                showNetworkDisconnectedDialog()
+                fallbackBoolean = true
+                savePostToLocaLStorage()
+//                return to the home fragment
+                val homeFragment = HomeFragment()
+                val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.fragment_container, homeFragment)
+                transaction.commit()
+            }
+        })
+
+        loadFromLocalStorage()
 
         // Configurar el botón de agregar item
         binding.btnPublish.setOnClickListener {
+//            disable the buttons and make them invisible
+            disableButtons()
+
 //            check the min length of the visible Text
             if (binding.etItemName.text.length < 3 && binding.etItemName.visibility == View.VISIBLE) {
                 binding.etItemName.error = "Name must be at least 3 characters long"
+                enableButtons()
                 return@setOnClickListener
             }
             if (binding.etItemDescription.text.length < 20 && binding.etItemDescription.visibility == View.VISIBLE) {
                 binding.etItemDescription.error = "Description must be at least 20 characters long"
+                enableButtons()
                 return@setOnClickListener
             }
             if (binding.etItemDegree.text.length < 3 && binding.etItemDegree.visibility == View.VISIBLE) {
                 binding.etItemDegree.error = "Degree must be at least 3 characters long"
+                enableButtons()
                 return@setOnClickListener
             }
             if (binding.etItemType.text.length < 3 && binding.etItemType.visibility == View.VISIBLE) {
                 binding.etItemType.error = "Type must be at least 3 characters long"
+                enableButtons()
                 return@setOnClickListener
             }
             if (binding.etItemAuthor.text.isEmpty() && binding.etItemAuthor.visibility == View.VISIBLE) {
                 binding.etItemAuthor.error = "Author must not be empty"
+                enableButtons()
                 return@setOnClickListener
             }
             if (binding.etItemSubject.text.length < 3 && binding.etItemSubject.visibility == View.VISIBLE) {
                 binding.etItemSubject.error = "Subject must be at least 3 characters long"
+                enableButtons()
                 return@setOnClickListener
             }
             if (binding.etItemColors.text.length < 3 && binding.etItemColors.visibility == View.VISIBLE) {
                 binding.etItemColors.error = "Colors must be at least 3 characters long"
+                enableButtons()
                 return@setOnClickListener
             }
             if (binding.etItemSize.text.isEmpty() && binding.etItemSize.visibility == View.VISIBLE) {
                 binding.etItemSize.error = "Size can't be empty"
+                enableButtons()
                 return@setOnClickListener
             }
             if (binding.etItemReference.text.length < 3 && binding.etItemReference.visibility == View.VISIBLE) {
                 binding.etItemReference.error = "Reference must be at least 3 characters long"
+                enableButtons()
                 return@setOnClickListener
             }
 
 //          check that any of the visible text input has errors
             if (binding.etItemName.error != null && binding.etItemName.visibility == View.VISIBLE) {
+                enableButtons()
                 return@setOnClickListener
             } else if (binding.etItemDescription.error != null && binding.etItemDescription.visibility == View.VISIBLE) {
+                enableButtons()
                 return@setOnClickListener
             } else if (binding.etItemDegree.error != null && binding.etItemDegree.visibility == View.VISIBLE) {
+                enableButtons()
                 return@setOnClickListener
             } else if (binding.etItemType.error != null && binding.etItemType.visibility == View.VISIBLE) {
+                enableButtons()
                 return@setOnClickListener
             } else if (binding.etItemAuthor.error != null && binding.etItemAuthor.visibility == View.VISIBLE) {
+                enableButtons()
                 return@setOnClickListener
             } else if (binding.etItemSubject.error != null && binding.etItemSubject.visibility == View.VISIBLE) {
+                enableButtons()
                 return@setOnClickListener
             } else if (binding.etItemColors.error != null && binding.etItemColors.visibility == View.VISIBLE) {
+                enableButtons()
                 return@setOnClickListener
             } else if (binding.etItemSize.error != null && binding.etItemSize.visibility == View.VISIBLE) {
+                enableButtons()
                 return@setOnClickListener
             } else if (binding.etItemReference.error != null && binding.etItemReference.visibility == View.VISIBLE) {
+                enableButtons()
                 return@setOnClickListener
             }
 
+            disableButtons()
 
-//            disable the buttons
-            binding.btnPublish.isEnabled = false
-            binding.btnCancel.isEnabled = false
 
             val item = HashMap<String, String>()
             item["name"] = binding.etItemName.text.toString()
@@ -140,22 +195,28 @@ class DonateFragment : Fragment() {
             //            println("Item: $item")
             //            println("ImageUri: $imageUri")
             if (imageUri != null) {
+                disableButtons()
                 itemViewModel.addItem(item, imageUri!!) { success ->
 //                    println("intenta publicar")
                     if (success) {
+                        disableButtons()
                         val checkUserDatabase = reference.orderByChild("username").equalTo(username)
-                        checkUserDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
+                        checkUserDatabase.addListenerForSingleValueEvent(object :
+                            ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {
                                 if (snapshot.exists()) {
-                                    val nameFromDB = snapshot.child(username).child("name").getValue(
-                                        String::class.java
-                                    )
-                                    val passwordFromDB = snapshot.child(username).child("password").getValue(
-                                        String::class.java
-                                    )
-                                    val emailFromDB = snapshot.child(username).child("email").getValue(
-                                        String::class.java
-                                    )
+                                    val nameFromDB =
+                                        snapshot.child(username).child("name").getValue(
+                                            String::class.java
+                                        )
+                                    val passwordFromDB =
+                                        snapshot.child(username).child("password").getValue(
+                                            String::class.java
+                                        )
+                                    val emailFromDB =
+                                        snapshot.child(username).child("email").getValue(
+                                            String::class.java
+                                        )
                                     val usernameFromDB =
                                         snapshot.child(username).child("username").getValue(
                                             String::class.java
@@ -186,8 +247,8 @@ class DonateFragment : Fragment() {
 
                                     reference.child(username).setValue(userBuilder)
                                     profileViewModel.setUser(userBuilder)
-                                    }
                                 }
+                            }
 
                             override fun onCancelled(error: DatabaseError) {
                                 println("Error: $error")
@@ -221,10 +282,11 @@ class DonateFragment : Fragment() {
                     "Please select an image first",
                     Toast.LENGTH_SHORT
                 ).show()
+                enableButtons()
             }
 //            enable the buttons again
-            binding.btnPublish.isEnabled = true
-            binding.btnCancel.isEnabled = true
+            enableButtons()
+
         }
 
         binding.btnCancel.setOnClickListener {
@@ -234,18 +296,6 @@ class DonateFragment : Fragment() {
                 .replace(R.id.fragment_container, HomeFragment()).commit()
         }
 
-        //        // Observar el resultado de la operación de agregar item
-        //        viewModel.addItemResult.observe(viewLifecycleOwner) { success ->
-        //            if (success) {
-        //                Toast.makeText(requireContext(), "Item agregado correctamente", Toast.LENGTH_SHORT)
-        //                    .show()
-        //            } else {
-        //                Toast.makeText(requireContext(), "Error al agregar item", Toast.LENGTH_SHORT).show()
-        //            }
-        ////            set the home fragment
-        //            val supportFragmentManager = requireActivity().supportFragmentManager
-        //            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, HomeFragment()).commit()
-        //        }
 
         binding.spCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -381,6 +431,105 @@ class DonateFragment : Fragment() {
 
         return view
     }
+
+    private fun disableButtons() {
+        binding.btnPublish.isEnabled = false
+        binding.btnCancel.isEnabled = false
+        binding.btnPickImage.isEnabled = false
+        binding.btnAddImage.isEnabled = false
+
+        binding.btnPublish.visibility = View.INVISIBLE
+        binding.btnCancel.visibility = View.INVISIBLE
+    }
+
+    private fun enableButtons() {
+        binding.btnPublish.isEnabled = true
+        binding.btnCancel.isEnabled = true
+        binding.btnPickImage.isEnabled = true
+        binding.btnAddImage.isEnabled = true
+
+        binding.btnCancel.visibility = View.VISIBLE
+        binding.btnPublish.visibility = View.VISIBLE
+    }
+
+    private fun savePostToLocaLStorage() {
+        val title = binding.etItemName.text.toString()
+        val description = binding.etItemDescription.text.toString()
+        val category = binding.spCategory.selectedItem.toString()
+        val type = binding.etItemType.text.toString()
+        val degree = binding.etItemDegree.text.toString()
+        val author = binding.etItemAuthor.text.toString()
+        val subject = binding.etItemSubject.text.toString()
+        val colors = binding.etItemColors.text.toString()
+        val size = binding.etItemSize.text.toString()
+        val reference = binding.etItemReference.text.toString()
+        val image = imageUri.toString()
+
+        val post = Post(
+            title = title,
+            description = description,
+            category = category,
+            type = type,
+            degree = degree,
+            author = author,
+            subject = subject,
+            colors = colors,
+            size = size,
+            reference = reference,
+            image = image
+        )
+
+        val postJson = Gson().toJson(post)
+        val sharedPreferences = requireContext().getSharedPreferences("post", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("post", postJson)
+        editor.apply()
+    }
+
+    private fun loadFromLocalStorage() {
+        val sharedPreferences = requireContext().getSharedPreferences("post", Context.MODE_PRIVATE)
+        val postJson = sharedPreferences.getString("post", null)
+        if (postJson != null) {
+            val post = Gson().fromJson(postJson, Post::class.java)
+            binding.etItemName.setText(post.title)
+            binding.etItemDescription.setText(post.description)
+            binding.spCategory.setSelection(getIndex(binding.spCategory, post.category))
+            binding.etItemType.setText(post.type)
+            binding.etItemDegree.setText(post.degree)
+            binding.etItemAuthor.setText(post.author)
+            binding.etItemSubject.setText(post.subject)
+            binding.etItemColors.setText(post.colors)
+            binding.etItemSize.setText(post.size)
+            binding.etItemReference.setText(post.reference)
+            binding.ivItemImage.setImageURI(Uri.parse(post.image))
+            this.imageUri = Uri.parse(post.image)
+        }
+//        delete the post from local storage
+        val editor = sharedPreferences.edit()
+        editor.remove("post")
+        editor.apply()
+    }
+
+    private fun getIndex(spCategory: Spinner, category: String): Int {
+        for (i in 0 until spCategory.count) {
+            if (spCategory.getItemAtPosition(i).toString().equals(category, ignoreCase = true)) {
+                return i
+            }
+        }
+        return 0
+    }
+
+    private fun showNetworkDisconnectedDialog() {
+        val binding = DialogNetworkPostBinding.inflate(layoutInflater)
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setView(binding.root)
+        val alertDialog = builder.create()
+        if (alertDialog.window != null) {
+            alertDialog.window!!.setBackgroundDrawable(ColorDrawable(0))
+        }
+        alertDialog.show()
+    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
