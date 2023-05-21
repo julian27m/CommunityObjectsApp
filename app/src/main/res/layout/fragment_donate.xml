@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.navigationdrawercommunityobjects.viewmodel.ItemViewModel" />
+            type="com.example.community_objects.viewmodel.ItemViewModel" />
     </data>
 
     <ScrollView
@@ -102,7 +102,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/donate_item_name_hint"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:maxLength="50" />
 
                 <TextView
                     android:id="@+id/textView4"
@@ -144,6 +145,7 @@
                         android:ems="10"
                         android:hint="@string/standard"
                         android:inputType="textPersonName"
+                        android:maxLength="7"
                         tools:ignore="TextFields" />
 
                     <!--                now that again with colors, author, degree, type, subject and reference-->
@@ -164,7 +166,8 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="@string/red_blue_green_etc"
-                        android:inputType="textPersonName" />
+                        android:inputType="textPersonName"
+                        android:maxLength="50" />
 
                     <TextView
                         android:id="@+id/lblAuthor"
@@ -182,7 +185,8 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="@string/author_of_the_book"
-                        android:inputType="textPersonName" />
+                        android:inputType="textPersonName"
+                        android:maxLength="30" />
 
                     <TextView
                         android:id="@+id/lblDegree"
@@ -200,7 +204,8 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="@string/ibio_leng_etc"
-                        android:inputType="textPersonName" />
+                        android:inputType="textPersonName"
+                        android:maxLength="50" />
 
                     <TextView
                         android:id="@+id/lblType"
@@ -218,7 +223,8 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="@string/helmet_gloves_glasses"
-                        android:inputType="textPersonName" />
+                        android:inputType="textPersonName"
+                        android:maxLength="50" />
 
                     <TextView
                         android:id="@+id/lblSubject"
@@ -236,7 +242,8 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="@string/calc_biology_chemistry_etc"
-                        android:inputType="textPersonName" />
+                        android:inputType="textPersonName"
+                        android:maxLength="50" />
 
                     <TextView
                         android:id="@+id/lblReference"
@@ -254,17 +261,19 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="@string/texas_ti_99_4a"
-                        android:inputType="textPersonName" />
+                        android:inputType="textPersonName"
+                        android:maxLength="20" />
 
                 </LinearLayout>
 
                 <EditText
                     android:id="@+id/etItemDescription"
                     android:layout_width="match_parent"
-                    android:layout_height="140dp"
+                    android:layout_height="wrap_content"
                     android:hint="@string/donate_item_description_hint"
-
-                    android:inputType="text"
+                    android:inputType="textMultiLine"
+                    android:minLines="3"
+                    android:maxLength="200"
                     android:maxLines="5"
                     android:textAlignment="inherit" />
 

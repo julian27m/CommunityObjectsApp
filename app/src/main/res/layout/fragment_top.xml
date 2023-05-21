@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/topbkg2"
+    android:id="@+id/top"
+    tools:context=".model.ProfileActivity">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/profileImg"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/baseline_school_24"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/titleUsername"
+        android:text="Username"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/profileImg"
+        app:layout_constraintStart_toStartOf="@id/profileImg"
+        app:layout_constraintTop_toBottomOf="@id/profileImg"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/donationsNo"
+        android:text="0"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/titleUsername"
+        app:layout_constraintStart_toStartOf="@id/titleUsername"
+        app:layout_constraintTop_toBottomOf="@id/titleUsername"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Top1"
+        android:text="1"
+        android:textColor="@color/tulip"
+        android:layout_marginTop="20dp"
+        android:textSize="55sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/donationsNo"
+        app:layout_constraintStart_toStartOf="@id/donationsNo"
+        app:layout_constraintTop_toBottomOf="@id/donationsNo"/>
+
+
+    <ImageView
+        android:id="@+id/profileImg2"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="90dp"
+        android:src="@drawable/baseline_school_24"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/titleUsername2"
+        android:layout_marginStart="20dp"
+        android:text="Username"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/profileImg2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profileImg2"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/donationsNo2"
+        android:text="0"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/titleUsername2"
+        app:layout_constraintStart_toStartOf="@id/titleUsername2"
+        app:layout_constraintTop_toBottomOf="@id/titleUsername2"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Top2"
+        android:text="2"
+        android:textColor="@color/cyan"
+        android:layout_marginTop="20dp"
+        android:textSize="45sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/donationsNo2"
+        app:layout_constraintStart_toStartOf="@id/donationsNo2"
+        app:layout_constraintTop_toBottomOf="@id/donationsNo2"/>
+
+    <ImageView
+        android:id="@+id/profileImg3"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="145dp"
+        android:src="@drawable/baseline_school_24"
+        android:layout_marginEnd="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/titleUsername3"
+        android:text="Username"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/profileImg3"
+        app:layout_constraintTop_toBottomOf="@id/profileImg3"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/donationsNo3"
+        android:text="0"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/titleUsername3"
+        app:layout_constraintStart_toStartOf="@id/titleUsername3"
+        app:layout_constraintTop_toBottomOf="@id/titleUsername3"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Top3"
+        android:text="3"
+        android:textColor="@color/cyan"
+        android:layout_marginTop="20dp"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/donationsNo3"
+        app:layout_constraintStart_toStartOf="@id/donationsNo3"
+        app:layout_constraintTop_toBottomOf="@id/donationsNo3"/>
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/doggy_connected2"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleUsername" />
+
+
+
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:text="Congratulations to our top 3 givers of the week!"
+        android:textColor="@color/tulip"
+        android:textSize="23sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/imageView"
+        app:layout_constraintStart_toStartOf="@id/imageView"
+        app:layout_constraintTop_toBottomOf="@id/imageView" />
+
+
+    <!--
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:id="@+id/editButton"
+        android:gravity="center"
+        android:text="Edit Profile"
+        android:textSize="18dp"
+        app:cornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/linearLayout"
+        app:layout_constraintStart_toStartOf="@id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout"/>
+-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

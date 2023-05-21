@@ -8,7 +8,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    namespace 'com.example.navigationdrawercommunityobjects'
+    namespace 'com.example.community_objects'
     compileSdk 33
 
     buildFeatures {
@@ -17,7 +17,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.navigationdrawercommunityobjects"
+        applicationId "com.example.community_objects"
         minSdk 24
         targetSdk 33
         versionCode 1
@@ -99,5 +99,10 @@ dependencies {
 
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
+
+
+    implementation 'com.google.code.gson:gson:2.8.6'
 
 }

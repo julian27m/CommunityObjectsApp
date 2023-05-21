@@ -12,10 +12,11 @@
             android:icon="@drawable/baseline_home_24"
             android:title="Home"/>
 
+
         <item
-            android:id="@+id/nav_help"
-            android:icon="@drawable/baseline_help_24"
-            android:title="How does it work?"/>
+            android:id="@+id/nav_top"
+            android:icon="@drawable/baseline_celebration_24"
+            android:title="Top Givers"/>
 
         <item
             android:id="@+id/nav_about"
