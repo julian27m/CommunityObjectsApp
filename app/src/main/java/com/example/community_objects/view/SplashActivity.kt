@@ -26,8 +26,9 @@ class SplashActivity : AppCompatActivity() {
 
         // Check if the device has network connection
         if (isNetworkAvailable()) {
-           fetchDataFromRealtimeDatabase()
-       }
+            fetchDataFromRealtimeDatabase()
+        }
+
 
         Handler(Looper.getMainLooper()).postDelayed({
             startActivity(Intent(this, MainActivity::class.java))
@@ -44,6 +45,10 @@ class SplashActivity : AppCompatActivity() {
 
 
     private fun fetchDataFromRealtimeDatabase() {
+        // Initialize SharedPreferences
+        val sharedPreferences = getSharedPreferences("userData", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+
         binding = FragmentTopBinding.inflate(layoutInflater)
         val titleUsername1 = binding.titleUsername
         val donations1 = binding.donationsNo
@@ -51,27 +56,39 @@ class SplashActivity : AppCompatActivity() {
         val donations2 = binding.donationsNo2
         val titleUsername3 = binding.titleUsername3
         val donations3 = binding.donationsNo3
+        //val message = binding.message
 
         val reference = FirebaseDatabase.getInstance().getReference("users")
-        reference.orderByChild("donations").limitToLast(3).addValueEventListener(object :
-            ValueEventListener {
+        reference.orderByChild("donations").limitToLast(3).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                var i = 0
+                val data = mutableListOf<Pair<String, Int>>()
                 for (ds in dataSnapshot.children) {
+                    val username = ds.child("username").getValue(String::class.java)
+                    val donations = ds.child("donations").getValue(String::class.java)?.toIntOrNull() ?: 0
+                    data.add(Pair(username, donations) as Pair<String, Int>)
+                }
+                data.sortByDescending { it.second }
+
+                // Store data in SharedPreferences
+                for ((index, pair) in data.withIndex()) {
+                    editor.putString("username$index", pair.first)
+                    editor.putInt("donations$index", pair.second)
+                }
+                editor.apply()
+                //message.text = "Congratulations to our top 3 givers of the week!"
+                var i = 0
+                for (d in data) {
                     if (i == 0) {
-                        titleUsername2.text = ds.child("username").getValue(String::class.java)
-                        donations2.text =
-                            ds.child("donations").getValue(String::class.java)
+                        titleUsername1.text = d.first
+                        donations1.text = d.second.toString()
                     } else if (i == 1) {
-                        titleUsername1.text = ds.child("username").getValue(String::class.java)
-                        donations1.text =
-                            ds.child("donations").getValue(String::class.java)
+                        titleUsername2.text = d.first
+                        donations2.text = d.second.toString()
                     } else if (i == 2) {
-                        titleUsername3.text = ds.child("username").getValue(String::class.java)
-                        donations3.text =
-                            ds.child("donations").getValue(String::class.java)
-                        i++
+                        titleUsername3.text = d.first
+                        donations3.text = d.second.toString()
                     }
+                    i++
                 }
             }
 
@@ -80,6 +97,10 @@ class SplashActivity : AppCompatActivity() {
             }
         })
     }
+
+
+
+
 
 
 }
