@@ -93,17 +93,18 @@
                 android:textColor="@color/light_cyan"
                 android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/signUpRedirectText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_marginStart="60dp"
-                    android:layout_marginTop="5dp"
-                    android:padding="10dp"
-                    android:text="Sign Up"
-                    android:textColor="@color/light_cyan"
-                    android:textSize="18sp" />
+            <TextView
+                android:id="@+id/signUpRedirectText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="5dp"
+                android:padding="10dp"
+                android:text="Sign Up"
+                android:textAlignment="viewEnd"
+                android:textColor="@color/light_cyan"
+                android:textSize="18sp" />
 
             </LinearLayout>
         </LinearLayout>

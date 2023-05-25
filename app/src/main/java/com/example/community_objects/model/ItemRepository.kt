@@ -21,11 +21,9 @@ class ItemRepository {
         }
     }
 
-    fun getItems(callback: (List<Any>) -> Unit) {
-//        println("ItemRepository.getItems")
-//        create a coroutine to call get items from the service adapter
+    fun getItems(username: String? = null, callback: (List<Any>) -> Unit) {
         GlobalScope.launch {
-            val items = serviceAdapter.getItems()
+            val items = serviceAdapter.getItems(username)
             withContext(Dispatchers.Main) {
                 callback(items)
             }
