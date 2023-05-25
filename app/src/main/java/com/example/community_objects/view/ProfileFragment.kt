@@ -54,7 +54,6 @@ class ProfileFragment : Fragment() {
             })
 
             donations.setOnClickListener(View.OnClickListener {
-                //when clicked, go to DonationFragment
                 val fragment = DonationFragment()
                 val transaction = activity?.supportFragmentManager?.beginTransaction()
                 transaction?.replace(R.id.fragment_container, fragment)

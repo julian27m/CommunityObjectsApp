@@ -137,7 +137,7 @@ class FirebaseServiceAdapter {
 
 
     suspend fun getItems(username: String? = null): List<Any> {
-        Log.d("ItemRepository.getItems", "username: $username")
+        //Log.d("ItemRepository.getItems", "username: $username")
         return withContext(Dispatchers.IO) {
             val items = mutableListOf<Any>()
             try {
@@ -146,7 +146,7 @@ class FirebaseServiceAdapter {
                     var query: Query = firestore.collection(category)
                     if (username != null) {
                         query = query.whereEqualTo("user", username)
-                        Log.d("ItemRepository.getItems", "query: $query")
+                        //Log.d("ItemRepository", "query: $query")
                     }
                     val categoryTask = query.get()
                     val categoryDocs = categoryTask.await()

@@ -38,6 +38,7 @@
                 android:visibility="gone"
                 />
 
+
             <TextView
                 android:id="@+id/textName"
                 android:layout_width="wrap_content"
@@ -51,25 +52,47 @@
 
             <TextView
                 android:id="@+id/textUsername"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:layout_marginLeft="3dp"
                 android:fontFamily="@font/roboto_light"
                 android:text="Username"
                 android:textColor="@android:color/primary_text_light"
                 android:textSize="18sp" />
 
-
-
             <TextView
                 android:id="@+id/lblProducts"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/roboto_light"
-                android:text="Your products"
+                android:text="Your donations"
+                android:layout_marginBottom="10dp"
                 android:textColor="@android:color/primary_text_light"
                 android:textSize="30sp" />
+
+
+            <ProgressBar
+                android:id="@+id/loading"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/txtnoDonations"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:padding="10dp"
+                android:textAlignment="center"
+                android:fontFamily="@font/roboto_light"
+                android:text="You have no donations yet."
+                android:textColor="@android:color/primary_text_light"
+                android:textSize="25sp" />
 
             <com.google.android.flexbox.FlexboxLayout
                 android:id="@+id/lytProducts"
@@ -85,7 +108,8 @@
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:layout_marginBottom="15dp"/>
         </LinearLayout>
     </ScrollView>
 </layout>
