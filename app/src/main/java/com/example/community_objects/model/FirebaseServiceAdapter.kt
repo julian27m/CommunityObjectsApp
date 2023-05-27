@@ -1,8 +1,8 @@
 package com.example.community_objects.model
 
 import android.net.Uri
-import android.util.Log
-import com.example.community_objects.viewmodel.ProfileViewModel
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -10,10 +10,6 @@ import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import com.google.firebase.Timestamp
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.Query
-import kotlin.collections.HashMap
 
 class FirebaseServiceAdapter {
     private val firestore = Firebase.firestore
@@ -166,6 +162,83 @@ class FirebaseServiceAdapter {
                             //}
                         }
                     }
+                }
+                //  Log.d("ItemRepository", "items: $items")
+                return@withContext items
+            } catch (e: Exception) {
+                println("Error al obtener los items: $e")
+                return@withContext emptyList()
+            }
+        }
+    }
+
+    suspend fun getItemsByCategory(category: String, username: String? = null): List<Any> {
+        //Log.d("ItemRepository.getItems", "username: $username")
+        return withContext(Dispatchers.IO) {
+            val items = mutableListOf<Any>()
+            try {
+                val categories = listOf("Equipment", "Printed", "Clothes", "Supplies", "items")
+                for (category in categories) {
+                    var query: Query = firestore.collection(category)
+                    if (username != null) {
+                        query = query.whereEqualTo("user", username)
+                        //Log.d("ItemRepository", "query: $query")
+                    }
+                    val categoryTask = query.get()
+                    val categoryDocs = categoryTask.await()
+                    for (doc in categoryDocs) {
+                        if (doc.get("imageURL") != null) {
+                            val item = when(category) {
+                                "Equipment" -> doc.toObject(EPP::class.java)
+                                "Printed" -> doc.toObject(Book::class.java)
+                                "Clothes" -> doc.toObject(Clothes::class.java)
+                                "Supplies" -> doc.toObject(Supplies::class.java)
+                                "items" -> doc.toObject(Item::class.java)
+                                else -> null
+                            }
+                            item?.let { items.add(it) }
+                            //if (item != null) {
+                              //  Log.d("ItemRepository", "item: $item")
+                            //}
+                        }
+                    }
+                }
+                //  Log.d("ItemRepository", "items: $items")
+                return@withContext items
+            } catch (e: Exception) {
+                println("Error al obtener los items: $e")
+                return@withContext emptyList()
+            }
+        }
+    }
+
+    suspend fun getItemsRequests(username: String? = null): List<Any> {
+        //Log.d("ItemRepository.getItems", "username: $username")
+        return withContext(Dispatchers.IO) {
+            val items = mutableListOf<Any>()
+            try {
+                val categories = listOf("Equipment_Request", "Printed_Request", "Clothes_Request", "Supplies_Request")
+                for (category in categories) {
+                    var query: Query = firestore.collection(category)
+                    if (username != null) {
+                        query = query.whereEqualTo("user", username)
+                        //Log.d("ItemRepository", "query: $query")
+                    }
+                    val categoryTask = query.get()
+                    val categoryDocs = categoryTask.await()
+                    for (doc in categoryDocs) {
+                            val item = when(category) {
+                                "Equipment_Request" -> doc.toObject(EPPRequest::class.java)
+                                "Printed_Request" -> doc.toObject(BookRequest::class.java)
+                                "Clothes_Request" -> doc.toObject(ClothesRequest::class.java)
+                                "Supplies_Request" -> doc.toObject(SuppliesRequest::class.java)
+                                else -> null
+                            }
+                            item?.let { items.add(it) }
+                            //if (item != null) {
+                              //  Log.d("ItemRepository", "item: $item")
+                            //}
+                        }
                 }
                 //  Log.d("ItemRepository", "items: $items")
                 return@withContext items

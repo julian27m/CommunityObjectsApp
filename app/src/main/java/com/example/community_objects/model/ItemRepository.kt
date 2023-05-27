@@ -36,4 +36,22 @@ class ItemRepository {
             }
         }
     }
+
+    fun getItemsByCategory(category: String, callback: (List<Any>) -> Unit) {
+        GlobalScope.launch {
+            val items = serviceAdapter.getItemsByCategory(category)
+            withContext(Dispatchers.Main) {
+                callback(items)
+            }
+        }
+    }
+
+    fun getItemsRequests(username: String? = null, callback: (List<Any>) -> Unit) {
+        GlobalScope.launch {
+            val items = serviceAdapter.getItemsRequests(username)
+            withContext(Dispatchers.Main) {
+                callback(items)
+            }
+        }
+    }
 }

@@ -132,6 +132,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.itemId) {
             R.id.nav_home -> supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, HomeFragment()).commit()
+            R.id.nav_requests -> supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, RequestsFragment()).commit()
             R.id.nav_top -> supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, TopFragment()).commit()
             R.id.nav_about -> supportFragmentManager.beginTransaction()
