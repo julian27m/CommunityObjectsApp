@@ -108,7 +108,7 @@
                     android:gravity="center"
                     android:text="0"
                     android:textAlignment="center"
-                    android:textColor="@color/light_cyan"
+                    android:textColor="@color/cyan"
                     android:textSize="26sp"
                     android:textStyle="bold" />
 
@@ -118,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:text="donations"
                     android:textAlignment="center"
-                    android:textColor="@color/light_cyan"
+                    android:textColor="@color/cyan"
                     android:textSize="11sp" />
 
             </LinearLayout>

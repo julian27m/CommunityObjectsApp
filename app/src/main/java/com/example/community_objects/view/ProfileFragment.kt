@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.example.community_objects.R
 import com.example.community_objects.databinding.FragmentProfileBinding
 import com.example.community_objects.databinding.FragmentProfileNotLoggedInBinding
 import com.example.community_objects.model.LoginActivity
@@ -52,6 +53,15 @@ class ProfileFragment : Fragment() {
                 }
             })
 
+            donations.setOnClickListener(View.OnClickListener {
+                val fragment = DonationFragment()
+                val transaction = activity?.supportFragmentManager?.beginTransaction()
+                transaction?.replace(R.id.fragment_container, fragment)
+                transaction?.addToBackStack(null)
+                transaction?.commit()
+
+            })
+
             return binding.root
 
         } else {
@@ -75,4 +85,6 @@ class ProfileFragment : Fragment() {
             return bindingNotLoggedIn.root
         }
     }
+
+
 }
