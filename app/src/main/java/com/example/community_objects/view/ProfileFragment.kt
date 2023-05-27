@@ -32,29 +32,43 @@ class ProfileFragment : Fragment() {
             //Log.d("ProfileFragment", "User is logged in" + user.email)
             binding = FragmentProfileBinding.inflate(inflater, container, false)
 
-            val profileName = binding.profileName
+            val profileCareer = binding.profileCareer
             val profileEmail = binding.profileEmail
-            val profileUsername = binding.profileUsername
+            val profileGender = binding.profileGender
             val titleName = binding.titleName
             val titleUsername = binding.titleUsername
+            val profileAge = binding.profileAge
             val donations = binding.donationsNo
+            val updates = binding.updatesNo
+            val editButton = binding.editProfile
 
             val viewModel = ProfileViewModel.getInstance()
 
             viewModel.getUser().observe(viewLifecycleOwner, Observer { user ->
                 //Log.d("ProfileFragment", "getUser().observe() called")
                 if (user != null) {
-                    profileName.text = user.name
+                    profileCareer.text = user.career
                     profileEmail.text = user.email
-                    profileUsername.text = user.username
+                    profileGender.text = user.gender
+                    profileAge.text = user.age.toString()
                     titleName.text = user.name
                     titleUsername.text = user.username
                     donations.text = user.donations.toString()
+                    updates.text = user.updates.toString()
                 }
             })
 
             donations.setOnClickListener(View.OnClickListener {
                 val fragment = DonationFragment()
+                val transaction = activity?.supportFragmentManager?.beginTransaction()
+                transaction?.replace(R.id.fragment_container, fragment)
+                transaction?.addToBackStack(null)
+                transaction?.commit()
+
+            })
+
+            editButton.setOnClickListener(View.OnClickListener {
+                val fragment = EditProfileFragment()
                 val transaction = activity?.supportFragmentManager?.beginTransaction()
                 transaction?.replace(R.id.fragment_container, fragment)
                 transaction?.addToBackStack(null)

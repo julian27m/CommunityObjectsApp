@@ -187,12 +187,9 @@ class DonateFragment : Fragment() {
             item["colors"] = binding.etItemColors.text.toString()
             item["size"] = binding.etItemSize.text.toString()
             item["reference"] = binding.etItemReference.text.toString()
-//            print("User set")
             item["user"] = username
             item["title"] = binding.etItemName.text.toString()
 
-            //            println("Item: $item")
-            //            println("ImageUri: $imageUri")
             if (imageUri != null) {
                 disableButtons()
                 itemViewModel.addItem(item, imageUri!!) { success ->
@@ -253,9 +250,6 @@ class DonateFragment : Fragment() {
                                 println("Error: $error")
                             }
                         })
-
-                        //val donations = signupPassword.getText().toString().trim { it <= ' ' }
-
                         Toast.makeText(
                             requireContext(),
                             "Item added successfully",
@@ -263,14 +257,14 @@ class DonateFragment : Fragment() {
 
                         )
                             .show()
-                    } else {
+                    }
+                    else {
                         Toast.makeText(
                             requireContext(),
                             "Error adding the item",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
-                    //            set the home fragment
                     val supportFragmentManager = requireActivity().supportFragmentManager
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, HomeFragment()).commit()
@@ -283,18 +277,14 @@ class DonateFragment : Fragment() {
                 ).show()
                 enableButtons()
             }
-//            enable the buttons again
             enableButtons()
-
         }
-
         binding.btnCancel.setOnClickListener {
             //            set the home fragment
             val supportFragmentManager = requireActivity().supportFragmentManager
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, HomeFragment()).commit()
         }
-
 
         binding.spCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -305,7 +295,6 @@ class DonateFragment : Fragment() {
             ) {
                 when (binding.spCategory.selectedItem.toString()) {
                     "Clothes" -> {
-                        //                        let color and size be visible
                         binding.etItemColors.visibility = View.VISIBLE
                         binding.etItemSize.visibility = View.VISIBLE
                         binding.lblColor.visibility = View.VISIBLE
@@ -324,7 +313,6 @@ class DonateFragment : Fragment() {
 
                     }
                     "Books" -> {
-                        //                        let author and subject be visible
                         binding.etItemAuthor.visibility = View.VISIBLE
                         binding.etItemSubject.visibility = View.VISIBLE
                         binding.lblAuthor.visibility = View.VISIBLE
@@ -342,7 +330,6 @@ class DonateFragment : Fragment() {
                         binding.lblReference.visibility = View.GONE
                     }
                     "Protective equipment" -> {
-                        //                        let type and degree be visible
                         binding.etItemDegree.visibility = View.VISIBLE
                         binding.etItemType.visibility = View.VISIBLE
                         binding.lblDegree.visibility = View.VISIBLE
@@ -360,7 +347,6 @@ class DonateFragment : Fragment() {
                         binding.lblReference.visibility = View.GONE
                     }
                     "School and University Supplies" -> {
-                        //                        let reference be visible
                         binding.etItemReference.visibility = View.VISIBLE
                         binding.lblReference.visibility = View.VISIBLE
 
@@ -379,7 +365,6 @@ class DonateFragment : Fragment() {
 
                     }
                     "Other" -> {
-                        //                        let none be visible
                         binding.etItemDegree.visibility = View.GONE
                         binding.etItemType.visibility = View.GONE
                         binding.etItemAuthor.visibility = View.GONE
@@ -399,24 +384,11 @@ class DonateFragment : Fragment() {
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                //                set the first element
                 binding.spCategory.setSelection(0)
             }
         }
 
-        //        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        //            if (result.resultCode == RESULT_OK) {
-        //                val _photoUri: Uri? = result.data?.data
-        ////                println("photoUri: $_photoUri")
-        //                imageUri = _photoUri
-        ////                println("imageUri: $imageUri")
-        //                binding.ivItemImage.setImageURI(_photoUri)
-        //            }
-        //        }
-
-        // Agregar un botón para seleccionar una imagen
         binding.btnAddImage.setOnClickListener {
-            //Start CameraActivity.kt
             val intent = Intent(requireContext(), CameraActivity::class.java)
             startActivityForResult(intent, 1)
 
@@ -532,11 +504,9 @@ class DonateFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-//        println("onActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResultonActivityResult")
-//        println(data)
+
         if (requestCode == 1 && resultCode == RESULT_OK) {
             val photoUri: Uri? = data?.data
-//            print(photoUri)
             imageUri = photoUri
             binding.ivItemImage.setImageURI(photoUri)
         }

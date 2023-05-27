@@ -6,11 +6,8 @@
     <string name="donate_item_name_hint">Name</string>
     <string name="donate_item_description_hint">Description</string>
     <string name="donate_item_category_prompt">Select categories...</string>
-    <string name="donate_item_image_title">Photos</string>
-    <string name="donate_item_add_image_button_text">Add</string>
     <string name="donate_item_publish_button_text">Publish</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="select_an_image_of_your_material">Select an image of your material</string>
     <string name="author_of_the_book">Author of the book</string>
     <string name="ibio_leng_etc">IBIO, LENG, etc.</string>
@@ -27,6 +24,5 @@
     <string name="standard">#/standard</string>
     <string name="size">Size</string>
     <string name="about_disconnect">You are not connected to the internet. Make sure Wifi is on, Airplane mode is off and try again.</string>
-    <string name="about_connected">Now you are online, I won\'t play with your cables again.</string>
 
 </resources>

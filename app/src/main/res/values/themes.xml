@@ -15,40 +15,9 @@
         <item name="android:forceDarkAllowed">false</item>
     </style>
 
-    <style name="Theme.MainActivity" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/cyan</item>
-        <item name="colorPrimaryVariant">@color/cyan</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/light_cyan</item>
-        <item name="colorSecondaryVariant">@color/light_cyan</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/white</item>
-        <!-- Customize your theme here. -->
-    </style>
-
     <style name="DialogAnimation">
         <item name="android:windowEnterAnimation">@anim/slide_in</item>
         <item name="android:windowExitAnimation">@anim/slide_out</item>
-    </style>
-
-    <style name="WhiteButtonStyle" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="android:colorPrimary">@color/white</item>
-    </style>
-    
-    <style name="SplashTheme" parent = "Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="android:windowBackground">@drawable/splashscreen</item>
-    </style>
-
-    <style name="DialogFragment" parent="android:Theme.Dialog">
-        <item name="android:windowBackground">@color/design_default_color_background</item>
-        <item name="android:windowAnimationStyle">@null</item>
-        <item name="android:backgroundDimEnabled">true</item>
-        <item name="android:windowMinWidthMajor">70%</item>
-        <item name="android:windowMinWidthMinor">70%</item>
-        <item name="android:windowNoTitle">true</item>
     </style>
 
 </resources>
