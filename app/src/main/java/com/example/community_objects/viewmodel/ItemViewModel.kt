@@ -43,4 +43,16 @@ class ItemViewModel() : ViewModel() {
         }
     }
 
+    fun getItemsByCategory(category: String, callback: (List<Any>) -> Unit) {
+        repository.getItemsByCategory(category) { items ->
+            callback(items)
+        }
+    }
+
+    fun getItemsRequest(username: String? = null, callback: (List<Any>) -> Unit) {
+        repository.getItemsRequests(username) { items ->
+            callback(items)
+        }
+    }
+
 }

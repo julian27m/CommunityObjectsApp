@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="com.example.community_objects.model.ItemRequest" />
+
+        <variable
+            name="itemRequest"
+            type="ItemRequest" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="@dimen/cardview_default_elevation"
+        android:layout_margin="5dp"
+        >
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="5dp"
+            >
+        <TextView
+            android:id="@+id/requestName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{itemRequest.name}"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/requestDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{itemRequest.description}"
+            android:textSize="18sp"
+            />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.cardview.widget.CardView>
+</layout>
