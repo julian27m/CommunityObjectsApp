@@ -1,14 +1,15 @@
 package com.example.community_objects.model
 
 class UserBuilderClass public constructor(
-    val name: String?,
-    val gender: String?,
-    val age: String?,
+    var name: String?,
+    var gender: String?,
+    var age: String?,
     val email: String?,
     val username: String?,
     val password: String?,
     val donations: String?,
-    val career: String?
+    val updates: String?,
+    var career: String?
 ) {
     class Builder {
         private var name: String? = null
@@ -18,6 +19,7 @@ class UserBuilderClass public constructor(
         private var username: String? = null
         private var password: String? = null
         private var donations: String? = null
+        private var updates: String? = null
         private var career: String? = null
 
         fun setName(name: String?): Builder {
@@ -55,13 +57,18 @@ class UserBuilderClass public constructor(
             return this
         }
 
+        fun setUpdates(updates: String?): Builder {
+            this.updates = updates
+            return this
+        }
+
         fun setCareer(career: String?): Builder {
             this.career = career
             return this
         }
 
         fun build(): UserBuilderClass {
-            return UserBuilderClass(name, gender, age, email, username, password, donations, career)
+            return UserBuilderClass(name, gender, age, email, username, password, donations, updates, career)
         }
     }
 }

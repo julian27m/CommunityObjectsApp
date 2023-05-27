@@ -180,6 +180,10 @@ class LoginActivity: AppCompatActivity() {
                             snapshot.child(userUsername).child("donations").getValue(
                                 String::class.java
                             )
+                        val updatesFromDB =
+                            snapshot.child(userUsername).child("updates").getValue(
+                                String::class.java
+                            )
                         val careerFromDB =
                             snapshot.child(userUsername).child("career").getValue(
                                 String::class.java
@@ -193,6 +197,7 @@ class LoginActivity: AppCompatActivity() {
                             .setGender(genderFromDB.toString())
                             .setAge(ageFromDB.toString())
                             .setDonations(donationsFromDB.toString())
+                            .setUpdates(updatesFromDB.toString())
                             .setCareer(careerFromDB.toString())
                             .build()
 

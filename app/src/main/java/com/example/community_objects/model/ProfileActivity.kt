@@ -27,10 +27,16 @@ class ProfileActivity : AppCompatActivity() {
         val nameUser = intent.getStringExtra("name")
         val emailUser = intent.getStringExtra("email")
         val usernameUser = intent.getStringExtra("username")
+        val genderUser = intent.getStringExtra("gender")
+        val careerUser = intent.getStringExtra("career")
+        val ageUser = intent.getStringExtra("age")
+
         binding.titleName.text = nameUser
         binding.titleUsername.text = usernameUser
-        binding.profileName.text = nameUser
+        binding.profileGender.text = genderUser
+        binding.profileCareer.text = careerUser
+        binding.profileAge.text = ageUser
         binding.profileEmail.text = emailUser
-        binding.profileUsername.text = usernameUser
+
     }
 }

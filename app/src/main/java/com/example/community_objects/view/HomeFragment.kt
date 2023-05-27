@@ -2,6 +2,7 @@ package com.example.community_objects.view
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -160,6 +161,8 @@ class HomeFragment : Fragment() {
 
         viewModel.getAllItems() { items ->
             if (!isAdded) return@getAllItems
+
+            //Log.d("HomeFragment", "items: $items")
 
             for (item in items) {
                 val productThumbnailView = ProductThumbnailView(requireContext())
