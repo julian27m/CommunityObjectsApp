@@ -59,23 +59,23 @@ class SplashActivity : AppCompatActivity() {
         //val message = binding.message
 
         val reference = FirebaseDatabase.getInstance().getReference("users")
-        reference.orderByChild("donations").limitToLast(3).addValueEventListener(object : ValueEventListener {
+        reference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val data = mutableListOf<Pair<String, Int>>()
+                var data = mutableListOf<Pair<String, Int>>()
                 for (ds in dataSnapshot.children) {
                     val username = ds.child("username").getValue(String::class.java)
                     val donations = ds.child("donations").getValue(String::class.java)?.toIntOrNull() ?: 0
                     data.add(Pair(username, donations) as Pair<String, Int>)
                 }
                 data.sortByDescending { it.second }
+                data = data.take(3).toMutableList()
 
-                // Store data in SharedPreferences
                 for ((index, pair) in data.withIndex()) {
                     editor.putString("username$index", pair.first)
                     editor.putInt("donations$index", pair.second)
                 }
                 editor.apply()
-                //message.text = "Congratulations to our top 3 givers of the week!"
+
                 var i = 0
                 for (d in data) {
                     if (i == 0) {
@@ -97,11 +97,6 @@ class SplashActivity : AppCompatActivity() {
             }
         })
     }
-
-
-
-
-
 
 }
 

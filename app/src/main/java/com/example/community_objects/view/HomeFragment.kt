@@ -158,15 +158,15 @@ class HomeFragment : Fragment() {
         })
 
 
-        viewModel.items.observe(viewLifecycleOwner, Observer
-        { items ->
+        viewModel.getAllItems() { items ->
+            if (!isAdded) return@getAllItems
+
             for (item in items) {
-//                println("item: $item")
                 val productThumbnailView = ProductThumbnailView(requireContext())
                 productThumbnailView.setProduct(item, binding.lytProducts.width)
                 productsContainer.addView(productThumbnailView)
             }
-        })
+        }
 
     }
 

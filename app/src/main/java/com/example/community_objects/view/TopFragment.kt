@@ -93,28 +93,25 @@ class TopFragment : Fragment() {
         val editor = sharedPreferences.edit()
 
         withContext(Dispatchers.IO) {
-            //Here is where I fetch the data from the database
             try {
                 val reference = FirebaseDatabase.getInstance().getReference("users")
-                val dataSnapshot = reference.orderByChild("donations").limitToLast(3).get().await()
-                val data = mutableListOf<Pair<String, Int>>()
+                val dataSnapshot = reference.get().await()
+                var data = mutableListOf<Pair<String, Int>>()
                 for (ds in dataSnapshot.children) {
                     val username = ds.child("username").getValue(String::class.java)
                     val donations = ds.child("donations").getValue(String::class.java)?.toIntOrNull() ?: 0
                     data.add(Pair(username, donations) as Pair<String, Int>)
                 }
                 data.sortByDescending { it.second }
+                data = data.take(3).toMutableList()
 
-                //Store data in SharedPreferences
                 for ((index, pair) in data.withIndex()) {
                     editor.putString("username$index", pair.first)
                     editor.putInt("donations$index", pair.second)
                 }
                 editor.apply()
 
-                data.sortByDescending { it.second }
                 withContext(Dispatchers.Main) {
-                    //This is where I update the UI
                     var i = 0
                     for (d in data) {
                         if (i == 0) {
@@ -131,10 +128,7 @@ class TopFragment : Fragment() {
                     }
                 }
             } catch (e: Exception) {
-                // Handle error
                 Log.d("TopFragment", "Failed to fetch data from database: ${e.message}")
-
-                // If fetch from database fails, try to load from SharedPreferences
                 withContext(Dispatchers.Main) {
                     loadCachedData()
                 }

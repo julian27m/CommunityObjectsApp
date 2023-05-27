@@ -37,9 +37,8 @@ class ItemViewModel() : ViewModel() {
         }
     }
 
-    fun getAllItems(callback: (List<Any>) -> Unit) {
-//        println("ItemViewModel.getAllItems")
-        repository.getItems() { items ->
+    fun getAllItems(username: String? = null, callback: (List<Any>) -> Unit) {
+        repository.getItems(username) { items ->
             callback(items)
         }
     }
