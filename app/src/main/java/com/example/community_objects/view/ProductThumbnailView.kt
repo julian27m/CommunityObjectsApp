@@ -35,11 +35,15 @@ class ProductThumbnailView : FrameLayout {
         )
 
         binding.root.setOnClickListener {
-            Toast.makeText(
-                context,
-                binding.item!!.category,
-                Toast.LENGTH_SHORT
-            ).show()
+//            use the item id to go to the detail view
+            Toast.makeText(context, "Item id: ${binding.item?.id}", Toast.LENGTH_SHORT).show()
+            val view = ProductDetailView(context)
+            view.setProduct(binding.item!!)
+            val params = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+            view.layoutParams = params
+            val fragment = ProductDetailFragment(view)
+
+
         }
 
     }
@@ -59,4 +63,5 @@ class ProductThumbnailView : FrameLayout {
 
     }
 }
+
 

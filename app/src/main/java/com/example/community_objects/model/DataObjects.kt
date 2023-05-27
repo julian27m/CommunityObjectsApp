@@ -1,9 +1,7 @@
 package com.example.community_objects.model
 
-
-//All requests objects are the same but without image
-
 open class Item(
+    var id: String = "",
     var name: String = "",
     var category: String = "",
     var description: String = "",
@@ -12,6 +10,7 @@ open class Item(
 )
 
 open class ItemRequest(
+    var id: String = "",
     var name: String = "",
     var category: String = "",
     var description: String = "",
@@ -19,11 +18,12 @@ open class ItemRequest(
 )
 
 class EPP(
-    var degree: String,
-    var type: String
+    var degree: String = "",
+    var type: String = ""
 ) : Item() {
 
     constructor(
+        id: String = "",
         name: String = "",
         category: String = "",
         description: String = "",
@@ -32,6 +32,7 @@ class EPP(
         type: String = "",
         user: String = ""
     ) : this(degree, type) {
+        this.id = id
         this.name = name
         this.category = category
         this.description = description
@@ -40,16 +41,15 @@ class EPP(
         this.type = type
         this.user = user
     }
-
-    constructor() : this("", "")
 }
 
 class EPPRequest(
-    var degree: String,
-    var type: String
+    var degree: String = "",
+    var type: String = ""
 ) : ItemRequest() {
 
     constructor(
+        id: String = "",
         name: String = "",
         category: String = "",
         description: String = "",
@@ -57,6 +57,7 @@ class EPPRequest(
         type: String = "",
         user: String = ""
     ) : this(degree, type) {
+        this.id = id
         this.name = name
         this.category = category
         this.description = description
@@ -64,11 +65,10 @@ class EPPRequest(
         this.type = type
         this.user = user
     }
-
-    constructor() : this("", "")
 }
 
 class Book(
+    var id: String = "",
     var title: String = "",
     var category: String = "",
     var description: String = "",
@@ -79,6 +79,7 @@ class Book(
 )
 
 class BookRequest(
+    var id: String = "",
     var title: String = "",
     var category: String = "",
     var description: String = "",
@@ -88,10 +89,11 @@ class BookRequest(
 )
 
 class Clothes(
-    var colors: String,
-    var size: String,
+    var colors: String = "",
+    var size: String = ""
 ) : Item() {
     constructor(
+        id: String = "",
         name: String = "",
         category: String = "",
         description: String = "",
@@ -100,6 +102,7 @@ class Clothes(
         size: String = "",
         user: String = ""
     ) : this(colors, size) {
+        this.id = id
         this.name = name
         this.category = category
         this.description = description
@@ -108,15 +111,14 @@ class Clothes(
         this.size = size
         this.user = user
     }
-
-    constructor() : this("", "")
 }
 
 class ClothesRequest(
-    var colors: String,
-    var size: String,
+    var colors: String = "",
+    var size: String = ""
 ) : ItemRequest() {
     constructor(
+        id: String = "",
         name: String = "",
         category: String = "",
         description: String = "",
@@ -124,6 +126,7 @@ class ClothesRequest(
         size: String = "",
         user: String = ""
     ) : this(colors, size) {
+        this.id = id
         this.name = name
         this.category = category
         this.description = description
@@ -131,11 +134,10 @@ class ClothesRequest(
         this.size = size
         this.user = user
     }
-
-    constructor() : this("", "")
 }
 
 class Supplies(
+    var id: String = "",
     var title: String = "",
     var category: String = "",
     var description: String = "",
@@ -145,6 +147,7 @@ class Supplies(
 )
 
 class SuppliesRequest(
+    var id: String = "",
     var title: String = "",
     var category: String = "",
     var description: String = "",
