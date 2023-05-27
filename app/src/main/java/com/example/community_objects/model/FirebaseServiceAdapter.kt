@@ -1,8 +1,10 @@
 package com.example.community_objects.model
 
 import android.net.Uri
+import com.google.android.gms.tasks.Task
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -138,17 +140,21 @@ class FirebaseServiceAdapter {
             val items = mutableListOf<Any>()
             try {
                 val categories = listOf("Equipment", "Printed", "Clothes", "Supplies", "items")
+                var query: Query;
+                var categoryTask: Task<QuerySnapshot>;
+                var categoryDocs: QuerySnapshot;
+                var item: Any?;
                 for (category in categories) {
-                    var query: Query = firestore.collection(category)
+                    query = firestore.collection(category)
                     if (username != null) {
                         query = query.whereEqualTo("user", username)
                         //Log.d("ItemRepository", "query: $query")
                     }
-                    val categoryTask = query.get()
-                    val categoryDocs = categoryTask.await()
+                    categoryTask = query.get()
+                    categoryDocs = categoryTask.await()
                     for (doc in categoryDocs) {
                         if (doc.get("imageURL") != null) {
-                            val item = when(category) {
+                            item = when(category) {
                                 "Equipment" -> doc.toObject(EPP::class.java)
                                 "Printed" -> doc.toObject(Book::class.java)
                                 "Clothes" -> doc.toObject(Clothes::class.java)
@@ -265,16 +271,20 @@ class FirebaseServiceAdapter {
         firestore.collection("category_popularity").whereNotEqualTo("time", null)
             .get()
             .addOnSuccessListener { docs ->
+                var actual: Timestamp;
+                var saved: Timestamp;
+                var diff: Long;
+                var visit: Visit;
                 for (doc in docs) {
 //                    println("doc: $doc")
 //                    filter the visits from the last 24 hours
-                    val actual = Timestamp.now()
+                    actual = Timestamp.now()
 //                    println("actual: $actual")
-                    val saved = doc.get("time") as Timestamp
-                    val diff = actual.seconds - saved.seconds
+                    saved = doc.get("time") as Timestamp
+                    diff = actual.seconds - saved.seconds
 //                    println("diff: $diff")
                     if (diff < 86400) {
-                        val visit = doc.toObject(Visit::class.java)
+                        visit = doc.toObject(Visit::class.java)
                         visits.add(visit)
                     }
 //                    val visit = doc.toObject(Visit::class.java)
