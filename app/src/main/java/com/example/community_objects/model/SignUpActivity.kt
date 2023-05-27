@@ -59,6 +59,7 @@ class SignUpActivity : AppCompatActivity() {
             val username = binding.signupUsername.text.toString().trim { it <= ' ' }
             val user = binding.signupEmail.text.toString().trim { it <= ' ' }
             val donations = "0"
+            val updates = "0"
             val career = binding.signupCareer.text.toString().trim { it <= ' ' }.replace("á", "a")
                 .replace("é", "e")
                 .replace("í", "i")
@@ -175,10 +176,10 @@ class SignUpActivity : AppCompatActivity() {
                         //User recovered internet connection
                         showNetworkDialog()
                         fallbackBoolean = false
-                        registerUser(user, pass, name, gender, age, username, donations, career)
+                        registerUser(user, pass, name, gender, age, username, donations, updates, career)
                     } else {
                         //User has internet connection fro the start
-                        registerUser(user, pass, name, gender, age, username, donations, career)
+                        registerUser(user, pass, name, gender, age, username, donations, updates, career)
                     }
                 } else {
                     //User doesn't have internet connection
@@ -198,6 +199,7 @@ class SignUpActivity : AppCompatActivity() {
         age: String,
         username: String,
         donations: String,
+        updates: String,
         career: String
     ) {
         auth = FirebaseAuth.getInstance()
@@ -222,6 +224,7 @@ class SignUpActivity : AppCompatActivity() {
                                         .setUsername(username)
                                         .setPassword(pass)
                                         .setDonations(donations)
+                                        .setUpdates(updates)
                                         .setCareer(career)
                                         .build()
                                     reference.child(username).setValue(userBuilderClass)
