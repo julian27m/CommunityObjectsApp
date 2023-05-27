@@ -82,22 +82,22 @@ class EditProfileFragment : Fragment() {
                     }
                     if (fallbackBoolean) {
                         fallbackBoolean = false
-                    } else if (!isConnected) {
-                        showNetworkDisconnectedDialog()
-                        fallbackBoolean = true
-                        saveProfileToLocalStorage(
-                            binding.newName.text.toString(),
-                            binding.newGender.text.toString(),
-                            binding.newAge.text.toString(),
-                            binding.newCareer.text.toString()
-                        )
-                        //return to profile fragment
-                        navigateToProfileFragment()
                     }
                 }else if (recentUpdates.toInt() > 4){
                 showRecentUpdatesDialog()
             }
-        }})
+        }else if (!isConnected) {
+                showNetworkDisconnectedDialog()
+                fallbackBoolean = true
+                saveProfileToLocalStorage(
+                    binding.newName.text.toString(),
+                    binding.newGender.text.toString(),
+                    binding.newAge.text.toString(),
+                    binding.newCareer.text.toString()
+                )
+                //return to profile fragment
+                navigateToProfileFragment()
+            }})
 
 
 
